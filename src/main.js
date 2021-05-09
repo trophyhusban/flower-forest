@@ -8,3 +8,6 @@ let config = {
 let game = new Phaser.Game(config);
 
 let uiUnit = game.config.height / 15;
+
+let keySPACE;
+let textConfig;
