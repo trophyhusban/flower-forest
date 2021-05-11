@@ -5,12 +5,17 @@ class Play extends Phaser.Scene {
     
     init() {
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+        keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
+        keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
+        keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
+        keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
     }
 
     preload() {
         this.load.image("text box", "./assets/ui/textbox.png");
         this.load.image("text box flowers", "./assets/ui/textbox_flowers.png");
         this.load.image("text box tail", "./assets/ui/textbox_tail.png");
+        this.load.image("tempSprite", "./assets/gamepieces/Sprite-0001.png");
     }
     create() {
         textConfig = {
@@ -36,10 +41,17 @@ class Play extends Phaser.Scene {
         this.input.keyboard.on("keydown-SPACE", () => {
             this.dialogue.nextPage();
         });
+
+        this.player = new One(this, 
+            50, 
+            240, 
+            "tempSprite", 
+            0);
     }
     update() {
         if (this.dialogue != undefined) {
             this.dialogue.nextLetter();
         }
+        this.player.update();
     }
 }
