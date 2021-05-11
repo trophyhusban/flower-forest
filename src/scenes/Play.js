@@ -13,11 +13,11 @@ class Play extends Phaser.Scene {
         this.load.image("text box tail", "./assets/ui/textbox_tail.png");
     }
     create() {
+        this.add.rectangle(0, 0, config.width, config.height, 0xDDFFDD).setOrigin(0,0);
         textConfig = {
             fontFamily: "Verdana",
             fontSize: "24px",
-            color: "#000",
-            //backgroundColor: "#fff",
+            color: "#050",
             align: "center",
             padding: 4,
             wordWrap: {width: config.width - unit*2},
@@ -28,7 +28,7 @@ class Play extends Phaser.Scene {
             this,
             unit,
             64,
-            ["this is the first page of the text, it sort of goes on for a while so thawhile so while so while so while so whil"],
+            ["hey y'all check out this cool dialogue box i made :-) "],
             textConfig
         );
         this.dialogue.drawText();
