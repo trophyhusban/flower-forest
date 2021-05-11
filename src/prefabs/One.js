@@ -6,6 +6,7 @@ class One extends Phaser.GameObjects.Sprite {
         this.gridX = 0;
         this.gridY = 0;
         this.scene = scene;
+        scene.add.existing(this);
 
         for(this.i = 0; this.i <= gridSize; this.i++) {
             for(this.j = 0; this.j <= gridSize; this.j++) {
@@ -41,11 +42,11 @@ class One extends Phaser.GameObjects.Sprite {
             }
 
             if(keyUP.isDown) {
-                this.gridY++;
+                this.gridY--;
                 this.walking = true;
             }
             if(keyDOWN.isDown) {
-                this.gridY--;
+                this.gridY++;
                 this.walking = true;
             }
             if(keyRIGHT.isDown) {
