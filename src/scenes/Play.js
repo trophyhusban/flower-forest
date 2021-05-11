@@ -9,6 +9,8 @@ class Play extends Phaser.Scene {
 
     preload() {
         this.load.image("text box", "./assets/ui/textbox.png");
+        this.load.image("text box flowers", "./assets/ui/textbox_flowers.png");
+        this.load.image("text box tail", "./assets/ui/textbox_tail.png");
     }
     create() {
         textConfig = {
