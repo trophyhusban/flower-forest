@@ -64,6 +64,8 @@ class One extends Phaser.GameObjects.Sprite {
                 this.gridX--;
                 this.walking = true;
             }
+            this.gridX = Phaser.Math.Clamp(this.gridX, 1, gridSize);
+            this.gridY = Phaser.Math.Clamp(this.gridY, 0, gridSize - 1);
 
             if(this.walking) {
                 this.scene.tweens.add({

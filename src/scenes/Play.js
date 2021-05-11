@@ -65,13 +65,11 @@ class Play extends Phaser.Scene {
         //create player
         this.player = new One(
             this, 
-            50, 
-            240, 
+            (gridSize / 2) * gridUnit, 
+            (gridSize / 2) * gridUnit, 
             "oneSprite");
 
         this.drawGrid();
-        
-   
     }
 
     update() {
