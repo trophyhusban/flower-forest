@@ -65,10 +65,20 @@ class Play extends Phaser.Scene {
         //create player
         this.player = new One(
             this, 
-            (gridSize / 2) * gridUnit, 
+            (gridSize / 2) * gridUnit + gridUnit, 
             (gridSize / 2) * gridUnit, 
             "oneSprite");
 
+        //create doppelganger
+        this.doppelganger = new Other(
+            this, 
+            (gridSize / 2) * gridUnit - gridUnit, 
+            (gridSize / 2) * gridUnit, 
+            "oneSprite");
+        this.input.keyboard.on("keydown-M", () => {
+            this.doppelganger.mirrorMode = !this.doppelganger.mirrorMode;
+        });
+        
         this.drawGrid();
     }
 
@@ -77,6 +87,7 @@ class Play extends Phaser.Scene {
             this.dialogue.nextLetter();
         }
         this.player.update();
+        this.doppelganger.update();
     }
 
     drawGrid() {
