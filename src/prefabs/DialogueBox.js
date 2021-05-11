@@ -8,6 +8,7 @@ class DialogueBox {
     //      how to format the text in CSS + font choice
     //      maybe a tail?
     // refine/stylize the UI
+    //      maybe move the flowers on top onto the text box itself 
     // make it always look good (may have to go above/below NPC or at the top or bottom of the screen for example)
     // implement it in the context of the game
     // impement audio blips when alexis finishes them
@@ -24,14 +25,24 @@ class DialogueBox {
         this.drawingNewText = false;
     }
     drawText() {
-        this.textBox = this.scene.add.sprite(this.x-4, this.y-4, "text box").setOrigin(0, 0);
-        this.textBoxFlowers = this.scene.add.sprite(this.textBox.x, this.textBox.y, "text box flowers").setOrigin(0, 1);
+        this.textBox = this.scene.add.sprite(
+            this.x-4, 
+            this.y-4, 
+            "text box"
+            ).setOrigin(0, 0);
+
+        this.textBoxFlowers = this.scene.add.sprite(
+            this.textBox.x, 
+            this.textBox.y, 
+            "text box flowers"
+            ).setOrigin(0, 1);
+
         this.textBoxTail = this.scene.add.sprite(
             this.textBox.x + this.textBox.width*.75, 
             this.textBox.y+this.textBox.height-3,
             "text box tail"
             ).setOrigin(.5, 0);
-            
+
         this.currentText = this.scene.add.text(this.x, this.y, this.textDrawnInBox, textConfig);
     }
 
@@ -45,6 +56,7 @@ class DialogueBox {
                 this.currentText.destroy();
                 this.textBox.destroy();
                 this.textBoxFlowers.destroy();
+                this.textBoxTail.destroy();
                 this.text = "";
             }
         }

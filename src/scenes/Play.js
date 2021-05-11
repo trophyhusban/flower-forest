@@ -29,19 +29,6 @@ class Play extends Phaser.Scene {
             align: "left"
         };
 
-        this.dialogue = new DialogueBox(
-            this,
-            unit,
-            64,
-            ["hey y'all check out this cool dialogue box i made :-) "],
-            textConfig
-        );
-        this.dialogue.drawText();
-
-        this.input.keyboard.on("keydown-SPACE", () => {
-            this.dialogue.nextPage();
-        });
-
         this.player = new One(
             this, 
             50, 
