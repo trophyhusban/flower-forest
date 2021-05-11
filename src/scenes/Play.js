@@ -15,7 +15,7 @@ class Play extends Phaser.Scene {
         this.load.image("text box", "./assets/ui/textbox.png");
         this.load.image("text box flowers", "./assets/ui/textbox_flowers.png");
         this.load.image("text box tail", "./assets/ui/textbox_tail.png");
-        this.load.image("tempSprite", "./assets/gamepieces/Sprite-0001.png");
+        this.load.image("tempSprite", "./assets/gamepieces/player1.png");
     }
     create() {
         this.add.rectangle(0, 0, config.width, config.height, 0xDDFFDD).setOrigin(0,0);
@@ -47,7 +47,8 @@ class Play extends Phaser.Scene {
             50, 
             240, 
             "tempSprite").setDepth(100);
-    }
+   
+        }
     update() {
         if (this.dialogue != undefined) {
             this.dialogue.nextLetter();
