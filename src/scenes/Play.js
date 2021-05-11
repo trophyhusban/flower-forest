@@ -15,7 +15,9 @@ class Play extends Phaser.Scene {
         this.load.image("text box", "./assets/ui/textbox.png");
         this.load.image("text box flowers", "./assets/ui/textbox_flowers.png");
         this.load.image("text box tail", "./assets/ui/textbox_tail.png");
-        this.load.image("tempSprite", "./assets/gamepieces/player1.png");
+        this.load.image("oneSprite", "./assets/gamepieces/player1.png");
+        this.load.spritesheet("flowerCrumb", "./assets/gamepieces/flower.png", 
+            {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 6});
     }
     create() {
         this.add.rectangle(0, 0, config.width, config.height, 0xDDFFDD).setOrigin(0,0);
@@ -42,17 +44,61 @@ class Play extends Phaser.Scene {
             this.dialogue.nextPage();
         });
 
+        //create flower group
+        this.flowerTrail = this.add.group({
+            runChildUpdate: true
+        });
+        //configure flower animations
+        this.anims.create({
+            key: 'plantCrumb',
+            frames: this.anims.generateFrameNumbers("flowerCrumb", 
+                {start: 0, end: 6, first: 0}),
+            frameRate: 6
+        });
+        this.anims.create({
+            key: 'killCrumb',
+            frames: this.anims.generateFrameNumbers("flowerCrumb", 
+                {start: 6, end: 0, first: 6}),
+            frameRate: 6
+        });
+
+        //create player
         this.player = new One(
             this, 
             50, 
             240, 
-            "tempSprite").setDepth(100);
+            "oneSprite");
+
+        this.drawGrid();
+        
    
-        }
+    }
+
     update() {
         if (this.dialogue != undefined) {
             this.dialogue.nextLetter();
         }
         this.player.update();
+    }
+
+    drawGrid() {
+        for(this.j = 0; this.j <= gridSize; this.j++) {
+            this.add.line(
+                this.j * gridUnit + (gridUnit / 2),
+                0,
+                this.j * gridUnit + (gridUnit / 2),
+                gridSize,
+                0x000000,
+                1);
+        }
+        for(this.i = 0; this.i <= gridSize; this.i++) {
+            this.add.line(
+                0,
+                this.i * gridUnit + (gridUnit / 2),
+                gridSize,
+                this.i * gridUnit + (gridUnit / 2),
+                0x000000,
+                1);
+        }
     }
 }
