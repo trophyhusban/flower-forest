@@ -8,23 +8,27 @@ class Play extends Phaser.Scene {
     }
 
     preload() {
-
+        this.load.image("text box", "./assets/ui/textbox.png");
+        this.load.image("text box flowers", "./assets/ui/textbox_flowers.png");
+        this.load.image("text box tail", "./assets/ui/textbox_tail.png");
     }
     create() {
         textConfig = {
             fontFamily: "Verdana",
             fontSize: "24px",
             color: "#000",
-            backgroundColor: "#fff",
+            //backgroundColor: "#fff",
             align: "center",
-            padding: 5,
+            padding: 4,
+            wordWrap: {width: config.width - unit*2},
+            align: "left"
         };
 
         this.dialogue = new DialogueBox(
             this,
+            unit,
             64,
-            64,
-            ["this is the first page of the text", "this is the second page"],
+            ["this is the first page of the text, it sort of goes on for a while so thawhile so while so while so while so whil"],
             textConfig
         );
         this.dialogue.drawText();
@@ -32,5 +36,10 @@ class Play extends Phaser.Scene {
         this.input.keyboard.on("keydown-SPACE", () => {
             this.dialogue.nextPage();
         });
+    }
+    update() {
+        if (this.dialogue != undefined) {
+            this.dialogue.nextLetter();
+        }
     }
 }
