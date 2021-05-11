@@ -85,20 +85,24 @@ class Play extends Phaser.Scene {
         for(this.j = 0; this.j <= gridSize; this.j++) {
             this.add.line(
                 this.j * gridUnit + (gridUnit / 2),
+                (gridSize * gridUnit) / 2 + (gridUnit / 2),
                 0,
-                this.j * gridUnit + (gridUnit / 2),
-                gridSize,
+                0,
+                0,
+                gridSize * gridUnit,
                 0x000000,
-                1);
+                0.15);
         }
         for(this.i = 0; this.i <= gridSize; this.i++) {
             this.add.line(
+                (gridSize * gridUnit) / 2 + (gridUnit / 2),
+                this.i * gridUnit + (gridUnit / 2),
                 0,
-                this.i * gridUnit + (gridUnit / 2),
-                gridSize,
-                this.i * gridUnit + (gridUnit / 2),
+                0,
+                gridSize * gridUnit,
+                0,
                 0x000000,
-                1);
+                0.15);
         }
     }
 }
