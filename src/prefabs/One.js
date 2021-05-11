@@ -8,14 +8,14 @@ class One extends Phaser.GameObjects.Sprite {
         this.scene = scene;
         scene.add.existing(this);
 
+        for(this.j = 0; this.j <= gridSize; this.j++) {
+            if(Math.abs(this.x - (this.j * gridUnit)) < Math.abs(this.x - (this.gridX * gridUnit))) {
+                this.gridX = this.j;
+            }
+        }
         for(this.i = 0; this.i <= gridSize; this.i++) {
-            for(this.j = 0; this.j <= gridSize; this.j++) {
-                if(Math.abs(this.x - (this.j * gridUnit)) < Math.abs(this.x - (this.gridX * gridUnit))) {
-                    this.gridX = this.j;
-                }
-                if(Math.abs(this.y - (this.i * gridUnit)) < Math.abs(this.y - (this.gridY * gridUnit))) {
-                    this.gridY = this.i;
-                }
+            if(Math.abs(this.y - (this.i * gridUnit)) < Math.abs(this.y - (this.gridY * gridUnit))) {
+                this.gridY = this.i;
             }
         }
     }
@@ -30,6 +30,13 @@ class One extends Phaser.GameObjects.Sprite {
 
     plant() {
         console.log("plant");
+        this.scene.flowerTrail.add(new FlowerCrumb(
+            this.scene,
+            this.gridX * gridUnit,
+            this.gridY * gridUnit,
+            "flowerCrumb",
+            0
+        ));
     }
 
     walk() {
@@ -57,6 +64,8 @@ class One extends Phaser.GameObjects.Sprite {
                 this.gridX--;
                 this.walking = true;
             }
+            this.gridX = Phaser.Math.Clamp(this.gridX, 1, gridSize);
+            this.gridY = Phaser.Math.Clamp(this.gridY, 0, gridSize - 1);
 
             if(this.walking) {
                 this.scene.tweens.add({
