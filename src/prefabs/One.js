@@ -1,4 +1,4 @@
-class One extends Phaser.Physics.Arcade.Sprite {
+class One extends Phaser.GameObjects.Sprite {
     constructor(scene, x, y, texture, frame) {
         super(scene, x, y, texture, frame);
         this.walkSpd = 1;
