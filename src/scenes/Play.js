@@ -42,11 +42,11 @@ class Play extends Phaser.Scene {
             this.dialogue.nextPage();
         });
 
-        this.player = new One(this, 
+        this.player = new One(
+            this, 
             50, 
             240, 
-            "tempSprite", 
-            0);
+            "tempSprite").setDepth(100);
     }
     update() {
         if (this.dialogue != undefined) {
