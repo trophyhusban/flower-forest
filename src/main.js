@@ -8,8 +8,9 @@ let config = {
 let game = new Phaser.Game(config);
 
 let uiUnit = game.config.height / 15;
-let gridUnit = game.config.width / 51;
+let gridSize = 50;
+let gridUnit = game.config.width / (gridSize + 1);
 let unit = game.config.height / 15;
 
-let keySPACE;
+let keySPACE, keyUP, keyDOWN, keyLEFT, keyRIGHT;
 let textConfig;
