@@ -31,8 +31,6 @@ class Play extends Phaser.Scene {
             align: "left"
         };
 
-<<<<<<< HEAD
-=======
         this.dialogue = new DialogueBox(
             this,
             unit,
@@ -65,7 +63,6 @@ class Play extends Phaser.Scene {
         });
 
         //create player
->>>>>>> e5721fc95f727eb9a125b4b8b53d7ff7a8dab675
         this.player = new One(
             this, 
             (gridSize / 2) * gridUnit + gridUnit, 
