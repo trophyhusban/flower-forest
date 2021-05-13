@@ -65,15 +65,15 @@ class Play extends Phaser.Scene {
         //create player
         this.player = new One(
             this, 
-            (gridSize / 2) * gridUnit + gridUnit, 
-            (gridSize / 2) * gridUnit, 
+            (Math.floor(gridSize / 2) + 2) * gridUnit, 
+            Math.floor(gridSize / 2) * gridUnit, 
             "oneSprite");
 
         //create doppelganger
         this.doppelganger = new Other(
             this, 
-            (gridSize / 2) * gridUnit - gridUnit, 
-            (gridSize / 2) * gridUnit, 
+            Math.floor(gridSize / 2) * gridUnit, 
+            Math.floor(gridSize / 2) * gridUnit, 
             "oneSprite");
         this.input.keyboard.on("keydown-M", () => {
             this.doppelganger.mirrorMode = !this.doppelganger.mirrorMode;
