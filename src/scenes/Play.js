@@ -29,6 +29,15 @@ class Play extends Phaser.Scene {
 
         this.groundLayer = this.defaultMap.createLayer("floor", this.tileSet, -(gridUnit / 2), -(gridUnit / 2));
         this.wallLayer = this.defaultMap.createLayer("terrain", this.tileSet, -(gridUnit / 2), -(gridUnit / 2));
+        this.wallLayer.setCollisionByProperty({wall: true});
+
+        //debug hitboxes for wall tiles
+        this.debugGraphics = this.add.graphics().setAlpha(0.75);
+        this.wallLayer.renderDebug(this.debugGraphics, {
+            tileColor: null, // Color of non-colliding tiles
+            collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
+            faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
+          });
 
         textConfig = {
             fontFamily: "express",
@@ -97,6 +106,9 @@ class Play extends Phaser.Scene {
         }
         this.player.update();
         this.doppelganger.update();
+
+        this.physics.world.collide(this.player, this.wallLayer);
+        this.physics.world.collide(this.doppelganger, this.wallLayer);
     }
 
     drawGrid() {

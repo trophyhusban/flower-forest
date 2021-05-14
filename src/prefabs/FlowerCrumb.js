@@ -1,4 +1,4 @@
-class FlowerCrumb extends Phaser.GameObjects.Sprite {
+class FlowerCrumb extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y, texture, frame) {
         super(scene, x, y, texture, frame);
         this.planted = false;
@@ -6,6 +6,7 @@ class FlowerCrumb extends Phaser.GameObjects.Sprite {
         this.gridY = 0;
         this.scene = scene;
         scene.add.existing(this);
+        scene.physics.add.existing(this);
 
         for(this.j = 0; this.j <= gridSize; this.j++) {
             if(Math.abs(this.x - (this.j * gridUnit)) < Math.abs(this.x - (this.gridX * gridUnit))) {

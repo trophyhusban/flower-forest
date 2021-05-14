@@ -1,4 +1,4 @@
-class Other extends Phaser.GameObjects.Sprite {
+class Other extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y, texture, frame) {
         super(scene, x, y, texture, frame);
         this.walkSpd = 250;
@@ -10,6 +10,7 @@ class Other extends Phaser.GameObjects.Sprite {
         this.gridY = 0;
         this.scene = scene;
         scene.add.existing(this);
+        scene.physics.add.existing(this);
 
         for(this.j = 0; this.j <= gridSize; this.j++) {
             if(Math.abs(this.x - (this.j * gridUnit)) < Math.abs(this.x - (this.gridX * gridUnit))) {
@@ -82,6 +83,21 @@ class Other extends Phaser.GameObjects.Sprite {
                 });
                 this.scene.time.delayedCall(this.walkSpd, () => {this.walking = false;});
             }
+        }
+        else { //recalculate coordinates
+            for(this.j = 0; this.j <= gridSize; this.j++) {
+                if(Math.abs(this.x - (this.j * gridUnit)) < Math.abs(this.x - (this.gridX * gridUnit))) {
+                    this.gridX = this.j;
+                }
+            }
+            for(this.i = 0; this.i <= gridSize; this.i++) {
+                if(Math.abs(this.y - (this.i * gridUnit)) < Math.abs(this.y - (this.gridY * gridUnit))) {
+                    this.gridY = this.i;
+                }
+            }
+            
+            this.gridX = Phaser.Math.Clamp(this.gridX, 1, gridSize);
+            this.gridY = Phaser.Math.Clamp(this.gridY, 1, gridSize);
         }
     }
 }
