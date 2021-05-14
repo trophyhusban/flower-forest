@@ -16,11 +16,16 @@ class Play extends Phaser.Scene {
         this.load.image("text box flowers", "./assets/ui/textbox_flowers.png");
         this.load.image("text box tail", "./assets/ui/textbox_tail.png");
         this.load.image("oneSprite", "./assets/gamepieces/player1.png");
+        this.load.spritesheet("flowerCrumb", "./assets/gamepieces/flower.png", 
+            {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 6});
+        //this.load.tilesetTiledJSON("tempSet", "./assets/tilesets/temptileset..json");
+        this.load.tilemapTiledJSON("defaultRoom", "./assets/tilesets/defaultroom..json");
     }
     create() {
-        this.add.rectangle(0, 0, config.width, config.height, 0xDDFFDD).setOrigin(0,0);
-        // the code (on index.html) for loading in the font i got from stack overflow user NoobTW
-        // https://stackoverflow.com/questions/51217147/how-to-use-a-local-font-in-phaser-3
+        //this.add.rectangle(0, 0, config.width, config.height, 0xDDFFDD).setOrigin(0,0);
+        this.defaultMap = this.make.tilemap({key: "defaultRoom"});
+        this.tempTileSet = this.defaultMap.addTilesetImage("temp");
+
         textConfig = {
             fontFamily: "express",
             fontSize: "24px",
@@ -65,15 +70,15 @@ class Play extends Phaser.Scene {
         //create player
         this.player = new One(
             this, 
-            (gridSize / 2) * gridUnit + gridUnit, 
-            (gridSize / 2) * gridUnit, 
+            (Math.floor(gridSize / 2) + 2) * gridUnit, 
+            Math.floor(gridSize / 2) * gridUnit, 
             "oneSprite");
 
         //create doppelganger
         this.doppelganger = new Other(
             this, 
-            (gridSize / 2) * gridUnit - gridUnit, 
-            (gridSize / 2) * gridUnit, 
+            Math.floor(gridSize / 2) * gridUnit, 
+            Math.floor(gridSize / 2) * gridUnit, 
             "oneSprite");
         this.input.keyboard.on("keydown-M", () => {
             this.doppelganger.mirrorMode = !this.doppelganger.mirrorMode;
