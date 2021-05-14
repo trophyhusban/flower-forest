@@ -18,9 +18,14 @@ class Play extends Phaser.Scene {
         this.load.image("oneSprite", "./assets/gamepieces/player1.png");
         this.load.spritesheet("flowerCrumb", "./assets/gamepieces/flower.png", 
             {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 6});
+        //this.load.tilesetTiledJSON("tempSet", "./assets/tilesets/temptileset..json");
+        this.load.tilemapTiledJSON("defaultRoom", "./assets/tilesets/defaultroom..json");
     }
     create() {
-        this.add.rectangle(0, 0, config.width, config.height, 0xDDFFDD).setOrigin(0,0);
+        //this.add.rectangle(0, 0, config.width, config.height, 0xDDFFDD).setOrigin(0,0);
+        this.defaultMap = this.make.tilemap({key: "defaultRoom"});
+        this.tempTileSet = this.defaultMap.addTilesetImage("temp");
+
         textConfig = {
             fontFamily: "Verdana",
             fontSize: "24px",
