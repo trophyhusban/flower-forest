@@ -1,7 +1,7 @@
 class One extends Phaser.GameObjects.Sprite {
     constructor(scene, x, y, texture, frame) {
         super(scene, x, y, texture, frame);
-        this.walkSpd = 1;
+        this.walkSpd = 250;
         this.walking = false;
         this.gridX = 0;
         this.gridY = 0;
@@ -65,16 +65,16 @@ class One extends Phaser.GameObjects.Sprite {
                 this.walking = true;
             }
             this.gridX = Phaser.Math.Clamp(this.gridX, 1, gridSize);
-            this.gridY = Phaser.Math.Clamp(this.gridY, 0, gridSize - 1);
+            this.gridY = Phaser.Math.Clamp(this.gridY, 1, gridSize);
 
             if(this.walking) {
                 this.scene.tweens.add({
                     targets: [this],
                     x: {from: this.x, to: this.gridX * gridUnit},
                     y: {from: this.y, to: this.gridY * gridUnit},
-                    duration: 100,
+                    duration: this.walkSpd,
                 });
-                this.scene.time.delayedCall(100, () => {this.walking = false;});
+                this.scene.time.delayedCall(this.walkSpd, () => {this.walking = false;});
             }
         }
     }
