@@ -35,8 +35,8 @@ class One extends Phaser.Physics.Arcade.Sprite {
                     this.gridY = this.i;
                 }
             }
-            this.gridX = Phaser.Math.Clamp(this.gridX, 1, gridSize);
-            this.gridY = Phaser.Math.Clamp(this.gridY, 1, gridSize);
+            this.gridX = Phaser.Math.Clamp(this.gridX, 0, gridSize - 1);
+            this.gridY = Phaser.Math.Clamp(this.gridY, 0, gridSize - 1);
             if(this.x != this.gridX * gridUnit) {
                 this.x = this.gridX * gridUnit;
             }

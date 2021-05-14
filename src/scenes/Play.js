@@ -19,16 +19,16 @@ class Play extends Phaser.Scene {
         this.load.spritesheet("flowerCrumb", "./assets/gamepieces/flower.png", 
             {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 6});
         this.load.image("tileSheet", "./assets/tilesets/tilesheet.png");
-        this.load.tilemapTiledJSON("defaultRoom", "./assets/tilesets/defaultroom..json");
+        this.load.tilemapTiledJSON("level1", "./assets/tilesets/level1.json");
     }
     create() {
 
         //this.add.rectangle(0, 0, config.width, config.height, 0xDDFFDD).setOrigin(0,0);
-        this.defaultMap = this.make.tilemap({key: "defaultRoom"});
-        this.tileSet = this.defaultMap.addTilesetImage("tilesheet", "tileSheet");
+        this.level1Map = this.make.tilemap({key: "level1"});
+        this.tileSet = this.level1Map.addTilesetImage("tilesheet", "tileSheet");
 
-        this.groundLayer = this.defaultMap.createLayer("floor", this.tileSet, -(gridUnit / 2), -(gridUnit / 2));
-        this.wallLayer = this.defaultMap.createLayer("terrain", this.tileSet, -(gridUnit / 2), -(gridUnit / 2));
+        this.groundLayer = this.level1Map.createLayer("floor", this.tileSet, -(33 * gridUnit) - (gridUnit / 2), -(22 * gridUnit) - (gridUnit / 2));
+        this.wallLayer = this.level1Map.createLayer("terrain", this.tileSet, -(33 * gridUnit) - (gridUnit / 2), -(22 * gridUnit) - (gridUnit / 2));
         this.wallLayer.setCollisionByProperty({wall: true});
 
         //debug hitboxes for wall tiles
@@ -114,8 +114,8 @@ class Play extends Phaser.Scene {
     drawGrid() {
         for(this.j = 0; this.j <= gridSize; this.j++) {
             this.add.line(
-                this.j * gridUnit + (gridUnit / 2),
-                (gridSize * gridUnit) / 2 + (gridUnit / 2),
+                this.j * gridUnit - (gridUnit / 2),
+                (gridSize * gridUnit) / 2 - (gridUnit / 2),
                 0,
                 0,
                 0,
@@ -125,8 +125,8 @@ class Play extends Phaser.Scene {
         }
         for(this.i = 0; this.i <= gridSize; this.i++) {
             this.add.line(
-                (gridSize * gridUnit) / 2 + (gridUnit / 2),
-                this.i * gridUnit + (gridUnit / 2),
+                (gridSize * gridUnit) / 2 - (gridUnit / 2),
+                this.i * gridUnit - (gridUnit / 2),
                 0,
                 0,
                 gridSize * gridUnit,
