@@ -6,8 +6,13 @@ class Menu extends Phaser.Scene {
         this.load.image("menu ui", "./assets/ui/title_screen.png");
         this.load.spritesheet("flowerCrumb", "./assets/gamepieces/flower.png", 
             {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 6});
+        this.load.json("text JSON", "./assets/text/text.json");
     }
     create() {
+        textJSON = this.cache.json.get("text JSON");
+        
+        console.log(textJSON);
+
         this.anims.create({
             key: 'plantCrumb',
             frames: this.anims.generateFrameNumbers("flowerCrumb", 

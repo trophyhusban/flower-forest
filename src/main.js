@@ -15,3 +15,4 @@ let unit = game.config.height / 15;
 
 let keySPACE, keyUP, keyDOWN, keyLEFT, keyRIGHT;
 let textConfig;
+let textJSON;

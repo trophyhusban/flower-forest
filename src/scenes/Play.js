@@ -22,6 +22,7 @@ class Play extends Phaser.Scene {
         this.load.tilemapTiledJSON("defaultRoom", "./assets/tilesets/defaultroom..json");
     }
     create() {
+
         //this.add.rectangle(0, 0, config.width, config.height, 0xDDFFDD).setOrigin(0,0);
         this.defaultMap = this.make.tilemap({key: "defaultRoom"});
         this.tempTileSet = this.defaultMap.addTilesetImage("temp");
@@ -32,18 +33,18 @@ class Play extends Phaser.Scene {
             color: "#050",
             align: "center",
             padding: 4,
-            wordWrap: {width: config.width - unit*2},
+            wordWrap: {width: config.width - uiUnit*2},
             align: "left"
         };
 
         this.dialogue = new DialogueBox(
             this,
-            unit,
+            uiUnit,
             64,
-            ["hey y'all check out this cool dialogue box i made :-) "],
+            textJSON.example,
             textConfig
         );
-        this.dialogue.drawText();
+
 
         this.input.keyboard.on("keydown-SPACE", () => {
             this.dialogue.nextPage();
@@ -88,7 +89,7 @@ class Play extends Phaser.Scene {
     }
 
     update() {
-        if (this.dialogue != undefined) {
+        if (this.dialogue.currentText != undefined) {
             this.dialogue.nextLetter();
         }
         this.player.update();

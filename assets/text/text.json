@@ -1,0 +1,7 @@
+{
+  "example": [
+    "example text to test out JSON",
+    "the second line of example text to test out JSON",
+    "this is called from the key \"example\" and contains a single array of text"
+    ]
+}

@@ -23,7 +23,9 @@ class DialogueBox {
         this.textConfig = textConfig;
         this.currentPage = 0;
         this.drawingNewText = false;
+        this.drawText();
     }
+
     drawText() {
         this.textBox = this.scene.add.sprite(
             this.x-4, 
@@ -43,32 +45,39 @@ class DialogueBox {
             "text box tail"
             ).setOrigin(.5, 0);
 
-        this.currentText = this.scene.add.text(this.x, this.y, this.textDrawnInBox, textConfig);
+        this.updateText();
     }
 
     nextPage() {
-        if (this.text != "") {
-            this.currentPage ++;
-            if (this.currentPage != this.text.length) {
-                this.currentText.destroy();
-                this.drawText();
-            } else {
-                this.currentText.destroy();
-                this.textBox.destroy();
-                this.textBoxFlowers.destroy();
-                this.textBoxTail.destroy();
-                this.text = "";
-            }
+        this.currentPage ++;
+
+        if (this.currentPage < this.text.length) {
+            this.currentSliceIndex = 0;
+            this.currentText.destroy();
+            this.updateText();
+        } else {
+            console.log("here");
+            this.currentText.destroy();
+            this.textBox.destroy();
+            this.textBoxFlowers.destroy();
+            this.textBoxTail.destroy();
+            this.text = "";
         }
+
+    }
+
+    updateText() {
+        this.currentText = this.scene.add.text(this.x, this.y, this.textDrawnInBox, textConfig);
     }
 
     nextLetter() {
         this.currentSliceIndex++;
         if (this.text != "") {
-            if (this.currentSliceIndex < this.text[this.currentPage].length) {
+            if (this.currentSliceIndex <= this.text[this.currentPage].length) {
                 this.textDrawnInBox = this.text[this.currentPage].slice(0, this.currentSliceIndex);
                 this.currentText.text = this.textDrawnInBox;
             }
-        } 
+        }
     }
+
 }
