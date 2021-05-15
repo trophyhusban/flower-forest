@@ -23,13 +23,16 @@ class Play extends Phaser.Scene {
     }
     create() {
         this.camera = this.cameras.main;
+        //this.camera.setPosition((22 * gridUnit), (33 * gridUnit));
 
         //this.add.rectangle(0, 0, config.width, config.height, 0xDDFFDD).setOrigin(0,0);
         this.level1Map = this.make.tilemap({key: "level1"});
         this.tileSet = this.level1Map.addTilesetImage("tilesheet", "tileSheet");
+        levelWidth = 7;
+        levelHeight = 4;
 
-        this.groundLayer = this.level1Map.createLayer("floor", this.tileSet, -(33 * gridUnit) - (gridUnit / 2), -(22 * gridUnit) - (gridUnit / 2));
-        this.wallLayer = this.level1Map.createLayer("terrain", this.tileSet, -(33 * gridUnit) - (gridUnit / 2), -(22 * gridUnit) - (gridUnit / 2));
+        this.groundLayer = this.level1Map.createLayer("floor", this.tileSet, 0, 0);
+        this.wallLayer = this.level1Map.createLayer("terrain", this.tileSet, 0, 0);
         this.wallLayer.setCollisionByProperty({wall: true});
 
         //debug hitboxes for wall tiles
@@ -81,11 +84,14 @@ class Play extends Phaser.Scene {
             frameRate: 6
         });
 
+        this.spawnPoint = this.level1Map.findObject("triggers", obj => obj.name === "Spawnpoint");
+        this.camera.centerOn(this.spawnPoint.x, this.spawnPoint.y);
+
         //create player
         this.player = new One(
             this, 
-            (Math.floor(gridSize / 2) + 1) * gridUnit, 
-            Math.floor(gridSize / 2) * gridUnit, 
+            this.spawnPoint.x, 
+            this.spawnPoint.y, 
             "oneSprite");
 
         //create doppelganger
@@ -97,8 +103,6 @@ class Play extends Phaser.Scene {
         this.input.keyboard.on("keydown-M", () => {
             this.doppelganger.mirrorMode = !this.doppelganger.mirrorMode;
         });
-        
-        this.drawGrid();
     }
 
     update() {
@@ -111,7 +115,7 @@ class Play extends Phaser.Scene {
         this.physics.world.collide(this.player, this.wallLayer);
         this.physics.world.collide(this.doppelganger, this.wallLayer);
         
-        this.currentObj = this.level1Map.getTileAt(this.player.gridX * gridUnit, this.player.gridY * gridUnit, false, "triggers");
+        this.currentObj = this.level1Map.getTileAtWorldXY(this.player.gridX * gridUnit, this.player.gridY * gridUnit, false, this.camera, "triggers");
         if(this.currentObj != null) {
             if(this.currentObj.exitLeft) {
                 this.camera.setPosition(this.camera.x - (12 * gridUnit), this.camera.y);
@@ -137,31 +141,6 @@ class Play extends Phaser.Scene {
                 this.player.y += 2 * gridUnit;
                 console.log("moving down");
             }
-        }
-    }
-
-    drawGrid() {
-        for(this.j = 0; this.j <= gridSize; this.j++) {
-            this.add.line(
-                this.j * gridUnit - (gridUnit / 2),
-                (gridSize * gridUnit) / 2 - (gridUnit / 2),
-                0,
-                0,
-                0,
-                gridSize * gridUnit,
-                0x000000,
-                0.15);
-        }
-        for(this.i = 0; this.i <= gridSize; this.i++) {
-            this.add.line(
-                (gridSize * gridUnit) / 2 - (gridUnit / 2),
-                this.i * gridUnit - (gridUnit / 2),
-                0,
-                0,
-                gridSize * gridUnit,
-                0,
-                0x000000,
-                0.15);
         }
     }
 }

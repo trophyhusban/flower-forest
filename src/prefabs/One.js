@@ -4,19 +4,20 @@ class One extends Phaser.Physics.Arcade.Sprite {
         this.walkSpd = 200;
         this.walking = false;
         this.plantTouching = false;
+        this.plantCooldown = false;
         this.gridX = 0;
         this.gridY = 0;
         this.scene = scene;
         scene.add.existing(this);
         scene.physics.add.existing(this);
 
-        for(this.j = 0; this.j <= gridSize; this.j++) {
-            if(Math.abs(this.x - (this.j * gridUnit)) < Math.abs(this.x - (this.gridX * gridUnit))) {
+        for(this.j = 0; this.j <= gridSize * levelWidth; this.j++) {
+            if(Math.abs(this.x - (this.j * gridUnit - (gridUnit / 2))) < Math.abs(this.x - (this.gridX * gridUnit - (gridUnit / 2)))) {
                 this.gridX = this.j;
             }
         }
-        for(this.i = 0; this.i <= gridSize; this.i++) {
-            if(Math.abs(this.y - (this.i * gridUnit)) < Math.abs(this.y - (this.gridY * gridUnit))) {
+        for(this.i = 0; this.i <= gridSize * levelHeight; this.i++) {
+            if(Math.abs(this.y - (this.i * gridUnit - (gridUnit / 2))) < Math.abs(this.y - (this.gridY * gridUnit - (gridUnit / 2)))) {
                 this.gridY = this.i;
             }
         }
@@ -24,51 +25,54 @@ class One extends Phaser.Physics.Arcade.Sprite {
     
     update() {
         this.walk();
-        if(this.body.speed == 0) { //recalculate grid position, then snap to it when not walking
+        if(this.body.speed == 0) {
             this.walking = false;
-            for(this.j = 0; this.j <= gridSize; this.j++) {
-                if(Math.abs(this.x - (this.j * gridUnit)) < Math.abs(this.x - (this.gridX * gridUnit))) {
-                    this.gridX = this.j;
-                }
+        }
+        for(this.j = 0; this.j <= gridSize * levelWidth; this.j++) {
+            if(Math.abs(this.x - (this.j * gridUnit - (gridUnit / 2))) < Math.abs(this.x - (this.gridX * gridUnit - (gridUnit / 2)))) {
+                this.gridX = this.j;
             }
-            for(this.i = 0; this.i <= gridSize; this.i++) {
-                if(Math.abs(this.y - (this.i * gridUnit)) < Math.abs(this.y - (this.gridY * gridUnit))) {
-                    this.gridY = this.i;
-                }
-            }
-            this.gridX = Phaser.Math.Clamp(this.gridX, 0, gridSize - 1);
-            this.gridY = Phaser.Math.Clamp(this.gridY, 0, gridSize - 1);
-            if(this.x != this.gridX * gridUnit) {
-                this.x = this.gridX * gridUnit;
-            }
-            if(this.y != this.gridY * gridUnit) {
-                this.y = this.gridY * gridUnit;
+        }
+        for(this.i = 0; this.i <= gridSize * levelHeight; this.i++) {
+            if(Math.abs(this.y - (this.i * gridUnit - (gridUnit / 2))) < Math.abs(this.y - (this.gridY * gridUnit - (gridUnit / 2)))) {
+                this.gridY = this.i;
             }
         }
 
-        if(Phaser.Input.Keyboard.JustDown(keySPACE)) {
+        if(keySPACE.isDown) {
             this.plant();
         }
     }
 
     plant() {
-        this.scene.physics.world.collide(this, this.scene.flowerTrail, (player, trail) => {
-            this.plantTouching = true;
-            trail.anims.play("killCrumb");
-            this.scene.time.delayedCall(1000, () => {
-                trail.destroy();
-            })
-        });
-        if(!this.plantTouching) {
-            console.log("plant");
-            this.scene.flowerTrail.add(new FlowerCrumb(
-                this.scene,
-                this.gridX * gridUnit,
-                this.gridY * gridUnit,
-                "flowerCrumb",
-                0
-            ));
+        if(!this.plantCooldown) {
+            this.scene.physics.world.collide(this, this.scene.flowerTrail, (player, trail) => {
+                this.plantTouching = true;
+                trail.anims.play("killCrumb");
+                this.scene.time.delayedCall(1000, () => {
+                    trail.destroy();
+                });
+            });
+            if(!this.plantTouching) {
+                console.log("plant");
+                if(!this.plantCooldown) {
+                    this.plantCooldown = true;
+                }
+                this.scene.flowerTrail.add(new FlowerCrumb(
+                    this.scene,
+                    this.gridX * gridUnit - (gridUnit / 2),
+                    this.gridY * gridUnit - (gridUnit / 2),
+                    "flowerCrumb",
+                    0
+                ));
+                if(this.plantCooldown) {
+                        this.scene.time.delayedCall(500, () => {
+                        this.plantCooldown = false;
+                    });
+                }
+            }
         }
+        
         this.plantTouching = false;
     }
 
@@ -92,6 +96,6 @@ class One extends Phaser.Physics.Arcade.Sprite {
             this.walking = true;
         }
 
-        this.body.velocity.normalize().scale(this.body.speed);
+        this.body.velocity.normalize().scale(this.walkSpd);
     }
 }

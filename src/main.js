@@ -19,6 +19,8 @@ let gridSize = 11;
 let gridUnit = game.config.width / (gridSize - 1);
 let unit = game.config.height / 15;
 
+let levelWidth, levelHeight;
+
 let keySPACE, keyUP, keyDOWN, keyLEFT, keyRIGHT;
 let textConfig;
 let textJSON;
