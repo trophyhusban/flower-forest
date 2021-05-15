@@ -1,7 +1,7 @@
 class Other extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, x, y, texture, frame) {
         super(scene, x, y, texture, frame);
-        this.walkSpd = 250;
+        this.walkSpd = 200;
         this.walking = false;
         this.mirrorMode = false;
         this.chaseMode = false;
@@ -27,6 +27,27 @@ class Other extends Phaser.Physics.Arcade.Sprite {
     update() {
         if(this.mirrorMode) {
             this.walk();
+            if(this.body.speed == 0) { //recalculate grid position, then snap to it when not walking
+                this.walking = false;
+                for(this.j = 0; this.j <= gridSize; this.j++) {
+                    if(Math.abs(this.x - (this.j * gridUnit)) < Math.abs(this.x - (this.gridX * gridUnit))) {
+                        this.gridX = this.j;
+                    }
+                }
+                for(this.i = 0; this.i <= gridSize; this.i++) {
+                    if(Math.abs(this.y - (this.i * gridUnit)) < Math.abs(this.y - (this.gridY * gridUnit))) {
+                        this.gridY = this.i;
+                    }
+                }
+                this.gridX = Phaser.Math.Clamp(this.gridX, 0, gridSize - 1);
+                this.gridY = Phaser.Math.Clamp(this.gridY, 0, gridSize - 1);
+                if(this.x != this.gridX * gridUnit) {
+                    this.x = this.gridX * gridUnit;
+                }
+                if(this.y != this.gridY * gridUnit) {
+                    this.y = this.gridY * gridUnit;
+                }
+            }
             if(Phaser.Input.Keyboard.JustDown(keySPACE)) {
                 this.plant();
             }
@@ -47,6 +68,29 @@ class Other extends Phaser.Physics.Arcade.Sprite {
     }
 
     walk() {
+        this.body.setVelocity(0);
+            
+        if(keyUP.isDown) {
+            this.body.setVelocityY(-this.walkSpd);
+            this.walking = true;
+        }
+        if(keyDOWN.isDown) {
+            this.body.setVelocityY(this.walkSpd);
+            this.walking = true;
+        }
+        if(keyRIGHT.isDown) {
+            this.body.setVelocityX(-this.walkSpd);
+            this.walking = true;
+        }
+        if(keyLEFT.isDown) {
+            this.body.setVelocityX(this.walkSpd);
+            this.walking = true;
+        }
+
+        this.body.velocity.normalize().scale(this.body.speed);
+    }
+
+    scriptWalk() {
         if(!this.walking) {
             if(this.x != this.gridX * gridUnit) {
                 this.x = this.gridX * gridUnit;
@@ -95,7 +139,7 @@ class Other extends Phaser.Physics.Arcade.Sprite {
                     this.gridY = this.i;
                 }
             }
-            
+
             this.gridX = Phaser.Math.Clamp(this.gridX, 1, gridSize);
             this.gridY = Phaser.Math.Clamp(this.gridY, 1, gridSize);
         }

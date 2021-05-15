@@ -83,14 +83,14 @@ class Play extends Phaser.Scene {
         //create player
         this.player = new One(
             this, 
-            (Math.floor(gridSize / 2) + 2) * gridUnit, 
+            (Math.floor(gridSize / 2) + 1) * gridUnit, 
             Math.floor(gridSize / 2) * gridUnit, 
             "oneSprite");
 
         //create doppelganger
         this.doppelganger = new Other(
             this, 
-            Math.floor(gridSize / 2) * gridUnit, 
+            (Math.floor(gridSize / 2) - 1) * gridUnit, 
             Math.floor(gridSize / 2) * gridUnit, 
             "oneSprite");
         this.input.keyboard.on("keydown-M", () => {
