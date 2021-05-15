@@ -22,6 +22,7 @@ class Play extends Phaser.Scene {
         this.load.tilemapTiledJSON("level1", "./assets/tilesets/level1.json");
     }
     create() {
+        this.camera = this.cameras.main;
 
         //this.add.rectangle(0, 0, config.width, config.height, 0xDDFFDD).setOrigin(0,0);
         this.level1Map = this.make.tilemap({key: "level1"});
@@ -109,6 +110,34 @@ class Play extends Phaser.Scene {
 
         this.physics.world.collide(this.player, this.wallLayer);
         this.physics.world.collide(this.doppelganger, this.wallLayer);
+        
+        this.currentObj = this.level1Map.getTileAt(this.player.gridX * gridUnit, this.player.gridY * gridUnit, false, "triggers");
+        if(this.currentObj != null) {
+            if(this.currentObj.exitLeft) {
+                this.camera.setPosition(this.camera.x - (12 * gridUnit), this.camera.y);
+                if(this.currentObj.shunt) {this.player.x -= gridUnit;}
+                this.player.x -= 2 * gridUnit;
+                console.log("moving left");
+            }
+            else if(this.currentObj.exitRight) {
+                this.camera.setPosition(this.camera.x + (12 * gridUnit), this.camera.y);
+                if(this.currentObj.shunt) {this.player.x += gridUnit;}
+                this.player.x += 2 * gridUnit;
+                console.log("moving right");
+            }
+            else if(this.currentObj.exitUp) {
+                this.camera.setPosition(this.camera.x, this.camera.y - (12 * gridUnit));
+                if(this.currentObj.shunt) {this.player.y -= gridUnit;}
+                this.player.y -= 2 * gridUnit;
+                console.log("moving up");
+            }
+            else if(this.currentObj.exitDown) {
+                this.camera.setPosition(this.camera.x, this.camera.y + (12 * gridUnit));
+                if(this.currentObj.shunt) {this.player.y += gridUnit;}
+                this.player.y += 2 * gridUnit;
+                console.log("moving down");
+            }
+        }
     }
 
     drawGrid() {

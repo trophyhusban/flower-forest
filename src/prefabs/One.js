@@ -3,6 +3,7 @@ class One extends Phaser.Physics.Arcade.Sprite {
         super(scene, x, y, texture, frame);
         this.walkSpd = 200;
         this.walking = false;
+        this.plantTouching = false;
         this.gridX = 0;
         this.gridY = 0;
         this.scene = scene;
@@ -51,14 +52,24 @@ class One extends Phaser.Physics.Arcade.Sprite {
     }
 
     plant() {
-        console.log("plant");
-        this.scene.flowerTrail.add(new FlowerCrumb(
-            this.scene,
-            this.gridX * gridUnit,
-            this.gridY * gridUnit,
-            "flowerCrumb",
-            0
-        ));
+        this.scene.physics.world.collide(this, this.scene.flowerTrail, (player, trail) => {
+            this.plantTouching = true;
+            trail.anims.play("killCrumb");
+            this.scene.time.delayedCall(1000, () => {
+                trail.destroy();
+            })
+        });
+        if(!this.plantTouching) {
+            console.log("plant");
+            this.scene.flowerTrail.add(new FlowerCrumb(
+                this.scene,
+                this.gridX * gridUnit,
+                this.gridY * gridUnit,
+                "flowerCrumb",
+                0
+            ));
+        }
+        this.plantTouching = false;
     }
 
     walk() {
