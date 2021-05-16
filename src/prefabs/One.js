@@ -28,9 +28,6 @@ class One extends Phaser.Physics.Arcade.Sprite {
     
     update() {
         this.walk();
-        if(this.body.speed == 0) {
-            this.walking = false;
-        }
         for(this.j = 0; this.j <= gridSize * levelWidth; this.j++) {
             if(Math.abs(this.x - (this.j * gridUnit - (gridUnit / 2))) < Math.abs(this.x - (this.gridX * gridUnit - (gridUnit / 2)))) {
                 this.gridX = this.j;
@@ -80,23 +77,47 @@ class One extends Phaser.Physics.Arcade.Sprite {
     }
 
     walk() {
-        this.body.setVelocity(0);
-            
-        if(keyUP.isDown) {
-            this.body.setVelocityY(-this.walkSpd);
-            this.walking = true;
+        if(this.walking) {
+            console.log("calcX: " + ((this.x + (gridUnit / 2)) / gridUnit) + "| gridX: " + this.gridX);
+            if(((this.x + (gridUnit / 2)) / gridUnit) <= this.gridX + 0.1 && ((this.x + (gridUnit / 2)) / gridUnit) >= this.gridX - 0.1) {
+                this.body.setVelocityX(0);
+                this.x = this.gridX * gridUnit - (gridUnit / 2);
+                console.log("stopX");
+            }
+            console.log("calcY: " + ((this.y + (gridUnit / 2)) / gridUnit) + "| gridY: " + this.gridY);
+            if(((this.y + (gridUnit / 2)) / gridUnit) <= this.gridY + 0.1 && ((this.y + (gridUnit / 2)) / gridUnit) >= this.gridY - 0.1) {
+                this.body.setVelocityY(0);
+                this.y = this.gridY * gridUnit - (gridUnit / 2);
+                console.log("stopY");
+            }
+            if(this.body.speed == 0) {
+                this.walking = false;
+                console.log("stopped");
+            }
         }
-        if(keyDOWN.isDown) {
-            this.body.setVelocityY(this.walkSpd);
-            this.walking = true;
-        }
-        if(keyRIGHT.isDown) {
-            this.body.setVelocityX(this.walkSpd);
-            this.walking = true;
-        }
-        if(keyLEFT.isDown) {
-            this.body.setVelocityX(-this.walkSpd);
-            this.walking = true;
+        
+        if(!this.walking) {
+            if(keyUP.isDown) {
+                this.body.setVelocityY(-this.walkSpd);
+                this.scene.time.delayedCall(100, () => {this.walking = true;});
+            }
+            if(keyDOWN.isDown) {
+                this.body.setVelocityY(this.walkSpd);
+                this.scene.time.delayedCall(100, () => {this.walking = true;});
+            }
+            if(keyRIGHT.isDown) {
+                this.body.setVelocityX(this.walkSpd);
+                this.scene.time.delayedCall(100, () => {this.walking = true;});
+            }
+            if(keyLEFT.isDown) {
+                this.body.setVelocityX(-this.walkSpd);
+                this.scene.time.delayedCall(100, () => {this.walking = true;});
+            }
+
+            if(this.body.speed == 0) {
+                this.x = this.gridX * gridUnit - (gridUnit / 2);
+                this.y = this.gridY * gridUnit - (gridUnit / 2);
+            }
         }
 
         this.body.velocity.normalize().scale(this.walkSpd);
