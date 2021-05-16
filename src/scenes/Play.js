@@ -20,8 +20,12 @@ class Play extends Phaser.Scene {
             {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 6});
         this.load.image("tileSheet", "./assets/tilesets/tilesheet.png");
         this.load.tilemapTiledJSON("level1", "./assets/tilesets/level1.json");
+        this.load.audio("footsteps", "./assets/sound/Footsteps.wav");
+        this.load.audio("talking", "./assets/sound/CharacterSpeak.wav");
     }
     create() {
+        this.initializeAudio();
+
         this.camera = this.cameras.main;
 
         this.level1Map = this.make.tilemap({key: "level1"});
@@ -108,6 +112,8 @@ class Play extends Phaser.Scene {
     }
 
     update() {
+        this.updateFootsteps();
+
         if (this.dialogue.currentText != undefined) {
             this.dialogue.nextLetter();
         }
@@ -145,5 +151,24 @@ class Play extends Phaser.Scene {
                 console.log("door right");
             }
         }
+    }
+    
+    updateFootsteps() {
+        if (this.player.walking && this.footsteps.isPlaying == false) {
+            this.footsteps.resume();
+        }
+        if (this.player.walking == false && this.footsteps.isPlaying) {
+            this.footsteps.pause();
+        }
+    }
+
+    initializeAudio() {
+        this.footsteps = this.sound.add("footsteps");
+        this.talking = this.sound.add("talking");
+
+        this.footsteps.setLoop(true);
+        this.footsteps.play();
+        this.footsteps.pause();
+        this.footsteps.setVolume(.2);
     }
 }

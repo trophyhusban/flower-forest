@@ -7,11 +7,13 @@ class Menu extends Phaser.Scene {
         this.load.spritesheet("flowerCrumb", "./assets/gamepieces/flower.png", 
             {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 6});
         this.load.json("text JSON", "./assets/text/text.json");
+        this.load.audio("select", "./assets/sound/Select.wav");
     }
     create() {
         textJSON = this.cache.json.get("text JSON");
-        
-        console.log(textJSON);
+
+        this.select = this.sound.add("select");
+
 
         this.anims.create({
             key: 'plantCrumb',
@@ -85,6 +87,7 @@ class Menu extends Phaser.Scene {
         });
         
         this.input.keyboard.on("keydown-SPACE", () => {
+            this.select.play();
             this.scene.start("playScene");
         });
     }
