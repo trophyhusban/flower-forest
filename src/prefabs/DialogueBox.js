@@ -18,15 +18,22 @@ class DialogueBox {
         this.text = text;
         this.textDrawnInBox = this.text[0].slice(0,0);
         this.currentSliceIndex = 0;
+        // this.x = this.scene.camCenterX - config.width/2 + x;
+        // this.y = this.scene.camCenterY - config.height/2 + y;
         this.x = x;
         this.y = y;
         this.textConfig = textConfig;
         this.currentPage = 0;
         this.drawingNewText = false;
         this.drawText();
+        console.log(text);
+        console.log(textConfig);
+        this.allTextRead = false;
     }
 
     drawText() {
+        // this.x = this.scene.camCenterX - config.width/2 + this.x;
+        // this.y = this.scene.camCenterY - config.height/2 + this.y;
         this.textBox = this.scene.add.sprite(
             this.x-4, 
             this.y-4, 
@@ -77,6 +84,8 @@ class DialogueBox {
                 this.textDrawnInBox = this.text[this.currentPage].slice(0, this.currentSliceIndex);
                 this.currentText.text = this.textDrawnInBox;
             }
+        } else {
+            this.allTextRead = true;
         }
     }
 

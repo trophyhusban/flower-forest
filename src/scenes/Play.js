@@ -57,19 +57,6 @@ class Play extends Phaser.Scene {
             align: "left"
         };
 
-        this.dialogue = new DialogueBox(
-            this,
-            uiUnit,
-            64,
-            textJSON.example,
-            textConfig
-        );
-
-
-        this.input.keyboard.on("keydown-SPACE", () => {
-            this.dialogue.nextPage();
-        });
-
         //create flower group
         this.flowerTrail = this.add.group({
             runChildUpdate: true
@@ -109,14 +96,25 @@ class Play extends Phaser.Scene {
         this.input.keyboard.on("keydown-M", () => {
             this.doppelganger.mirrorMode = !this.doppelganger.mirrorMode;
         });
+
+        this.openDialogue(uiUnit, 64, textJSON.example, textConfig);
+
+        // this.dialogue = new DialogueBox(
+        //     this,
+        //     uiUnit,
+        //     64,
+        //     textJSON.example,
+        //     textConfig
+        // );
+
+        // this.input.keyboard.on("keydown-SPACE", () => {
+        //     this.dialogue.nextPage();
+        // });
     }
 
     update() {
         this.updateFootsteps();
 
-        if (this.dialogue.currentText != undefined) {
-            this.dialogue.nextLetter();
-        }
         this.player.update();
         this.doppelganger.update();
 
@@ -170,5 +168,14 @@ class Play extends Phaser.Scene {
         this.footsteps.play();
         this.footsteps.pause();
         this.footsteps.setVolume(.2);
+    }
+
+    openDialogue(x, y, text, config) {
+        textBox.x = x;
+        textBox.y = y;
+        textBox.text = text;
+        textBox.config = config;
+        this.scene.pause();
+        this.scene.launch("dialogueScene");
     }
 }

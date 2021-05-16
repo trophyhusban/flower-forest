@@ -21,6 +21,9 @@ class One extends Phaser.Physics.Arcade.Sprite {
                 this.gridY = this.i;
             }
         }
+
+        console.log("player x: " + this.x);
+        console.log("player y: " + this.y);
     }
     
     update() {

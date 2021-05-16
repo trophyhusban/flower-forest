@@ -8,7 +8,7 @@ let config = {
             debug: true
         }
     },
-    scene: [Menu, Play],
+    scene: [Menu, Play, DialogueScene],
     pixelArt: true,
 };
 
@@ -24,3 +24,4 @@ let levelWidth, levelHeight;
 let keySPACE, keyUP, keyDOWN, keyLEFT, keyRIGHT;
 let textConfig;
 let textJSON;
+let textBox = {};
