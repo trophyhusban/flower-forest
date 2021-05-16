@@ -25,7 +25,7 @@ class Menu extends Phaser.Scene {
         textConfig = {
             fontFamily: "express",
             fontSize: "48px",
-            color: "#2effb0",
+            color: "#002416",
             align: "center",
             padding: 4,
             wordWrap: {width: config.width - unit*2},
