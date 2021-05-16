@@ -23,25 +23,25 @@ class Play extends Phaser.Scene {
     }
     create() {
         this.camera = this.cameras.main;
-        //this.camera.setPosition((22 * gridUnit), (33 * gridUnit));
 
-        //this.add.rectangle(0, 0, config.width, config.height, 0xDDFFDD).setOrigin(0,0);
         this.level1Map = this.make.tilemap({key: "level1"});
         this.tileSet = this.level1Map.addTilesetImage("tilesheet", "tileSheet");
         levelWidth = 7;
         levelHeight = 4;
+        this.camera.setBounds(0, 0, this.level1Map.displayWidth, this.level1Map.displayHeight);
 
         this.groundLayer = this.level1Map.createLayer("floor", this.tileSet, 0, 0);
         this.wallLayer = this.level1Map.createLayer("terrain", this.tileSet, 0, 0);
         this.wallLayer.setCollisionByProperty({wall: true});
+        this.doorLayer = this.level1Map.createLayer("doors", this.tileSet, 0, 0);
 
-        //debug hitboxes for wall tiles
-        this.debugGraphics = this.add.graphics().setAlpha(0.75);
-        this.wallLayer.renderDebug(this.debugGraphics, {
-            tileColor: null, // Color of non-colliding tiles
-            collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
-            faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
-          });
+        // //debug hitboxes for wall tiles
+        // this.debugGraphics = this.add.graphics().setAlpha(0.75);
+        // this.wallLayer.renderDebug(this.debugGraphics, {
+        //     tileColor: null, // Color of non-colliding tiles
+        //     collidingTileColor: new Phaser.Display.Color(243, 134, 48, 255), // Color of colliding tiles
+        //     faceColor: new Phaser.Display.Color(40, 39, 37, 255) // Color of colliding face edges
+        //   });
 
         textConfig = {
             fontFamily: "express",
@@ -85,7 +85,9 @@ class Play extends Phaser.Scene {
         });
 
         this.spawnPoint = this.level1Map.findObject("triggers", obj => obj.name === "Spawnpoint");
-        this.camera.centerOn(this.spawnPoint.x, this.spawnPoint.y);
+        this.camCenterX = this.spawnPoint.x;
+        this.camCenterY = this.spawnPoint.y;
+        this.camera.centerOn(this.camCenterX, this.camCenterY);
 
         //create player
         this.player = new One(
@@ -114,32 +116,33 @@ class Play extends Phaser.Scene {
 
         this.physics.world.collide(this.player, this.wallLayer);
         this.physics.world.collide(this.doppelganger, this.wallLayer);
-        
-        this.currentObj = this.level1Map.getTileAtWorldXY(this.player.gridX * gridUnit, this.player.gridY * gridUnit, false, this.camera, "triggers");
-        if(this.currentObj != null) {
-            if(this.currentObj.exitLeft) {
-                this.camera.setPosition(this.camera.x - (12 * gridUnit), this.camera.y);
-                if(this.currentObj.shunt) {this.player.x -= gridUnit;}
-                this.player.x -= 2 * gridUnit;
-                console.log("moving left");
+
+
+        this.doorCheck = this.level1Map.getTileAtWorldXY(this.player.x, this.player.y, false, this.camera, "doors");
+        if(this.doorCheck != null) {
+            if(this.doorCheck.properties.direction == "up") {
+                this.camCenterY -= (gridSize * gridUnit);
+                this.player.y -= 3 * gridUnit;
+                this.camera.centerOn(this.camCenterX, this.camCenterY);
+                console.log("door up");
             }
-            else if(this.currentObj.exitRight) {
-                this.camera.setPosition(this.camera.x + (12 * gridUnit), this.camera.y);
-                if(this.currentObj.shunt) {this.player.x += gridUnit;}
-                this.player.x += 2 * gridUnit;
-                console.log("moving right");
+            else if(this.doorCheck.properties.direction == "down") {
+                this.camCenterY += (gridSize * gridUnit);
+                this.player.y += 3 * gridUnit;
+                this.camera.centerOn(this.camCenterX, this.camCenterY);
+                console.log("door down");
             }
-            else if(this.currentObj.exitUp) {
-                this.camera.setPosition(this.camera.x, this.camera.y - (12 * gridUnit));
-                if(this.currentObj.shunt) {this.player.y -= gridUnit;}
-                this.player.y -= 2 * gridUnit;
-                console.log("moving up");
+            else if(this.doorCheck.properties.direction == "left") {
+                this.camCenterX -= (gridSize * gridUnit);
+                this.player.x -= 3 * gridUnit;
+                this.camera.centerOn(this.camCenterX, this.camCenterY);
+                console.log("door left");
             }
-            else if(this.currentObj.exitDown) {
-                this.camera.setPosition(this.camera.x, this.camera.y + (12 * gridUnit));
-                if(this.currentObj.shunt) {this.player.y += gridUnit;}
-                this.player.y += 2 * gridUnit;
-                console.log("moving down");
+            else if(this.doorCheck.properties.direction == "right") {
+                this.camCenterX += (gridSize * gridUnit);
+                this.player.x += 3 * gridUnit;
+                this.camera.centerOn(this.camCenterX, this.camCenterY);
+                console.log("door right");
             }
         }
     }
