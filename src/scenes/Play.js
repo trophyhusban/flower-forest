@@ -85,7 +85,7 @@ class Play extends Phaser.Scene {
             this, 
             this.spawnPoint.x, 
             this.spawnPoint.y, 
-            "oneSprite");
+            "oneSprite").setDepth(100);
 
         //create doppelganger
         this.doppelganger = new Other(
