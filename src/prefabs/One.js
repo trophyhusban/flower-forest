@@ -3,7 +3,6 @@ class One extends Phaser.Physics.Arcade.Sprite {
         super(scene, x, y, texture, frame);
         this.walkSpd = 200;
         this.walking = false;
-        this.plantTouching = false;
         this.plantCooldown = false;
         this.gridX = 0;
         this.gridY = 0;
@@ -46,31 +45,29 @@ class One extends Phaser.Physics.Arcade.Sprite {
 
     plant() {
         if(!this.plantCooldown) {
-            this.scene.physics.world.collide(this, this.scene.flowerTrail, (player, trail) => {
-                this.plantTouching = true;
-                trail.anims.play("killCrumb");
-                this.scene.time.delayedCall(1000, () => {
-                    trail.destroy();
-                });
-            });
-            if(!this.plantTouching) {
-                console.log("plant");
-                if(!this.plantCooldown) {
-                    this.plantCooldown = true;
-                }
-                this.scene.flowerTrail.add(new FlowerCrumb(
-                    this.scene,
-                    this.gridX * gridUnit - (gridUnit / 2),
-                    this.gridY * gridUnit - (gridUnit / 2),
-                    "flowerCrumb",
-                    0
-                ));
-                if(this.plantCooldown) {
-                        this.scene.time.delayedCall(500, () => {
-                        this.plantCooldown = false;
-                    });
-                }
+            console.log("plant");
+            if(!this.plantCooldown) {
+                this.plantCooldown = true;
             }
+            this.scene.flowerTrail.add(new FlowerCrumb(
+                this.scene,
+                this.gridX * gridUnit - (gridUnit / 2),
+                this.gridY * gridUnit - (gridUnit / 2),
+                "flowerCrumb",
+                0
+            ));
+            if(this.plantCooldown) {
+                    this.scene.time.delayedCall(500, () => {
+                    this.plantCooldown = false;
+                });
+            }
+            this.scene.physics.world.collide(this.scene.flowerTrail, this.scene.flowerTrail, (flower1, flower2) => {
+                flower1.anims.play("killCrumb");
+                this.scene.time.delayedCall(1000, () => {
+                    flower1.destroy();
+                });
+                flower2.destroy();
+            });
         }
         
         this.plantTouching = false;
