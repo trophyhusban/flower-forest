@@ -24,11 +24,31 @@ class Ritual {
     update() {
         this.doorClosed = true;
         this.scene.physics.world.collide(this.circle1, this.scene.flowerTrail, (circle, flower) => {
-            if(this.door != null) {
-                this.door.destroy();
-                this.door = null;
+            if(!this.circle2Present) {
+                if(this.door != null) {
+                    this.door.destroy();
+                    this.door = null;
+                }
+                this.doorClosed = false;
+            } else {
+                this.scene.physics.world.collide(this.circle2, this.scene.flowerTrail, (circle, flower) => {
+                    if(!this.circle3Present) {
+                        if(this.door != null) {
+                            this.door.destroy();
+                            this.door = null;
+                        }
+                        this.doorClosed = false;
+                    } else {
+                        this.scene.physics.world.collide(this.circle3, this.scene.flowerTrail, (circle, flower) => {
+                            if(this.door != null) {
+                                this.door.destroy();
+                                this.door = null;
+                            }
+                            this.doorClosed = false;
+                        });
+                    }
+                });
             }
-            this.doorClosed = false;
         });
         if(this.doorClosed && this.door == null) {
             this.closeDoor();
