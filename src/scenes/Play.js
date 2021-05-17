@@ -16,6 +16,8 @@ class Play extends Phaser.Scene {
         this.load.image("text box flowers", "./assets/ui/textbox_flowers.png");
         this.load.image("text box tail", "./assets/ui/textbox_tail.png");
         this.load.image("oneSprite", "./assets/gamepieces/player1.png");
+        this.load.image("ritualCircleBasic", "./assets/gamepieces/ritualCircleBasic.png");
+        this.load.image("ritualDoorUp", "./assets/gamepieces/ritualDoorUp.png");
         this.load.spritesheet("flowerCrumb", "./assets/gamepieces/flower.png", 
             {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 6});
         this.load.image("tileSheet", "./assets/tilesets/tilesheet.png");
@@ -56,6 +58,17 @@ class Play extends Phaser.Scene {
             wordWrap: {width: config.width - uiUnit*2},
             align: "left"
         };
+
+        //create first ritual
+        this.ritual1DoorObj = this.level1Map.findObject("rituals", obj => obj.name ==="SimpleRitual1Door");
+        this.ritual1Door = this.add.sprite(this.ritual1DoorObj.x, this.ritual1DoorObj.y, "ritualDoorUp");
+        this.physics.add.existing(this.ritual1Door);
+        this.ritual1Door.body.setImmovable();
+
+        this.ritual1Obj = this.level1Map.findObject("rituals", obj => obj.name ==="SimpleRitual1");
+        this.ritual1 = this.add.sprite(this.ritual1Obj.x, this.ritual1Obj.y, "ritualCircleBasic");
+        this.physics.add.existing(this.ritual1);
+        this.ritual1.body.setImmovable();
 
         //create flower group
         this.flowerTrail = this.add.group({
@@ -121,7 +134,12 @@ class Play extends Phaser.Scene {
         this.doppelganger.update();
 
         this.physics.world.collide(this.player, this.wallLayer);
+        this.physics.world.collide(this.player, this.ritual1Door);
         this.physics.world.collide(this.doppelganger, this.wallLayer);
+
+        this.physics.world.collide(this.flowerTrail, this.ritual1, (trail, ritual) => {
+            this.ritual1Door.destroy();
+        });
 
 
         this.doorCheck = this.level1Map.getTileAtWorldXY(this.player.x, this.player.y, false, this.camera, "doors");
