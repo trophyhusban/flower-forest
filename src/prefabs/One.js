@@ -100,18 +100,22 @@ class One extends Phaser.Physics.Arcade.Sprite {
             if(keyUP.isDown) {
                 this.body.setVelocityY(-this.walkSpd);
                 this.scene.time.delayedCall(100, () => {this.walking = true;});
+                this.anims.play("downWalk");
             }
             if(keyDOWN.isDown) {
                 this.body.setVelocityY(this.walkSpd);
                 this.scene.time.delayedCall(100, () => {this.walking = true;});
+                this.anims.play("downWalk");
             }
             if(keyRIGHT.isDown) {
                 this.body.setVelocityX(this.walkSpd);
                 this.scene.time.delayedCall(100, () => {this.walking = true;});
+                this.anims.play("downWalk");
             }
             if(keyLEFT.isDown) {
                 this.body.setVelocityX(-this.walkSpd);
                 this.scene.time.delayedCall(100, () => {this.walking = true;});
+                this.anims.play("downWalk");
             }
 
             if(this.body.speed == 0) {
