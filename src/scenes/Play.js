@@ -15,8 +15,7 @@ class Play extends Phaser.Scene {
         this.load.image("text box", "./assets/ui/textbox.png");
         this.load.image("text box flowers", "./assets/ui/textbox_flowers.png");
         this.load.image("text box tail", "./assets/ui/textbox_tail.png");
-        this.load.spritesheet("oneSprite", "./assets/gamepieces/playerSheet.png", 
-            {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 3});
+        this.load.image("oneSprite", "./assets/gamepieces/player1.png");
         this.load.spritesheet("flowerCrumb", "./assets/gamepieces/flower.png", 
             {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 6});
         this.load.image("tileSheet", "./assets/tilesets/tilesheet.png");
@@ -82,12 +81,6 @@ class Play extends Phaser.Scene {
         this.camera.centerOn(this.camCenterX, this.camCenterY);
 
         //create player anims
-        this.anims.create({
-            key: 'downWalk',
-            frames: this.anims.generateFrameNumbers("oneSprite",
-                {start: 0, end: 3, first: 0}),
-            frameRate: 24
-        });
 
         //create player
         this.player = new One(
