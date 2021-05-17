@@ -61,14 +61,8 @@ class Play extends Phaser.Scene {
 
         //create first ritual
         this.ritual1DoorObj = this.level1Map.findObject("rituals", obj => obj.name ==="SimpleRitual1Door");
-        this.ritual1Door = this.add.sprite(this.ritual1DoorObj.x, this.ritual1DoorObj.y, "ritualDoorUp");
-        this.physics.add.existing(this.ritual1Door);
-        this.ritual1Door.body.setImmovable();
-
         this.ritual1Obj = this.level1Map.findObject("rituals", obj => obj.name ==="SimpleRitual1");
-        this.ritual1 = this.add.sprite(this.ritual1Obj.x, this.ritual1Obj.y, "ritualCircleBasic");
-        this.physics.add.existing(this.ritual1);
-        this.ritual1.body.setImmovable();
+        this.simpleRitual1 = new Ritual(this, this.ritual1DoorObj, "ritualDoorUp", this.ritual1Obj, "ritualCircleBasic");
 
         //create flower group
         this.flowerTrail = this.add.group({
@@ -137,9 +131,7 @@ class Play extends Phaser.Scene {
         this.physics.world.collide(this.player, this.ritual1Door);
         this.physics.world.collide(this.doppelganger, this.wallLayer);
 
-        this.physics.world.collide(this.flowerTrail, this.ritual1, (trail, ritual) => {
-            this.ritual1Door.destroy();
-        });
+        this.simpleRitual1.update();
 
 
         this.doorCheck = this.level1Map.getTileAtWorldXY(this.player.x, this.player.y, false, this.camera, "doors");
