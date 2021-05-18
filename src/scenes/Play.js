@@ -97,7 +97,7 @@ class Play extends Phaser.Scene {
             this.doppelganger.mirrorMode = !this.doppelganger.mirrorMode;
         });
 
-        this.openDialogue(uiUnit, 64, textJSON.example, textConfig);
+        this.openDialogue(uiUnit, 64, textJSON.puck1, textConfig);
 
         // this.dialogue = new DialogueBox(
         //     this,

@@ -3,5 +3,15 @@
     "example text to test out JSON",
     "the second line of example text to test out JSON",
     "this is called from the key \"example\" and contains a single array of text"
-    ]
+    ],
+  "puck1": [
+    "Hello dear traveler, welcome to the forest. You look lost. I am Puck, fabled friend to those in need.", 
+    "Most fae won’t even look at someone as ugly as you are, so you’re lucky to have me at your service. What’s your name?",
+    "...",
+    "Do you not have one? Am I correct to assume that wicked fae in the tower stole it? I’ve seen many a stranger come through these parts looking for her, but most never leave the forest.",
+    "But I’m sure you’ll be fine! You’ve got those, uhh, fine shoes on. Can I take a closer look? They look enchanted.",
+    "I was right! Try pressing the spacebar to plant a flower where you’re standing. The forest will reward you for planting flowers in the right places.", 
+    "Press space again to pick a flower. Maybe you could use them to remember where you have been?",
+    "Don’t get lost, and maybe I will see you around."
+  ]
 }
