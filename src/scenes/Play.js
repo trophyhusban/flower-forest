@@ -20,6 +20,8 @@ class Play extends Phaser.Scene {
         this.load.image("ritualDoorUp", "./assets/gamepieces/ritualDoorUp.png");
         this.load.spritesheet("flowerCrumb", "./assets/gamepieces/flower.png", 
             {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 6});
+        this.load.spritesheet("puck", "./assets/gamepieces/puckSheet.png",
+            {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 1});
         this.load.image("tileSheet", "./assets/tilesets/tilesheet.png");
         this.load.tilemapTiledJSON("level1", "./assets/tilesets/level1.json");
         this.load.audio("footsteps", "./assets/sound/Footsteps.wav");
@@ -68,19 +70,9 @@ class Play extends Phaser.Scene {
         this.flowerTrail = this.add.group({
             runChildUpdate: true
         });
-        //configure flower animations
-        this.anims.create({
-            key: 'plantCrumb',
-            frames: this.anims.generateFrameNumbers("flowerCrumb", 
-                {start: 0, end: 6, first: 0}),
-            frameRate: 6
-        });
-        this.anims.create({
-            key: 'killCrumb',
-            frames: this.anims.generateFrameNumbers("flowerCrumb", 
-                {start: 6, end: 0, first: 6}),
-            frameRate: 6
-        });
+
+        this.initializeAnimations();
+        
 
         this.spawnPoint = this.level1Map.findObject("triggers", obj => obj.name === "Spawnpoint");
         this.camCenterX = this.spawnPoint.x;
@@ -106,19 +98,17 @@ class Play extends Phaser.Scene {
             this.doppelganger.mirrorMode = !this.doppelganger.mirrorMode;
         });
 
-        this.openDialogue(uiUnit, 64, textJSON.puck1, textConfig);
+        //this.openDialogue(uiUnit, 64, textJSON.puck1, textConfig);
 
-        // this.dialogue = new DialogueBox(
-        //     this,
-        //     uiUnit,
-        //     64,
-        //     textJSON.example,
-        //     textConfig
-        // );
-
-        // this.input.keyboard.on("keydown-SPACE", () => {
-        //     this.dialogue.nextPage();
-        // });
+        this.puckNPC1 = new NPC(
+            this,
+            this.player,
+            2572,
+            1695,
+            ["puck", "puckTalking"],
+            0,
+            textJSON.puck1
+        );
     }
 
     update() {
@@ -126,6 +116,7 @@ class Play extends Phaser.Scene {
 
         this.player.update();
         this.doppelganger.update();
+        this.puckNPC1.update();
 
         this.physics.world.collide(this.player, this.wallLayer);
         this.physics.world.collide(this.player, this.ritual1Door);
@@ -182,12 +173,28 @@ class Play extends Phaser.Scene {
         this.footsteps.setVolume(.2);
     }
 
-    openDialogue(x, y, text, config) {
-        textBox.x = x;
-        textBox.y = y;
-        textBox.text = text;
-        textBox.config = config;
-        this.scene.pause();
-        this.scene.launch("dialogueScene");
+    initializeAnimations() {
+        //configure flower animations
+        this.anims.create({
+            key: 'plantCrumb',
+            frames: this.anims.generateFrameNumbers("flowerCrumb", 
+                {start: 0, end: 6, first: 0}),
+            frameRate: 6
+        });
+        this.anims.create({
+            key: 'killCrumb',
+            frames: this.anims.generateFrameNumbers("flowerCrumb", 
+                {start: 6, end: 0, first: 6}),
+            frameRate: 6
+        });
+        this.anims.create({
+            key: "puckTalking",
+            frames: this.anims.generateFrameNumbers("puck",
+                {start:0, end:1, first:0}),
+            frameRate:8,
+            repeat: -1
+        });
     }
+
+
 }

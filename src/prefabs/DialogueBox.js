@@ -13,22 +13,26 @@ class DialogueBox {
     // implement it in the context of the game
     // impement audio blips when alexis finishes them
 
-    constructor(scene, x, y, text, textConfig) {
+    constructor(scene, tailX, text, textConfig, align) {
         this.scene = scene;
         this.text = text;
         this.textDrawnInBox = this.text[0].slice(0,0);
         this.currentSliceIndex = 0;
         // this.x = this.scene.camCenterX - config.width/2 + x;
         // this.y = this.scene.camCenterY - config.height/2 + y;
-        this.x = x;
-        this.y = y;
+        this.x = uiUnit;
+        this.y = uiUnit;
+        this.align = align;
+        if (this.align == "down") {
+            this.y = config.height - 128 - uiUnit;
+        }
+        this.tailX = tailX;
         this.textConfig = textConfig;
         this.currentPage = 0;
         this.drawingNewText = false;
         this.drawText();
-        console.log(text);
-        console.log(textConfig);
         this.allTextRead = false;
+        console.log("tailX: " + this.tailX);
     }
 
     drawText() {
@@ -40,17 +44,20 @@ class DialogueBox {
             "text box"
             ).setOrigin(0, 0);
 
-        this.textBoxFlowers = this.scene.add.sprite(
-            this.textBox.x, 
-            this.textBox.y, 
-            "text box flowers"
-            ).setOrigin(0, 1);
-
         this.textBoxTail = this.scene.add.sprite(
-            this.textBox.x + this.textBox.width*.75, 
+            this.tailX, 
             this.textBox.y+this.textBox.height-3,
             "text box tail"
-            ).setOrigin(.5, 0);
+            ).setOrigin(0, 0);
+        if (this.tailX < this.textBox.x + this.textBox.width/2) {
+            this.textBoxTail.flipX = true;
+        }
+
+        if (this.align == "down") {
+            this.textBoxTail.setOrigin(0, 1);
+            this.textBoxTail.y -= this.textBox.height - 6;
+            this.textBoxTail.flipY = true;
+        }
 
         this.updateText();
     }
@@ -66,7 +73,6 @@ class DialogueBox {
             console.log("here");
             this.currentText.destroy();
             this.textBox.destroy();
-            this.textBoxFlowers.destroy();
             this.textBoxTail.destroy();
             this.text = "";
         }
@@ -88,5 +94,6 @@ class DialogueBox {
             this.allTextRead = true;
         }
     }
+
 
 }

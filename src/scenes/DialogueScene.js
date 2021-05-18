@@ -6,10 +6,10 @@ class DialogueScene extends Phaser.Scene {
     create() {
         this.dialogue = new DialogueBox(
             this,
-            textBox.x,
-            textBox.y,
+            textBox.tailX,
             textBox.text,
-            textBox.config
+            textBox.config,
+            textBox.align
         );
         this.input.keyboard.on("keydown-SPACE", () => {
             this.dialogue.nextPage();

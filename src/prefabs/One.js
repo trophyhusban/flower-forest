@@ -7,6 +7,7 @@ class One extends Phaser.Physics.Arcade.Sprite {
         this.gridX = 0;
         this.gridY = 0;
         this.scene = scene;
+        this.nextToNPC = false;
         scene.add.existing(this);
         scene.physics.add.existing(this);
 
@@ -44,7 +45,7 @@ class One extends Phaser.Physics.Arcade.Sprite {
     }
 
     plant() {
-        if(!this.plantCooldown) {
+        if(!this.plantCooldown && !this.nextToNPC) {
             console.log("plant");
             if(!this.plantCooldown) {
                 this.plantCooldown = true;
