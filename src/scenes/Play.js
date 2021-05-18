@@ -16,6 +16,8 @@ class Play extends Phaser.Scene {
         this.load.image("text box flowers", "./assets/ui/textbox_flowers.png");
         this.load.image("text box tail", "./assets/ui/textbox_tail.png");
         this.load.image("oneSprite", "./assets/gamepieces/player1.png");
+        this.load.image("ritualCircleBasic", "./assets/gamepieces/ritualCircleBasic.png");
+        this.load.image("ritualDoorUp", "./assets/gamepieces/ritualDoorUp.png");
         this.load.spritesheet("flowerCrumb", "./assets/gamepieces/flower.png", 
             {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 6});
         this.load.image("tileSheet", "./assets/tilesets/tilesheet.png");
@@ -57,6 +59,11 @@ class Play extends Phaser.Scene {
             align: "left"
         };
 
+        //create first ritual
+        this.ritual1DoorObj = this.level1Map.findObject("rituals", obj => obj.name ==="SimpleRitual1Door");
+        this.ritual1Obj = this.level1Map.findObject("rituals", obj => obj.name ==="SimpleRitual1");
+        this.simpleRitual1 = new Ritual(this, this.ritual1DoorObj, "ritualDoorUp", this.ritual1Obj, "ritualCircleBasic");
+
         //create flower group
         this.flowerTrail = this.add.group({
             runChildUpdate: true
@@ -80,12 +87,14 @@ class Play extends Phaser.Scene {
         this.camCenterY = this.spawnPoint.y;
         this.camera.centerOn(this.camCenterX, this.camCenterY);
 
+        //create player anims
+
         //create player
         this.player = new One(
             this, 
             this.spawnPoint.x, 
             this.spawnPoint.y, 
-            "oneSprite");
+            "oneSprite").setDepth(100);
 
         //create doppelganger
         this.doppelganger = new Other(
@@ -119,7 +128,10 @@ class Play extends Phaser.Scene {
         this.doppelganger.update();
 
         this.physics.world.collide(this.player, this.wallLayer);
+        this.physics.world.collide(this.player, this.ritual1Door);
         this.physics.world.collide(this.doppelganger, this.wallLayer);
+
+        this.simpleRitual1.update();
 
 
         this.doorCheck = this.level1Map.getTileAtWorldXY(this.player.x, this.player.y, false, this.camera, "doors");
