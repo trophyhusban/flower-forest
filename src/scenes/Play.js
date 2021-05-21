@@ -18,6 +18,8 @@ class Play extends Phaser.Scene {
         this.load.image("oneSprite", "./assets/gamepieces/player1.png");
         this.load.image("ritualCircleBasic", "./assets/gamepieces/ritualCircleBasic.png");
         this.load.image("ritualDoorUp", "./assets/gamepieces/ritualDoorUp.png");
+        this.load.image("small to big note UI", "./assets/ui/little_to_big_ritual.png");
+        this.load.image("small to big note", "./assets/gamepieces/noteOne.png");
         this.load.spritesheet("flowerCrumb", "./assets/gamepieces/flower.png", 
             {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 6});
         this.load.spritesheet("puck", "./assets/gamepieces/puckSheet.png",
@@ -100,6 +102,17 @@ class Play extends Phaser.Scene {
 
         //this.openDialogue(uiUnit, 64, textJSON.puck1, textConfig);
 
+        this.testNote = new NPC(
+            this,
+            this.player,
+            2572 - 128 - 64,
+            1695 + 64,
+            ["small to big note"],
+            0,
+            "small to big note UI",
+            "note"
+        );
+        
         this.puckNPC1 = new NPC(
             this,
             this.player,
@@ -107,16 +120,22 @@ class Play extends Phaser.Scene {
             1695,
             ["puck", "puckTalking"],
             0,
-            textJSON.puck1
+            textJSON.puck1,
+            "NPC"
         );
+
+        
     }
 
     update() {
+        console.log(this.player.nextToNPC);
         this.updateFootsteps();
 
         this.player.update();
         this.doppelganger.update();
+        this.testNote.update();
         this.puckNPC1.update();
+        
 
         this.physics.world.collide(this.player, this.wallLayer);
         this.physics.world.collide(this.player, this.ritual1Door);

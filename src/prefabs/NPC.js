@@ -1,11 +1,14 @@
 class NPC extends Phaser.Physics.Arcade.Sprite {
-    constructor(scene, player, x, y, texture, frame, text) {
+    constructor(scene, player, x, y, texture, frame, content, kind) {
         super(scene, x, y, texture[0], frame);
         scene.add.existing(this);
         scene.physics.add.existing(this);
         this.scene = scene;
         this.body.setImmovable();
-        this.text = text;
+        this.content = content;
+        if (this.kind == "note") {
+            this.content = content[0];
+        }
         this.player = player;
         this.talking = false;
         this.setOrigin(0, 0);
@@ -13,45 +16,41 @@ class NPC extends Phaser.Physics.Arcade.Sprite {
         this.y -= this.y%gridUnit;
         this.gridX = this.x/gridUnit + 1;
         this.gridY = this.y/gridUnit + 1;
-        this.static = texture[0];
-        this.talkingAnimation = texture[1];
+        if (kind == "NPC") {
+            this.static = texture[0];
+            this.talkingAnimation = texture[1];
+        }
+        this.kind = kind;
+
+        this.justPressedKey = false;
     }
 
     update() {
+
+        if (this.checkNextToPlayer()) {
+            this.player.nextToNPC = true;
+        }
+        
         this.scene.physics.world.collide(this, this.player);
 
-        this.player.nextToNPC = false;
-        if (this.gridY == this.player.gridY) { // if y is the same, check x
-            if (this.gridX == this.player.gridX + 1 || this.gridX == this.player.gridX - 1) {
-                this.player.nextToNPC = true;
-            }
-        } else if (this.gridX == this.player.gridX) {
-            if (this.gridY == this.player.gridY + 1 || this.gridY == this.player.gridY - 1) {
-                this.player.nextToNPC = true;
-            }
-        }
+        this.justPressedKey = false;
+        if (keySPACE.isDown && this.justPressedKey == false) {
+            this.justPressedkey = true;
 
-        if (Phaser.Input.Keyboard.JustDown(keySPACE)) {
-            // check if the player is one gridUnit left, right, up, or down of the NPC
-            if (this.gridY == this.player.gridY) { // if y is the same, check x
-                if (this.gridX == this.player.gridX + 1 || this.gridX == this.player.gridX - 1) {
+
+             if (this.checkNextToPlayer()) {
+
+                if (this.kind == "NPC"){
                     this.openDialogue(
                         this.x + this.width/2,
-                        this.text,
-                        textConfig,
-                        "down"
-                    );
+                        this.content,
+                        this.config,
+                        "down" // TODO implement this LOL
+                    ); 
+                } else if (this.kind == "note") {
+                    this.openNote();
                 }
-            } else if (this.gridX == this.player.gridX) {
-                if (this.gridY == this.player.gridY + 1 || this.gridY == this.player.gridY - 1) {
-                    this.openDialogue(
-                        this.x + this.width/2,
-                        this.text,
-                        textConfig,
-                        "down"
-                    );
-                }
-            }
+             }
         }
     }
 
@@ -63,4 +62,24 @@ class NPC extends Phaser.Physics.Arcade.Sprite {
         this.scene.scene.pause();
         this.scene.scene.launch("dialogueScene");
     }
+
+    openNote() {
+        noteGlobal = this.content;
+        this.scene.scene.pause();
+        this.scene.scene.launch("noteScene");
+    }
+
+    checkNextToPlayer() {
+        if (this.gridY == this.player.gridY) { // if y is the same, check x
+            if (this.gridX == this.player.gridX + 1 || this.gridX == this.player.gridX - 1) {
+                return true;
+            }
+        } else if (this.gridX == this.player.gridX) {
+            if (this.gridY == this.player.gridY + 1 || this.gridY == this.player.gridY - 1) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
 }
