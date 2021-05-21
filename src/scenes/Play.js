@@ -63,6 +63,11 @@ class Play extends Phaser.Scene {
             align: "left"
         };
 
+        //create anomaly doors
+        this.warp1 = this.level1Map.findObject("triggers", obj => obj.name ==="warp1");
+        this.warp2down = this.level1Map.findObject("triggers", obj => obj.name ==="warp2down");
+        this.warp2up = this.level1Map.findObject("triggers", obj => obj.name ==="warp2up");
+
         //create first ritual
         this.ritual1DoorObj = this.level1Map.findObject("rituals", obj => obj.name ==="SimpleRitual1Door");
         this.ritual1Obj = this.level1Map.findObject("rituals", obj => obj.name ==="SimpleRitual1");
@@ -170,6 +175,24 @@ class Play extends Phaser.Scene {
                 this.camera.centerOn(this.camCenterX, this.camCenterY);
                 console.log("door right");
             }
+        }
+        if(this.player.gridX * gridUnit - (gridUnit / 2) == this.warp1.x && this.player.gridY * gridUnit - (gridUnit / 2) == this.warp1.y) {
+            this.camCenterX += 4 * (gridSize * gridUnit);
+            this.player.x += (4 * (gridSize * gridUnit)) - (2 * gridUnit);
+            this.camera.centerOn(this.camCenterX, this.camCenterY);
+            console.log("warp1");
+        }
+        if(this.player.gridX * gridUnit - (gridUnit / 2) == this.warp2down.x && this.player.gridY * gridUnit - (gridUnit / 2) == this.warp2down.y) {
+            this.camCenterY += 2 * (gridSize * gridUnit);
+            this.player.y += (gridSize * gridUnit) + (3 * gridUnit);
+            this.camera.centerOn(this.camCenterX, this.camCenterY);
+            console.log("warp2down");
+        }
+        if(this.player.gridX * gridUnit - (gridUnit / 2) == this.warp2up.x && this.player.gridY * gridUnit - (gridUnit / 2) == this.warp2up.y) {
+            this.camCenterY -= 2 * (gridSize * gridUnit);
+            this.player.y -= (gridSize * gridUnit) + (3 * gridUnit);
+            this.camera.centerOn(this.camCenterX, this.camCenterY);
+            console.log("warp2up");
         }
     }
     
