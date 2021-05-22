@@ -83,6 +83,9 @@ class Play extends Phaser.Scene {
         this.warp2down = this.level1Map.findObject("triggers", obj => obj.name ==="warp2down");
         this.warp2up = this.level1Map.findObject("triggers", obj => obj.name ==="warp2up");
 
+        //create end of level trigger
+        this.endLevel1 = this.level1Map.findObject("triggers", obj => obj.name ==="levelEnd");
+
         //create first ritual
         this.ritual1DoorObj = this.level1Map.findObject("rituals", obj => obj.name ==="SimpleRitual1Door");
         this.ritual1Obj = this.level1Map.findObject("rituals", obj => obj.name ==="SimpleRitual1");
@@ -258,6 +261,13 @@ class Play extends Phaser.Scene {
             this.camera.centerOn(this.camCenterX, this.camCenterY);
             console.log("warp2up");
             this.changeColor();
+        }
+        if(this.player.gridX * gridUnit - (gridUnit / 2) == this.endLevel1.x && this.player.gridY * gridUnit - (gridUnit / 2) == this.endLevel1.y) {
+            this.add.text(this.camCenterX - (gridSize * gridUnit) / 4,
+                this.camCenterY,
+                "Thank you for completing\nthe Level 1 demo.",
+                textConfig);
+            //this.changeColor();
         }
     }
     
