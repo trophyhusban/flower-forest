@@ -47,16 +47,27 @@ class DialogueBox {
         this.textBoxTail = this.scene.add.sprite(
             this.tailX, 
             this.textBox.y+this.textBox.height-3,
-            "text box tail"
+            "text box tail mask"
             ).setOrigin(0, 0);
+        
+        this.textBoxTailMask = this.scene.add.sprite(
+            this.tailX, 
+            this.textBox.y+this.textBox.height-3,
+            "text box tail mask"
+            ).setOrigin(0, 0);
+        
         if (this.tailX < this.textBox.x + this.textBox.width/2) {
             this.textBoxTail.flipX = true;
+            this.textBoxTailMask.flipX = true;
         }
 
         if (this.align == "down") {
             this.textBoxTail.setOrigin(0, 1);
             this.textBoxTail.y -= this.textBox.height - 6;
             this.textBoxTail.flipY = true;
+            this.textBoxTailMask.setOrigin(0, 1);
+            this.textBoxTailMask.y -= this.textBox.height - 6;
+            this.textBoxTailMask.flipY = true;
         }
 
         this.updateText();
@@ -81,6 +92,7 @@ class DialogueBox {
 
     updateText() {
         this.currentText = this.scene.add.text(this.x, this.y, this.textDrawnInBox, textConfig);
+        this.currentText.setDepth(105);
     }
 
     nextLetter() {

@@ -10,6 +10,9 @@ class Menu extends Phaser.Scene {
         this.load.audio("select", "./assets/sound/Select.wav");
     }
     create() {
+
+        
+
         textJSON = this.cache.json.get("text JSON");
 
         this.select = this.sound.add("select");
@@ -37,6 +40,7 @@ class Menu extends Phaser.Scene {
             "Flower Forest", 
             textConfig
             ).setOrigin(.5, 0);
+        this.titleText.setDepth(105);
        
         textConfig.fontSize = "24px";
         this.playText = this.add.text(
@@ -46,6 +50,7 @@ class Menu extends Phaser.Scene {
             textConfig
             ).setOrigin(.5, 0);
         this.playText.alpha = 0;
+        this.playText.setDepth(105);
 
         this.nameText = this.add.text(
             config.width/2, 
@@ -54,6 +59,7 @@ class Menu extends Phaser.Scene {
             textConfig
             ).setOrigin(.5, 0);
         this.nameText.alpha = 0;
+        this.nameText.setDepth(105);
 
         this.tweens.add({
             targets: [this.titleText],
@@ -90,5 +96,20 @@ class Menu extends Phaser.Scene {
             this.select.play();
             this.scene.start("playScene");
         });
+        
+        
+        while (prevColor != currentColor) {
+            currentColor = Phaser.Math.RND.pick(colors);
+        }
+        prevColor = currentColor;
+        
+        this.coloredRectangle = this.add.rectangle(
+            0,
+            0,
+            config.width,
+            config.height,
+            currentColor,
+            .3
+        ).setOrigin(0, 0).setDepth(100);
     }
 }
