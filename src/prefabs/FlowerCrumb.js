@@ -8,6 +8,7 @@ class FlowerCrumb extends Phaser.Physics.Arcade.Sprite {
         scene.add.existing(this);
         scene.physics.add.existing(this);
         this.body.setImmovable();
+        this.setDepth(101);
 
         for(this.j = 0; this.j <= gridSize; this.j++) {
             if(Math.abs(this.x - (this.j * gridUnit)) < Math.abs(this.x - (this.gridX * gridUnit))) {

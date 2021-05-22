@@ -15,6 +15,7 @@ class Play extends Phaser.Scene {
         this.load.image("text box", "./assets/ui/textbox.png");
         this.load.image("text box flowers", "./assets/ui/textbox_flowers.png");
         this.load.image("text box tail", "./assets/ui/textbox_tail.png");
+        this.load.image("text box tail mask", "./assets/ui/textbox_tail.png");
         this.load.image("oneSprite", "./assets/gamepieces/player1.png");
         this.load.image("ritualCircleBasic", "./assets/gamepieces/ritualCircleBasic.png");
         this.load.spritesheet("ritualTree", "./assets/gamepieces/treeSheet.png",
@@ -58,7 +59,7 @@ class Play extends Phaser.Scene {
         textConfig = {
             fontFamily: "express",
             fontSize: "24px",
-            color: "#050",
+            color: "#000",
             align: "center",
             padding: 4,
             wordWrap: {width: config.width - uiUnit*2},
@@ -91,7 +92,7 @@ class Play extends Phaser.Scene {
             this, 
             this.spawnPoint.x, 
             this.spawnPoint.y, 
-            "oneSprite").setDepth(100);
+            "oneSprite").setDepth(105);
 
         //create doppelganger
         this.doppelganger = new Other(
@@ -99,6 +100,8 @@ class Play extends Phaser.Scene {
             (Math.floor(gridSize / 2) - 1) * gridUnit, 
             Math.floor(gridSize / 2) * gridUnit, 
             "oneSprite");
+        this.doppelganger.setDepth(105);
+
         this.input.keyboard.on("keydown-M", () => {
             this.doppelganger.mirrorMode = !this.doppelganger.mirrorMode;
         });
@@ -115,6 +118,7 @@ class Play extends Phaser.Scene {
             "small to big note UI",
             "note"
         );
+        this.testNote.setDepth(105);
         
         this.puckNPC1 = new NPC(
             this,
@@ -126,7 +130,24 @@ class Play extends Phaser.Scene {
             textJSON.puck1,
             "NPC"
         );
+        
+        while (prevColor == currentColor) {
+            currentColor = Phaser.Math.RND.pick(colors);
+        }
+        prevColor = currentColor;
 
+        this.coloredRectangle = this.add.rectangle(
+            0,
+            0,
+            this.level1Map.width*64,
+            this.level1Map.height*64,
+            currentColor,
+            .3
+        ).setOrigin(0, 0).setDepth(100);
+
+        this.input.keyboard.on("keydown-C", () => {
+            this.changeColor();
+        });
         
     }
 
@@ -154,24 +175,28 @@ class Play extends Phaser.Scene {
                 this.player.y -= 3 * gridUnit;
                 this.camera.centerOn(this.camCenterX, this.camCenterY);
                 console.log("door up");
+                this.changeColor();
             }
             else if(this.doorCheck.properties.direction == "down") {
                 this.camCenterY += (gridSize * gridUnit);
                 this.player.y += 3 * gridUnit;
                 this.camera.centerOn(this.camCenterX, this.camCenterY);
                 console.log("door down");
+                this.changeColor();
             }
             else if(this.doorCheck.properties.direction == "left") {
                 this.camCenterX -= (gridSize * gridUnit);
                 this.player.x -= 3 * gridUnit;
                 this.camera.centerOn(this.camCenterX, this.camCenterY);
                 console.log("door left");
+                this.changeColor();
             }
             else if(this.doorCheck.properties.direction == "right") {
                 this.camCenterX += (gridSize * gridUnit);
                 this.player.x += 3 * gridUnit;
                 this.camera.centerOn(this.camCenterX, this.camCenterY);
                 console.log("door right");
+                this.changeColor();
             }
         }
         if(this.player.gridX * gridUnit - (gridUnit / 2) == this.warp1.x && this.player.gridY * gridUnit - (gridUnit / 2) == this.warp1.y) {
@@ -179,18 +204,21 @@ class Play extends Phaser.Scene {
             this.player.x += (4 * (gridSize * gridUnit)) - (2 * gridUnit);
             this.camera.centerOn(this.camCenterX, this.camCenterY);
             console.log("warp1");
+            this.changeColor();
         }
         if(this.player.gridX * gridUnit - (gridUnit / 2) == this.warp2down.x && this.player.gridY * gridUnit - (gridUnit / 2) == this.warp2down.y) {
             this.camCenterY += 2 * (gridSize * gridUnit);
             this.player.y += (gridSize * gridUnit) + (3 * gridUnit);
             this.camera.centerOn(this.camCenterX, this.camCenterY);
             console.log("warp2down");
+            this.changeColor();
         }
         if(this.player.gridX * gridUnit - (gridUnit / 2) == this.warp2up.x && this.player.gridY * gridUnit - (gridUnit / 2) == this.warp2up.y) {
             this.camCenterY -= 2 * (gridSize * gridUnit);
             this.player.y -= (gridSize * gridUnit) + (3 * gridUnit);
             this.camera.centerOn(this.camCenterX, this.camCenterY);
             console.log("warp2up");
+            this.changeColor();
         }
     }
     
@@ -251,5 +279,12 @@ class Play extends Phaser.Scene {
         });
     }
 
+    changeColor() {
+        while (prevColor == currentColor) {
+            currentColor = Phaser.Math.RND.pick(colors);
+        }
+        prevColor = currentColor;
+        this.coloredRectangle.fillColor = currentColor;
+    }
 
 }
