@@ -17,7 +17,8 @@ class Play extends Phaser.Scene {
         this.load.image("text box tail", "./assets/ui/textbox_tail.png");
         this.load.image("oneSprite", "./assets/gamepieces/player1.png");
         this.load.image("ritualCircleBasic", "./assets/gamepieces/ritualCircleBasic.png");
-        this.load.image("ritualDoorUp", "./assets/gamepieces/ritualDoorUp.png");
+        this.load.spritesheet("ritualTree", "./assets/gamepieces/treeSheet.png",
+            {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 4});
         this.load.image("small to big note UI", "./assets/ui/little_to_big_ritual.png");
         this.load.image("small to big note", "./assets/gamepieces/noteOne.png");
         this.load.spritesheet("flowerCrumb", "./assets/gamepieces/flower.png", 
@@ -31,6 +32,7 @@ class Play extends Phaser.Scene {
     }
     create() {
         this.initializeAudio();
+        this.initializeAnimations();
 
         this.camera = this.cameras.main;
 
@@ -71,22 +73,18 @@ class Play extends Phaser.Scene {
         //create first ritual
         this.ritual1DoorObj = this.level1Map.findObject("rituals", obj => obj.name ==="SimpleRitual1Door");
         this.ritual1Obj = this.level1Map.findObject("rituals", obj => obj.name ==="SimpleRitual1");
-        this.simpleRitual1 = new Ritual(this, this.ritual1DoorObj, "ritualDoorUp", this.ritual1Obj, "ritualCircleBasic");
+        this.simpleRitual1 = new Ritual(this, this.ritual1DoorObj, "ritualTree", this.ritual1Obj, "ritualCircleBasic");
 
         //create flower group
         this.flowerTrail = this.add.group({
             runChildUpdate: true
         });
-
-        this.initializeAnimations();
         
 
         this.spawnPoint = this.level1Map.findObject("triggers", obj => obj.name === "Spawnpoint");
         this.camCenterX = this.spawnPoint.x;
         this.camCenterY = this.spawnPoint.y;
         this.camera.centerOn(this.camCenterX, this.camCenterY);
-
-        //create player anims
 
         //create player
         this.player = new One(
@@ -232,8 +230,23 @@ class Play extends Phaser.Scene {
         this.anims.create({
             key: "puckTalking",
             frames: this.anims.generateFrameNumbers("puck",
-                {start:0, end:1, first:0}),
-            frameRate:8,
+                {start:0, end:1, first: 0}),
+            frameRate: 8,
+            repeat: -1
+        });
+
+        //create ritual tree anim
+        this.anims.create({
+            key: 'treeStand',
+            frames: this.anims.generateFrameNumbers("ritualTree",
+                {start: 0, end: 2, first: 0}),
+            frameRate: 6
+        });
+        this.anims.create({
+            key: 'treeWalk',
+            frames: this.anims.generateFrameNumbers("ritualTree",
+                {start: 3, end: 4, first: 3}),
+            frameRate: 6,
             repeat: -1
         });
     }

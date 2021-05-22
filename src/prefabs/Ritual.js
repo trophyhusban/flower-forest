@@ -199,7 +199,7 @@ class Ritual {
     }
 
     closeDoor() {
-        this.door = this.scene.add.sprite(this.doorObj.x, this.doorObj.y, this.doorTexture);
+        this.door = this.scene.add.sprite(this.doorObj.x, this.doorObj.y, this.doorTexture, 0);
         this.scene.add.existing(this.door);
         this.scene.physics.add.existing(this.door);
         this.door.body.setImmovable();
