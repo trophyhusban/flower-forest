@@ -32,8 +32,14 @@ class Play extends Phaser.Scene {
         this.load.image("ritualSliced2", "./assets/gamepieces/slicedC/slicedC2.png");
         this.load.image("ritualSliced3", "./assets/gamepieces/slicedC/slicedC3.png");
         this.load.image("ritualSliced4", "./assets/gamepieces/slicedC/slicedC4.png");
-        this.load.image("small to big note UI", "./assets/ui/little_to_big_ritual.png");
-        this.load.image("small to big note", "./assets/gamepieces/noteOne.png");
+        this.load.image("little big UI", "./assets/gamepieces/little2BigA/little2BigBig.png");
+        this.load.image("little big note", "./assets/gamepieces/noteOne.png");
+        this.load.image("sliced note", "./assets/gamepieces/slicedC/noteC.png");
+        this.load.image("sliced UI", "./assets/gamepieces/slicedC/slicedUI.png");
+        this.load.image("half left UI", "./assets/gamepieces/halfNoteB/halfNoteBLeft.png");
+        this.load.image("half left note", "./assets/gamepieces/halfNoteB/noteBLeft.png");
+        this.load.image("half right UI", "./assets/gamepieces/halfNoteB/halfNoteBRight.png");
+        this.load.image("half right note", "./assets/gamepieces/halfNoteB/noteBRight.png");
         this.load.image("arrow key up", "./assets/ui/arrow_key_up.png");
         this.load.image("space key", "./assets/ui/space_key.png");
         this.load.spritesheet("flowerCrumb", "./assets/gamepieces/flower.png", 
@@ -150,17 +156,57 @@ class Play extends Phaser.Scene {
 
         //this.openDialogue(uiUnit, 64, textJSON.puck1, textConfig);
 
+        this.noteArray = [];
+
         this.testNote = new NPC(
             this,
             this.player,
-            2572 - 128 - 64,
-            1695 + 64,
-            ["small to big note"],
+            3868,
+            2406,
+            ["little big note"],
             0,
-            "small to big note UI",
+            "little big UI",
             "note"
-        );
-        this.testNote.setDepth(105);
+        ).setDepth(105);
+
+        this.noteArray.push(this.testNote);
+
+        this.slicedNote = new NPC(
+            this,
+            this.player,
+            3100,
+            204,
+            ["sliced note"],
+            0,
+            "sliced UI",
+            "note"
+        ).setDepth(105);
+
+        this.noteArray.push(this.slicedNote);
+
+        this.halfNoteLeft = new NPC(
+            this,
+            this.player,
+            4646,
+            1004,
+            ["half left note"],
+            0,
+            "half left UI",
+            "note"
+        ).setDepth(105);
+
+        this.halfNoteLeft = new NPC(
+            this,
+            this.player,
+            924,
+            360,
+            ["half right note"],
+            0,
+            "half right UI",
+            "note"
+        ).setDepth(105);
+
+        this.noteArray.push(this.halfNoteLeft);
         
         this.puckNPC1 = new NPC(
             this,
@@ -339,13 +385,16 @@ class Play extends Phaser.Scene {
     updateObjects() {
         this.player.update();
         this.doppelganger.update();
-        this.testNote.update();
         this.puckNPC1.update();
         this.tutorialKeyUp.update();
         this.tutorialKeyDown.update();
         this.tutorialKeyLeft.update();
         this.tutorialKeyRight.update();
         this.tutorialKeySpace.update();
+
+        for (let i of this.noteArray) {
+            i.update();
+        }
     }
 
     createTutorialKeys() {
