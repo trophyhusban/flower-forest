@@ -32,7 +32,6 @@ class DialogueBox {
         this.drawingNewText = false;
         this.drawText();
         this.allTextRead = false;
-        console.log("tailX: " + this.tailX);
     }
 
     drawText() {
@@ -81,7 +80,6 @@ class DialogueBox {
             this.currentText.destroy();
             this.updateText();
         } else {
-            console.log("here");
             this.currentText.destroy();
             this.textBox.destroy();
             this.textBoxTail.destroy();

@@ -21,6 +21,8 @@ class Play extends Phaser.Scene {
         this.load.image("ritualDoorUp", "./assets/gamepieces/ritualDoorUp.png");
         this.load.image("small to big note UI", "./assets/ui/little_to_big_ritual.png");
         this.load.image("small to big note", "./assets/gamepieces/noteOne.png");
+        this.load.image("arrow key up", "./assets/ui/arrow_key_up.png");
+        this.load.image("space key", "./assets/ui/space_key.png");
         this.load.spritesheet("flowerCrumb", "./assets/gamepieces/flower.png", 
             {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 6});
         this.load.spritesheet("puck", "./assets/gamepieces/puckSheet.png",
@@ -80,7 +82,6 @@ class Play extends Phaser.Scene {
         });
 
         this.initializeAnimations();
-        
 
         this.spawnPoint = this.level1Map.findObject("triggers", obj => obj.name === "Spawnpoint");
         this.camCenterX = this.spawnPoint.x;
@@ -150,18 +151,16 @@ class Play extends Phaser.Scene {
         this.input.keyboard.on("keydown-C", () => {
             this.changeColor();
         });
-        
+
+        this.createTutorialKeys();
     }
 
     update() {
-        console.log(this.player.nextToNPC);
+
         this.updateFootsteps();
 
-        this.player.update();
-        this.doppelganger.update();
-        this.testNote.update();
-        this.puckNPC1.update();
-        
+        this.updateObjects();
+              
 
         this.physics.world.collide(this.player, this.wallLayer);
         this.physics.world.collide(this.player, this.ritual1Door);
@@ -274,4 +273,91 @@ class Play extends Phaser.Scene {
         this.coloredRectangle.fillColor = currentColor;
     }
 
+    updateObjects() {
+        this.player.update();
+        this.doppelganger.update();
+        this.testNote.update();
+        this.puckNPC1.update();
+        this.tutorialKeyUp.update();
+        this.tutorialKeyDown.update();
+        this.tutorialKeyLeft.update();
+        this.tutorialKeyRight.update();
+        this.tutorialKeySpace.update();
+    }
+
+    createTutorialKeys() {
+        this.tutorialKeyUp = new TutorialKey(
+            this,
+            this.camCenterX,
+            this.camCenterY + config.height/2 - uiUnit*5 + 400,
+            "arrow key up",
+            0,
+            "up",
+            "up"
+            ).setDepth(106);
+        this.tutorialKeyDown = new TutorialKey(
+            this,
+            this.camCenterX,
+            this.camCenterY + config.height/2 - uiUnit*5 + 34 + 400,
+            "arrow key up",
+            0,
+            "down",
+            "down"
+            ).setDepth(106);
+        this.tutorialKeyLeft = new TutorialKey(
+            this,
+            this.camCenterX - 33,
+            this.camCenterY + config.height/2 - uiUnit*5 + 34 + 400,
+            "arrow key up",
+            0,
+            "left",
+            "left"
+            ).setDepth(106);
+        this.tutorialKeyRight = new TutorialKey(
+            this,
+            this.camCenterX + 33,
+            this.camCenterY + config.height/2 - uiUnit*5 + 34 + 400,
+            "arrow key up",
+            0,
+            "right",
+            "right"
+            ).setDepth(106);
+
+        this.tutorialKeySpace = new TutorialKey(
+            this,
+            this.camCenterX,
+            this.camCenterY + config.height/2 - uiUnit*5 + 34*2 + 400,
+            "space key",
+            0,
+            "up",
+            "space"
+            ).setDepth(106);
+
+        this.add.tween({
+            targets: [this.tutorialKeyUp],
+            y: this.camCenterY + config.height/2 - uiUnit*5,
+            duration: 1500,
+            ease: "Quad.easeOut",
+            delay: 750
+        });
+
+        this.add.tween({
+            targets: [this.tutorialKeyDown, this.tutorialKeyRight,this.tutorialKeyLeft],
+            y: this.camCenterY + config.height/2 - uiUnit*5 + 34,
+            duration: 1500,
+            ease: "Quad.easeOut",
+            delay: 750
+        });
+
+        
+
+        this.add.tween({
+            targets: [this.tutorialKeySpace],
+            y: this.camCenterY + config.height/2 - uiUnit*5 + 34*2,
+            duration: 1500,
+            ease: "Quad.easeOut",
+            delay: 750
+        });
+
+    }
 }
