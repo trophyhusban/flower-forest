@@ -195,7 +195,9 @@ class Play extends Phaser.Scene {
             "note"
         ).setDepth(105);
 
-        this.halfNoteLeft = new NPC(
+        this.noteArray.push(this.halfNoteLeft);
+
+        this.halfNoteRight = new NPC(
             this,
             this.player,
             924,
@@ -206,7 +208,7 @@ class Play extends Phaser.Scene {
             "note"
         ).setDepth(105);
 
-        this.noteArray.push(this.halfNoteLeft);
+        this.noteArray.push(this.halfNoteRight);
         
         this.puckNPC1 = new NPC(
             this,
