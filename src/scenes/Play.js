@@ -20,6 +20,18 @@ class Play extends Phaser.Scene {
         this.load.image("ritualCircleBasic", "./assets/gamepieces/ritualCircleBasic.png");
         this.load.spritesheet("ritualTree", "./assets/gamepieces/treeSheet.png",
             {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 4});
+        this.load.image("ritualHalf1", "./assets/gamepieces/halfNoteB/halfNoteB1.png");
+        this.load.image("ritualHalf2", "./assets/gamepieces/halfNoteB/halfNoteB2.png");
+        this.load.image("ritualHalf3", "./assets/gamepieces/halfNoteB/halfNoteB3.png");
+        this.load.image("ritualHalf4", "./assets/gamepieces/halfNoteB/halfNoteB4.png");
+        this.load.image("ritualLittleBig1", "./assets/gamepieces/little2BigA/little2BigA1.png");
+        this.load.image("ritualLittleBig2", "./assets/gamepieces/little2BigA/little2BigA2.png");
+        this.load.image("ritualLittleBig3", "./assets/gamepieces/little2BigA/little2BigA3.png");
+        this.load.image("ritualLittleBig4", "./assets/gamepieces/little2BigA/little2BigA4.png");
+        this.load.image("ritualSliced1", "./assets/gamepieces/slicedC/slicedC1.png");
+        this.load.image("ritualSliced2", "./assets/gamepieces/slicedC/slicedC2.png");
+        this.load.image("ritualSliced3", "./assets/gamepieces/slicedC/slicedC3.png");
+        this.load.image("ritualSliced4", "./assets/gamepieces/slicedC/slicedC4.png");
         this.load.image("small to big note UI", "./assets/ui/little_to_big_ritual.png");
         this.load.image("small to big note", "./assets/gamepieces/noteOne.png");
         this.load.spritesheet("flowerCrumb", "./assets/gamepieces/flower.png", 
@@ -75,6 +87,30 @@ class Play extends Phaser.Scene {
         this.ritual1DoorObj = this.level1Map.findObject("rituals", obj => obj.name ==="SimpleRitual1Door");
         this.ritual1Obj = this.level1Map.findObject("rituals", obj => obj.name ==="SimpleRitual1");
         this.simpleRitual1 = new Ritual(this, this.ritual1DoorObj, "ritualTree", this.ritual1Obj, "ritualCircleBasic");
+
+        //create halfNote ritual
+        this.halfNoteRitual = new Ritual(this,
+            this.level1Map.findObject("rituals", obj => obj.name ==="halfdoor"), "ritualTree",
+            this.level1Map.findObject("rituals", obj => obj.name ==="half4"), "ritualHalf4",
+            this.level1Map.findObject("rituals", obj => obj.name ==="half3"), "ritualHalf3",
+            this.level1Map.findObject("rituals", obj => obj.name ==="half1"), "ritualHalf1",
+            this.level1Map.findObject("rituals", obj => obj.name ==="half2"), "ritualHalf2");
+        
+        //create little2Big ritual
+        this.littleBigRitual = new Ritual(this,
+            this.level1Map.findObject("rituals", obj => obj.name ==="little2bigdoor"), "ritualTree",
+            this.level1Map.findObject("rituals", obj => obj.name ==="little2big1"), "ritualLittleBig1",
+            this.level1Map.findObject("rituals", obj => obj.name ==="little2big3"), "ritualLittleBig3",
+            this.level1Map.findObject("rituals", obj => obj.name ==="little2big2"), "ritualLittleBig2",
+            this.level1Map.findObject("rituals", obj => obj.name ==="little2big4"), "ritualLittleBig4");
+        
+        //create sliced ritual
+        this.slicedRitual = new Ritual(this,
+            this.level1Map.findObject("rituals", obj => obj.name ==="sliceddoor"), "ritualTree",
+            this.level1Map.findObject("rituals", obj => obj.name ==="sliced2"), "ritualSliced2",
+            this.level1Map.findObject("rituals", obj => obj.name ==="sliced3"), "ritualSliced3",
+            this.level1Map.findObject("rituals", obj => obj.name ==="sliced4"), "ritualSliced4",
+            this.level1Map.findObject("rituals", obj => obj.name ==="sliced1"), "ritualSliced1");
 
         //create flower group
         this.flowerTrail = this.add.group({
@@ -152,7 +188,7 @@ class Play extends Phaser.Scene {
     }
 
     update() {
-        console.log(this.player.nextToNPC);
+        //console.log(this.player.nextToNPC);
         this.updateFootsteps();
 
         this.player.update();
@@ -166,6 +202,9 @@ class Play extends Phaser.Scene {
         this.physics.world.collide(this.doppelganger, this.wallLayer);
 
         this.simpleRitual1.update();
+        this.halfNoteRitual.update();
+        this.littleBigRitual.update();
+        this.slicedRitual.update();
 
 
         this.doorCheck = this.level1Map.getTileAtWorldXY(this.player.x, this.player.y, false, this.camera, "doors");

@@ -73,7 +73,6 @@ class Ritual {
         //check to see if the first circle has been filled
         this.circle1Active = false;
         this.scene.physics.world.collide(this.circle1, this.scene.flowerTrail, (circle, flower) => {
-            this.circle1Active = true;
             if(!this.circle2Present) { //if no other circles exist, complete ritual
                 if(this.door != null) {
                     this.door.destroy();
@@ -81,8 +80,9 @@ class Ritual {
                 }
                 this.doorClosed = false;
             } 
-            else if(this.ritualFailed) {} //if the ritual failed already, do nothing 
+            else if(this.ritualFailed) {console.log("ritual failed at circle 1");} //if the ritual failed already, do nothing 
             else { //continue on to check the second circle
+                this.circle1Active = true;
 
                 //check to see if another circle has been filled before the second one
                 if(this.circle3Present && !this.circle2Active) {
@@ -110,7 +110,6 @@ class Ritual {
                 //check to see if the second circle has been filled
                 this.circle2Active = false;
                 this.scene.physics.world.collide(this.circle2, this.scene.flowerTrail, (circle, flower) => {
-                    this.circle2Active = true;
                     if(!this.circle3Present) { //if no other circles exist, complete ritual
                         if(this.door != null) {
                             this.door.destroy();
@@ -118,8 +117,9 @@ class Ritual {
                         }
                         this.doorClosed = false;
                     } 
-                    else if(this.ritualFailed) {} //if the ritual failed already, do nothing
+                    else if(this.ritualFailed) {console.log("ritual failed at circle 2");} //if the ritual failed already, do nothing
                     else { //continue on to check the third circle
+                        this.circle2Active = true;
 
                         //check to see if another circle has been filled before the third one
                         if(this.circle4Present && !this.circle3Active) {
@@ -140,7 +140,6 @@ class Ritual {
                         //check to see if the third circle has been filled
                         this.circle3Active = false;
                         this.scene.physics.world.collide(this.circle3, this.scene.flowerTrail, (circle, flower) => {
-                            this.circle3Active = true;
                             if(!this.circle4Present) { //if no other circles exist, complete ritual
                                 if(this.door != null) {
                                     this.door.destroy();
@@ -148,8 +147,9 @@ class Ritual {
                                 }
                                 this.doorClosed = false;
                             } 
-                            else if(this.ritualFailed) {} //if the ritual failed already, do nothing 
+                            else if(this.ritualFailed) {console.log("ritual failed at circle 3");} //if the ritual failed already, do nothing 
                             else { //continue on to check the fourth circle
+                                this.circle3Active = true;
                 
                                 //check to see if another circle has been filled before the fourth one
                                 if(this.circle5Present && !this.circle4Active) {
@@ -163,7 +163,6 @@ class Ritual {
                                 //check to see if the fourth circle has been filled
                                 this.circle4Active = false;
                                 this.scene.physics.world.collide(this.circle4, this.scene.flowerTrail, (circle, flower) => {
-                                    this.circle4Active = true;
                                     if(!this.circle5Present) { //if no other circles exist, complete ritual
                                         if(this.door != null) {
                                             this.door.destroy();
@@ -171,8 +170,9 @@ class Ritual {
                                         }
                                         this.doorClosed = false;
                                     } 
-                                    else if(this.ritualFailed) {} //if the ritual failed already, do nothing
+                                    else if(this.ritualFailed) {console.log("ritual failed at circle 4");} //if the ritual failed already, do nothing
                                     else { //continue on to check the fifth circle
+                                        this.circle4Active = true;
                                         this.scene.physics.world.collide(this.circle5, this.scene.flowerTrail, (circle, flower) => {
                                             //if all circles are active in correct order, complete ritual
                                             this.circle5Active = true;
