@@ -4,14 +4,11 @@ class NoteScene extends Phaser.Scene {
     }
 
     create() {
-        console.log(noteGlobal);
         this.note = this.add.sprite(
             config.width/2,
             config.height/2,
             noteGlobal
         );
-
-        console.log(this.note);
 
         this.tweens.add({
             targets: [this.note],
@@ -20,7 +17,6 @@ class NoteScene extends Phaser.Scene {
         });
 
         this.input.keyboard.on("keydown-SPACE", () => {
-            console.log("keydown space in the note scene");
             if (this.note.alpha == 1) {
                 this.tweens.add({
                     targets: [this.note],
