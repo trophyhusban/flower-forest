@@ -371,7 +371,7 @@ class Play extends Phaser.Scene {
             key: 'treeWalk',
             frames: this.anims.generateFrameNumbers("ritualTree",
                 {start: 3, end: 4, first: 3}),
-            frameRate: 6,
+            frameRate: 2,
             repeat: -1
         });
     }
