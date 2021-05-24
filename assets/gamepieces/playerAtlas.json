@@ -1,0 +1,41 @@
+{
+	"textures": [
+		{
+			"image": "playerAtlas.png",
+			"format": "RGBA8888",
+			"size": {
+				"w": 256,
+				"h": 256
+			},
+			"scale": 1,
+			"frames": [
+				{
+					"filename": "playerAtlas.png",
+					"rotated": false,
+					"trimmed": false,
+					"sourceSize": {
+						"w": 256,
+						"h": 256
+					},
+					"spriteSourceSize": {
+						"x": 0,
+						"y": 0,
+						"w": 256,
+						"h": 256
+					},
+					"frame": {
+						"x": 0,
+						"y": 0,
+						"w": 256,
+						"h": 256
+					}
+				}
+			]
+		}
+	],
+	"meta": {
+		"app": "https://www.codeandweb.com/texturepacker",
+		"version": "3.0",
+		"smartupdate": "$TexturePacker:SmartUpdate:e02e82b4057b0d911488b6d4fde65aaf:d5071f18389ac4503d65baf24b249abb:a82ce358ecc117a026e6b67a071a3fd4$"
+	}
+}
