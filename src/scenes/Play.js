@@ -46,6 +46,10 @@ class Play extends Phaser.Scene {
             {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 6});
         this.load.spritesheet("puck", "./assets/gamepieces/puckSheet.png",
             {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 1});
+        this.load.spritesheet("titania", "./assets/gamepieces/titannaSheet.png",
+            {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 1});
+        this.load.spritesheet("flowerfae", "./assets/gamepieces/flowerfaeSheet.png",
+            {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 1});
         this.load.image("tileSheet", "./assets/tilesets/tilesheet.png");
         this.load.tilemapTiledJSON("level1", "./assets/tilesets/level1.json");
         this.load.audio("footsteps", "./assets/sound/Footsteps.wav");
@@ -53,7 +57,6 @@ class Play extends Phaser.Scene {
     }
     create() {
         this.initializeAudio();
-        this.initializeAnimations();
 
         this.camera = this.cameras.main;
         this.camera.zoom = 8;
@@ -158,7 +161,7 @@ class Play extends Phaser.Scene {
 
         //this.openDialogue(uiUnit, 64, textJSON.puck1, textConfig);
 
-        this.noteArray = [];
+        this.NPCArray = [];
 
         this.testNote = new NPC(
             this,
@@ -171,7 +174,7 @@ class Play extends Phaser.Scene {
             "note"
         ).setDepth(105);
 
-        this.noteArray.push(this.testNote);
+        this.NPCArray.push(this.testNote);
 
         this.slicedNote = new NPC(
             this,
@@ -184,7 +187,7 @@ class Play extends Phaser.Scene {
             "note"
         ).setDepth(105);
 
-        this.noteArray.push(this.slicedNote);
+        this.NPCArray.push(this.slicedNote);
 
         this.halfNoteLeft = new NPC(
             this,
@@ -197,7 +200,7 @@ class Play extends Phaser.Scene {
             "note"
         ).setDepth(105);
 
-        this.noteArray.push(this.halfNoteLeft);
+        this.NPCArray.push(this.halfNoteLeft);
 
         this.halfNoteRight = new NPC(
             this,
@@ -210,8 +213,8 @@ class Play extends Phaser.Scene {
             "note"
         ).setDepth(105);
 
-        this.noteArray.push(this.halfNoteRight);
-        
+        this.NPCArray.push(this.halfNoteRight);
+
         this.puckNPC1 = new NPC(
             this,
             this.player,
@@ -222,6 +225,47 @@ class Play extends Phaser.Scene {
             textJSON.puck1,
             "NPC"
         );
+
+        this.NPCArray.push(this.puckNPC1);
+
+        this.titaniaNPC1 = new NPC(
+            this,
+            this.player,
+            3168,
+            482,
+            ["titania", "titaniaTalking"],
+            0,
+            textJSON.titania1,
+            "NPC"
+        );
+
+        this.NPCArray.push(this.titaniaNPC1);
+
+        this.titaniaNPC1 = new NPC(
+            this,
+            this.player,
+            3168,
+            482,
+            ["titania", "titaniaTalking"],
+            0,
+            textJSON.titania1,
+            "NPC"
+        );
+
+        this.NPCArray.push(this.titaniaNPC1);
+
+        this.flowerfaeNPC1 = new NPC(
+            this,
+            this.player,
+            1110,
+            2530,
+            ["flowerfae", "flowerfaeTalking"],
+            0,
+            textJSON.flowerfae1,
+            "NPC"
+        );
+
+        this.NPCArray.push(this.flowerfaeNPC1);
         
         while (prevColor == currentColor) {
             currentColor = Phaser.Math.RND.pick(colors);
@@ -372,6 +416,22 @@ class Play extends Phaser.Scene {
             repeat: -1
         });
 
+        this.anims.create({
+            key: "titaniaTalking",
+            frames: this.anims.generateFrameNumbers("titania",
+                {start:0, end:1, first: 0}),
+            frameRate: 8,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: "flowerfaeTalking",
+            frames: this.anims.generateFrameNumbers("flowerfae",
+                {start:0, end:1, first: 0}),
+            frameRate: 8,
+            repeat: -1
+        });
+
         //create ritual tree anim
         this.anims.create({
             key: 'treeStand',
@@ -399,14 +459,13 @@ class Play extends Phaser.Scene {
     updateObjects() {
         this.player.update();
         this.doppelganger.update();
-        this.puckNPC1.update();
         this.tutorialKeyUp.update();
         this.tutorialKeyDown.update();
         this.tutorialKeyLeft.update();
         this.tutorialKeyRight.update();
         this.tutorialKeySpace.update();
 
-        for (let i of this.noteArray) {
+        for (let i of this.NPCArray) {
             i.update();
         }
     }
