@@ -94,7 +94,9 @@ class Menu extends Phaser.Scene {
         
         this.input.keyboard.on("keydown-SPACE", () => {
             this.select.play();
-            this.scene.start("playScene");
+            this.cameras.main.fadeOut(500).on("camerafadeoutcomplete", () => {
+                this.scene.start("playScene");
+            });
         });
         
         

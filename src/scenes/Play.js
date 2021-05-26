@@ -56,6 +56,8 @@ class Play extends Phaser.Scene {
         this.initializeAnimations();
 
         this.camera = this.cameras.main;
+        this.camera.zoom = 8;
+        this.camera.fadeIn(500);
 
         this.level1Map = this.make.tilemap({key: "level1"});
         this.tileSet = this.level1Map.addTilesetImage("tilesheet", "tileSheet");
@@ -78,7 +80,7 @@ class Play extends Phaser.Scene {
 
         textConfig = {
             fontFamily: "express",
-            fontSize: "24px",
+            fontSize: "27px",
             color: "#000",
             align: "center",
             padding: 4,
@@ -240,6 +242,16 @@ class Play extends Phaser.Scene {
         });
 
         this.createTutorialKeys();
+
+        this.tweens.add({
+            targets: [this.camera],
+            zoom: 1,
+            duration: 2500,
+            delay: 2000,
+            ease: "Quad.easeInOut"
+        }).on("complete", () => {
+            this.tutorialKeysTweens();
+        });
     }
 
     update() {
@@ -447,6 +459,9 @@ class Play extends Phaser.Scene {
             "space"
             ).setDepth(106);
 
+    }
+
+    tutorialKeysTweens() {
         this.add.tween({
             targets: [this.tutorialKeyUp],
             y: this.camCenterY + config.height/2 - uiUnit*5,
@@ -463,8 +478,6 @@ class Play extends Phaser.Scene {
             delay: 750
         });
 
-        
-
         this.add.tween({
             targets: [this.tutorialKeySpace],
             y: this.camCenterY + config.height/2 - uiUnit*5 + 34*2,
@@ -472,6 +485,5 @@ class Play extends Phaser.Scene {
             ease: "Quad.easeOut",
             delay: 750
         });
-
     }
 }

@@ -1,17 +1,31 @@
 {
-  "example": [
-    "example text to test out JSON",
-    "the second line of example text to test out JSON",
-    "this is called from the key \"example\" and contains a single array of text"
-    ],
   "puck1": [
-    "Hello dear traveler, welcome to the forest. You look lost. I am Puck, fabled friend to those in need.", 
-    "Most fae won’t even look at someone as ugly as you are, so you’re lucky to have me at your service. What’s your name?",
+    "You look lost. I am Puck, fabled friend to those in need.", 
+    "Most fae won’t even look at someone as ugly as you are, so you’re lucky to have me at your service. What’s your name?", 
+    ".",
+    "..",
     "...",
-    "Do you not have one? Am I correct to assume that wicked fae in the tower stole it? I’ve seen many a stranger come through these parts looking for her, but most never leave the forest.",
+    "Do you not have one? Am I correct to assume that wicked fae in the tower stole it?", 
+    "I’ve seen many strangers come through these parts looking for her, but most never leave the forest.",
     "But I’m sure you’ll be fine! You’ve got those, uhh, fine shoes on. Can I take a closer look? They look enchanted.",
-    "I was right! Try pressing the spacebar to plant a flower where you’re standing. The forest will reward you for planting flowers in the right places.", 
-    "Press space again to pick a flower. Maybe you could use them to remember where you have been?",
-    "Don’t get lost, and maybe I will see you around."
+    "I was right! Look for places where flowers might belong. You may want to plant some to find your way too.", 
+    "The forest doesn’t like strangers, so it will try to make you lost. My advice is “don’t get lost,” and maybe I will see you around."
+  ],
+  "flowerFae1": [
+    "Hello. I am the one people call “the flower fae.” I’ve been watching you plant all those flowers.",
+    "I cannot thank you enough. Recently the flowers all went missing. I can plant them myself, but your shoes work much faster.",
+    "I’ve been helping you navigate through the forest. Plant flowers in the right places and I’ll keep on letting you through."
+  ],
+  "titania1": [
+    "It’s you again. Do you ever get the feeling that you’re being followed? They’ll catch up with you eventually.",
+    "I wouldn’t worry about it too much. Even if you had a map, I don’t think you would ever get out of here.",
+    "You’re so stupid, I bet you don’t even know that the notes connect to each of the ritual circles on the ground HAHAHAHA!"
+  ],
+  "puck2": [
+    "Hello again!",
+    "I assume you must have met some of the other fae by now. I hope Titania didn’t cause you too much trouble.",
+    "Don’t tell anyone I said this, but the flower fae also had their name stolen by the fae in the tower.", 
+    "They were trying for a while to get it back from her, but eventually it was gone forever.",
+    "“The flower fae” became their new name. Now it’s all that we’ve ever known them by."
   ]
 }

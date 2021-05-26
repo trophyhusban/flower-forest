@@ -21,6 +21,7 @@ class NPC extends Phaser.Physics.Arcade.Sprite {
             this.talkingAnimation = texture[1];
         }
         this.kind = kind;
+        this.align = "up";
 
         this.justPressedKey = false;
     }
@@ -41,11 +42,18 @@ class NPC extends Phaser.Physics.Arcade.Sprite {
              if (this.checkNextToPlayer()) {
 
                 if (this.kind == "NPC"){
+                    
+                    if (this.player.y > this.y) {
+                        this.align = "up";
+                    } else {
+                        this.align = "down";
+                    }
+
                     this.openDialogue(
                         this.x + this.width/2,
                         this.content,
                         this.config,
-                        "down" // TODO implement this LOL
+                        this.align
                     ); 
                 } else if (this.kind == "note") {
                     this.openNote();
