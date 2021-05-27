@@ -1,3 +1,6 @@
+// this scene is really simple. we display the title screen art, wait for the player to press space, and then start the game :-)
+// alexa made the title screen art it looks rly good T-T
+
 class Menu extends Phaser.Scene {
     constructor() {
         super("menuScene");
@@ -11,86 +14,25 @@ class Menu extends Phaser.Scene {
     }
     create() {
 
-        
+        // smooth ;-)
+        this.cameras.main.fadeIn(1000);
 
+        // this variable contains all the text in the game o.o i load it in the title screen bc i can 
         textJSON = this.cache.json.get("text JSON");
 
+        // play a sound
         this.select = this.sound.add("select");
 
-
-        this.anims.create({
-            key: 'plantCrumb',
-            frames: this.anims.generateFrameNumbers("flowerCrumb", 
-                {start: 0, end: 6, first: 0}),
-            frameRate: 6
-        });
         this.add.sprite(0, 0, "menu ui").setOrigin(0, 0);
-        textConfig = {
-            fontFamily: "express",
-            fontSize: "48px",
-            color: "#002416",
-            align: "center",
-            padding: 4,
-            wordWrap: {width: config.width - unit*2},
-            align: "center"
-        };
-        this.titleText = this.add.text(
-            config.width/2, 
-            uiUnit*3, 
-            "Flower Forest", 
-            textConfig
-            ).setOrigin(.5, 0);
-        this.titleText.setDepth(105);
-       
-        textConfig.fontSize = "24px";
-        this.playText = this.add.text(
-            config.width/2, 
-            uiUnit*6, 
-            "space to play", 
-            textConfig
-            ).setOrigin(.5, 0);
-        this.playText.alpha = 0;
-        this.playText.setDepth(105);
-
-        this.nameText = this.add.text(
-            config.width/2, 
-            uiUnit*9, 
-            "Alex Basinki\nAlexa Wilbert\nArdent Eliot :-) Reinhard\nStar Hagen-Esquerra", 
-            textConfig
-            ).setOrigin(.5, 0);
-        this.nameText.alpha = 0;
-        this.nameText.setDepth(105);
-
-        this.tweens.add({
-            targets: [this.titleText],
-            alpha: {from: 0, to: 1},
-            duration: 1000,
-            ease: "Sine.In"
-        }).on("complete", () => {
-            this.tweens.add({
-                targets: [this.playText, this.nameText],
-                alpha: {from: 0, to: 1},
-                duration: 1000,
-                ease: "Sine.In"
-            }).on("complete", () => {
-                this.leftFlower = this.add.sprite(
-                    config.width/2 - uiUnit*3, 
-                    uiUnit*6,
-                    "plantCrumb"
-                    ).setOrigin(1, .25);
-                this.leftFlower.setScale(2);
-                this.leftFlower.flipX = true;
-                this.leftFlower.play("plantCrumb");
-        
-                this.rightFlower = this.add.sprite(
-                    config.width/2 + uiUnit*3,
-                    uiUnit*6,
-                    "plantCrumb"
-                    ).setOrigin(0, .25);
-                this.rightFlower.setScale(2);
-                this.rightFlower.play("plantCrumb");
-            });
-        });
+        // textConfig = {
+        //     fontFamily: "express",
+        //     fontSize: "48px",
+        //     color: "#002416",
+        //     align: "center",
+        //     padding: 4,
+        //     wordWrap: {width: config.width - unit*2},
+        //     align: "center"
+        // };
         
         this.input.keyboard.on("keydown-SPACE", () => {
             this.select.play();
@@ -98,20 +40,5 @@ class Menu extends Phaser.Scene {
                 this.scene.start("playScene");
             });
         });
-        
-        
-        while (prevColor != currentColor) {
-            currentColor = Phaser.Math.RND.pick(colors);
-        }
-        prevColor = currentColor;
-        
-        this.coloredRectangle = this.add.rectangle(
-            0,
-            0,
-            config.width,
-            config.height,
-            currentColor,
-            .3
-        ).setOrigin(0, 0).setDepth(100);
     }
 }
