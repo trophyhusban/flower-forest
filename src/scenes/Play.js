@@ -58,6 +58,11 @@ class Play extends Phaser.Scene {
         this.load.tilemapTiledJSON("level1", "./assets/tilesets/level1.json");
         this.load.audio("footsteps", "./assets/sound/Footsteps.wav");
         this.load.audio("talking", "./assets/sound/CharacterSpeak.wav");
+        this.load.audio("ritualFootsteps", "./assets/sound/treeWalk.wav");
+        this.load.spritesheet("oneSheet", "./assets/gamepieces/playerAtlas.png", 
+            {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 15});
+            this.load.spritesheet("otherSheet", "./assets/gamepieces/dopplAtlas.png", 
+            {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 15});
     }
     create() {
         this.initializeAudio();     // all the making of the audio variables go in here 
@@ -115,7 +120,7 @@ class Play extends Phaser.Scene {
 
         //create halfNote ritual
         this.halfNoteRitual = new Ritual(this,
-            this.level1Map.findObject("rituals", obj => obj.name ==="halfdoor"), "ritualTree", "up", [
+            this.level1Map.findObject("rituals", obj => obj.name ==="halfdoor"), "ritualDoor", "up", [
             [this.level1Map.findObject("rituals", obj => obj.name ==="half4"), "ritualHalf4"],
             [this.level1Map.findObject("rituals", obj => obj.name ==="half3"), "ritualHalf3"],
             [this.level1Map.findObject("rituals", obj => obj.name ==="half1"), "ritualHalf1"],
@@ -154,14 +159,16 @@ class Play extends Phaser.Scene {
             this, 
             this.spawnPoint.x, 
             this.spawnPoint.y, 
-            "oneSprite").setDepth(105);
+            "oneSheet",
+            0).setDepth(105);
 
         //create doppelganger
         this.doppelganger = new Other(
             this, 
             (Math.floor(gridSize / 2) - 1) * gridUnit, 
             Math.floor(gridSize / 2) * gridUnit, 
-            "oneSprite");
+            "otherSheet",
+            0);
         this.doppelganger.setDepth(105);
 
         this.input.keyboard.on("keydown-M", () => {
@@ -305,6 +312,78 @@ class Play extends Phaser.Scene {
     }
 
     initializeAnimations() {
+        //configure player animations
+        this.anims.create({
+            key: "one_reset",
+            frames: this.anims.generateFrameNumbers("oneSheet", 
+            {start: 0, end: 0, first: 0}),
+            frameRate: 6
+        });
+        this.anims.create({
+            key: "oneWalk_Down",
+            frames: this.anims.generateFrameNumbers("oneSheet", 
+            {start: 0, end: 3, first: 0}),
+            frameRate: 6,
+            repeat: -1
+        });
+        this.anims.create({
+            key: "oneWalk_Left",
+            frames: this.anims.generateFrameNumbers("oneSheet", 
+            {start: 4, end: 7, first: 4}),
+            frameRate: 6,
+            repeat: -1
+        });
+        this.anims.create({
+            key: "oneWalk_Right",
+            frames: this.anims.generateFrameNumbers("oneSheet", 
+            {start: 8, end: 11, first: 8}),
+            frameRate: 6,
+            repeat: -1
+        });
+        this.anims.create({
+            key: "oneWalk_Up",
+            frames: this.anims.generateFrameNumbers("oneSheet", 
+            {start: 12, end: 15, first: 12}),
+            frameRate: 6,
+            repeat: -1
+        });
+
+        //configure doppelganger animations
+        this.anims.create({
+            key: "other_reset",
+            frames: this.anims.generateFrameNumbers("otherSheet", 
+            {start: 0, end: 0, first: 0}),
+            frameRate: 6
+        });
+        this.anims.create({
+            key: "otherWalk_Down",
+            frames: this.anims.generateFrameNumbers("otherSheet", 
+            {start: 0, end: 3, first: 0}),
+            frameRate: 6,
+            repeat: -1
+        });
+        this.anims.create({
+            key: "otherWalk_Left",
+            frames: this.anims.generateFrameNumbers("otherSheet", 
+            {start: 4, end: 7, first: 4}),
+            frameRate: 6,
+            repeat: -1
+        });
+        this.anims.create({
+            key: "otherWalk_Right",
+            frames: this.anims.generateFrameNumbers("otherSheet", 
+            {start: 8, end: 11, first: 8}),
+            frameRate: 6,
+            repeat: -1
+        });
+        this.anims.create({
+            key: "otherWalk_Up",
+            frames: this.anims.generateFrameNumbers("otherSheet", 
+            {start: 12, end: 15, first: 12}),
+            frameRate: 6,
+            repeat: -1
+        });
+
         //configure flower animations
         this.anims.create({
             key: 'plantCrumb',
@@ -350,10 +429,16 @@ class Play extends Phaser.Scene {
             frameRate: 6
         });
         this.anims.create({
+            key: 'treeSit',
+            frames: this.anims.generateFrameNumbers("ritualTree",
+                {start: 2, end: 0, first: 2}),
+            frameRate: 6
+        });
+        this.anims.create({
             key: 'treeWalk',
             frames: this.anims.generateFrameNumbers("ritualTree",
                 {start: 3, end: 4, first: 3}),
-            frameRate: 2,
+            frameRate: 6,
             repeat: -1
         });
 
@@ -365,10 +450,16 @@ class Play extends Phaser.Scene {
             frameRate: 6
         });
         this.anims.create({
+            key: 'doorSit',
+            frames: this.anims.generateFrameNumbers("ritualDoor",
+                {start: 2, end: 0, first: 2}),
+            frameRate: 6
+        });
+        this.anims.create({
             key: 'doorWalk',
             frames: this.anims.generateFrameNumbers("ritualDoor",
                 {start: 3, end: 4, first: 3}),
-            frameRate: 2,
+            frameRate: 6,
             repeat: -1
         });
     }
