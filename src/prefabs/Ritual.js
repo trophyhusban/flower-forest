@@ -14,7 +14,7 @@ class Ritual {
         this.doorTexture = doorTexture;
         this.doorDirection = doorDirection;
         this.walking = false;
-        this.walkTime = 3000;
+        this.walkTime = 2000;
         this.door = this.scene.add.sprite(this.doorObj.x, this.doorObj.y, this.doorTexture, 0);
         this.scene.add.existing(this.door);
         this.scene.physics.add.existing(this.door);
@@ -102,10 +102,62 @@ class Ritual {
 
     closeDoor() {
         if(this.door == null && !this.walking) {
-            this.door = this.scene.add.sprite(this.doorObj.x, this.doorObj.y, this.doorTexture, 0);
+            this.x = this.doorObj.x;
+            this.y = this.doorObj.y;
+            if(this.doorDirection == "up") {
+                this.y -= 2 * gridUnit;
+            } else if(this.doorDirection == "down") {
+                this.y += 2 * gridUnit;
+            } else if(this.doorDirection == "left") {
+                this.x -= 2 * gridUnit;
+            } else if(this.doorDirection == "right") {
+                this.x += 2 * gridUnit;
+            }
+
+            this.door = this.scene.add.sprite(this.x, this.y, this.doorTexture, 0);
             this.scene.add.existing(this.door);
             this.scene.physics.add.existing(this.door);
             this.door.body.setImmovable();
+
+            this.walking = true;
+            if(this.doorTexture == "ritualTree") {
+                this.door.anims.play("treeWalk");
+            } else if(this.doorTexture == "ritualDoor") {
+                this.door.anims.play("doorWalk");
+            }
+            if(this.doorDirection == "up") {
+                this.tween = this.scene.tweens.add({
+                    targets: [this.door],
+                    y: {from: this.door.y, to: this.door.y + 2 * gridUnit},
+                    duration: this.walkTime,
+                });
+            } else if(this.doorDirection == "down") {
+                this.tween = this.scene.tweens.add({
+                    targets: [this.door],
+                    y: {from: this.door.y, to: this.door.y - 2 * gridUnit},
+                    duration: this.walkTime,
+                });
+            } else if(this.doorDirection == "left") {
+                this.tween = this.scene.tweens.add({
+                    targets: [this.door],
+                    x: {from: this.door.x, to: this.door.x + 2 * gridUnit},
+                    duration: this.walkTime,
+                });
+            } else if(this.doorDirection == "right") {
+                this.tween = this.scene.tweens.add({
+                    targets: [this.door],
+                    x: {from: this.door.x, to: this.door.x - 2 * gridUnit},
+                    duration: this.walkTime,
+                });
+            }
+            this.tween.on("complete", () => {
+                this.walking = false;
+                if(this.doorTexture == "ritualTree") {
+                    this.door.anims.play("treeSit");
+                } else if(this.doorTexture == "ritualDoor") {
+                    this.door.anims.play("doorSit");
+                }
+            });
         }
     }
 
@@ -127,25 +179,25 @@ class Ritual {
                 if(this.doorDirection == "up") {
                     this.tween = this.scene.tweens.add({
                         targets: [this.door],
-                        y: {from: this.y, to: this.y - 3 * gridUnit},
+                        y: {from: this.door.y, to: this.door.y - 2 * gridUnit},
                         duration: this.walkTime,
                     });
                 } else if(this.doorDirection == "down") {
                     this.tween = this.scene.tweens.add({
                         targets: [this.door],
-                        y: {from: this.y, to: this.y + 3 * gridUnit},
+                        y: {from: this.door.y, to: this.door.y + 2 * gridUnit},
                         duration: this.walkTime,
                     });
                 } else if(this.doorDirection == "left") {
                     this.tween = this.scene.tweens.add({
                         targets: [this.door],
-                        x: {from: this.x, to: this.x - 3 * gridUnit},
+                        x: {from: this.door.x, to: this.door.x - 2 * gridUnit},
                         duration: this.walkTime,
                     });
                 } else if(this.doorDirection == "right") {
                     this.tween = this.scene.tweens.add({
                         targets: [this.door],
-                        x: {from: this.x, to: this.x + 3 * gridUnit},
+                        x: {from: this.door.x, to: this.door.x + 2 * gridUnit},
                         duration: this.walkTime,
                     });
                 }

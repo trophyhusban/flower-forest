@@ -442,10 +442,16 @@ class Play extends Phaser.Scene {
             frameRate: 6
         });
         this.anims.create({
+            key: 'treeSit',
+            frames: this.anims.generateFrameNumbers("ritualTree",
+                {start: 2, end: 0, first: 2}),
+            frameRate: 6
+        });
+        this.anims.create({
             key: 'treeWalk',
             frames: this.anims.generateFrameNumbers("ritualTree",
                 {start: 3, end: 4, first: 3}),
-            frameRate: 2,
+            frameRate: 6,
             repeat: -1
         });
 
@@ -457,10 +463,16 @@ class Play extends Phaser.Scene {
             frameRate: 6
         });
         this.anims.create({
+            key: 'doorSit',
+            frames: this.anims.generateFrameNumbers("ritualDoor",
+                {start: 2, end: 0, first: 2}),
+            frameRate: 6
+        });
+        this.anims.create({
             key: 'doorWalk',
             frames: this.anims.generateFrameNumbers("ritualDoor",
                 {start: 3, end: 4, first: 3}),
-            frameRate: 2,
+            frameRate: 6,
             repeat: -1
         });
     }
