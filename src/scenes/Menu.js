@@ -24,15 +24,6 @@ class Menu extends Phaser.Scene {
         this.select = this.sound.add("select");
 
         this.add.sprite(0, 0, "menu ui").setOrigin(0, 0);
-        // textConfig = {
-        //     fontFamily: "express",
-        //     fontSize: "48px",
-        //     color: "#002416",
-        //     align: "center",
-        //     padding: 4,
-        //     wordWrap: {width: config.width - unit*2},
-        //     align: "center"
-        // };
         
         this.input.keyboard.on("keydown-SPACE", () => {
             this.select.play();
