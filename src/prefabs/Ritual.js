@@ -24,6 +24,8 @@ class Ritual {
         this.circleArray = [];
         this.circleArray.length = this.circleObjArray.length;
 
+        this.walkSFX = scene.sound.add("ritualFootsteps");
+
         this.createCircles();
     }
 
@@ -120,6 +122,8 @@ class Ritual {
             this.door.body.setImmovable();
 
             this.walking = true;
+            this.walkSFX.play();
+            this.scene.time.delayedCall(this.walkTime / 2, () =>{this.walkSFX.play();});
             if(this.doorTexture == "ritualTree") {
                 this.door.anims.play("treeWalk");
             } else if(this.doorTexture == "ritualDoor") {
@@ -176,6 +180,8 @@ class Ritual {
                 } else if(this.doorTexture == "ritualDoor") {
                     this.door.anims.play("doorWalk");
                 }
+                this.walkSFX.play();
+                this.scene.time.delayedCall(this.walkTime / 2, () =>{this.walkSFX.play();});
                 if(this.doorDirection == "up") {
                     this.tween = this.scene.tweens.add({
                         targets: [this.door],
