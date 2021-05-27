@@ -1,195 +1,95 @@
 class Ritual {
-    constructor(scene, doorObj, doorTexture, circle1Obj, circle1Texture, circle2Obj, circle2Texture, circle3Obj, circle3Texture, circle4Obj, circle4Texture, circle5Obj, circle5Texture) {
+    constructor(scene, doorObj, doorTexture, doorDirection, circleArray) {
         this.scene = scene;
         this.doorClosed = true;
-        this.ritualFailed = false;
+        this.ritualFailed = true;
+        this.ritualFinished = false;
+        this.outOfOrder = false;
+        this.index = 0;
+        this.lastCorrectIndex = [];
+        this.colliding = false;
+        this.done = false;
 
         this.doorObj = doorObj;
         this.doorTexture = doorTexture;
+        this.doorDirection = doorDirection;
+        this.door = this.scene.add.sprite(this.doorObj.x, this.doorObj.y, this.doorTexture, 0);
+        this.scene.add.existing(this.door);
+        this.scene.physics.add.existing(this.door);
+        this.door.body.setImmovable();
 
-        this.circle1Obj = circle1Obj;
-        this.circle1Texture = circle1Texture;
-        this.circle1Active = false;
+        this.circleObjArray = circleArray;
+        this.circleArray = [];
+        this.circleArray.length = this.circleObjArray.length;
 
-        this.circle2Obj = circle2Obj;
-        this.circle2Texture = circle2Texture;
-        this.circle2Active = false;
-        this.circle2Present = false;
-
-        this.circle3Obj = circle3Obj;
-        this.circle3Texture = circle3Texture;
-        this.circle3Active = false;
-        this.circle3Present = false;
-
-        this.circle4Obj = circle4Obj;
-        this.circle4Texture = circle4Texture;
-        this.circle4Active = false;
-        this.circle4Present = false;
-
-        this.circle5Obj = circle5Obj;
-        this.circle5Texture = circle5Texture;
-        this.circle5Active = false;
-        this.circle5Present = false;
-
-        this.closeDoor();
         this.createCircles();
     }
 
     update() {
         //reset variables for every-frame checks
         this.doorClosed = true;
-        this.ritualFailed = false;
+        this.ritualFailed = true;
+        this.outOfOrder = false;
 
-        //check to see if another circle has been filled before the first one
-        if(this.circle2Present && !this.circle1Active) {
-            this.circle2Active = false;
-            this.scene.physics.world.collide(this.circle2, this.scene.flowerTrail, (circle, flower) => {
-                this.circle2Active = true;
-                this.ritualFailed = true;
+        if(this.lastCorrectIndex.length == 0 ) {this.lastCorrectIndex.push(0);}
+        if(this.index + 1 >= this.circleArray.length) { //if no other circles remain, stop looking for them
+            this.scene.physics.world.collide(this.circleArray[this.index], this.scene.flowerTrail, (circle, flower) => {
+                this.openDoor(); //if the final circle is filled, open the door
+                this.ritualFailed = false;
+                this.ritualFinished = true;
             });
-        }
-        if(this.circle3Present && !this.circle1Active) {
-            this.circle3Active = false;
-            this.scene.physics.world.collide(this.circle3, this.scene.flowerTrail, (circle, flower) => {
-                this.circle3Active = true;
-                this.ritualFailed = true;
-            });
-        }
-        if(this.circle4Present && !this.circle1Active) {
-            this.circle4Active = false;
-            this.scene.physics.world.collide(this.circle4, this.scene.flowerTrail, (circle, flower) => {
-                this.circle4Active = true;
-                this.ritualFailed = true;
-            });
-        }
-        if(this.circle5Present && !this.circle1Active) {
-            this.circle5Active = false;
-            this.scene.physics.world.collide(this.circle5, this.scene.flowerTrail, (circle, flower) => {
-                this.circle5Active = true;
-                this.ritualFailed = true;
-            });
-        }
-        
-        //check to see if the first circle has been filled
-        this.circle1Active = false;
-        this.scene.physics.world.collide(this.circle1, this.scene.flowerTrail, (circle, flower) => {
-            if(!this.circle2Present) { //if no other circles exist, complete ritual
-                if(this.door != null) {
-                    this.door.destroy();
-                    this.door = null;
+            if(this.ritualFailed && this.ritualFinished) {
+                this.ritualFinished = false;
+                this.index = this.lastCorrectIndex.pop();
+                //console.log(this.index);
+            }
+        } else { //if other circles remain, check to see if they have been filled in the incorrect order before iterating
+            for(this.j = this.index + 1; this.j < this.circleArray.length; this.j++) {
+                this.scene.physics.world.collide(this.circleArray[this.j], this.scene.flowerTrail, (circle, flower) => {
+                    //if a circle is filled out of order, prevent check on current circle
+                    this.outOfOrder = true;
+                    if(this.index != this.lastCorrectIndex[this.lastCorrectIndex.length - 1]) {
+                        this.index = this.lastCorrectIndex[this.lastCorrectIndex.length - 1];
+                        //console.log(this.index);
+                    }
+                });
+                if(this.outOfOrder) {
+                    break;
                 }
-                this.doorClosed = false;
-            } 
-            else if(this.ritualFailed) {console.log("ritual failed at circle 1");} //if the ritual failed already, do nothing 
-            else { //continue on to check the second circle
-                this.circle1Active = true;
-
-                //check to see if another circle has been filled before the second one
-                if(this.circle3Present && !this.circle2Active) {
-                    this.circle3Active = false;
-                    this.scene.physics.world.collide(this.circle3, this.scene.flowerTrail, (circle, flower) => {
-                        this.circle3Active = true;
-                        this.ritualFailed = true;
-                    });
-                }
-                if(this.circle4Present && !this.circle2Active) {
-                    this.circle4Active = false;
-                    this.scene.physics.world.collide(this.circle4, this.scene.flowerTrail, (circle, flower) => {
-                        this.circle4Active = true;
-                        this.ritualFailed = true;
-                    });
-                }
-                if(this.circle5Present && !this.circle2Active) {
-                    this.circle5Active = false;
-                    this.scene.physics.world.collide(this.circle5, this.scene.flowerTrail, (circle, flower) => {
-                        this.circle5Active = true;
-                        this.ritualFailed = true;
-                    });
-                }
-
-                //check to see if the second circle has been filled
-                this.circle2Active = false;
-                this.scene.physics.world.collide(this.circle2, this.scene.flowerTrail, (circle, flower) => {
-                    if(!this.circle3Present) { //if no other circles exist, complete ritual
-                        if(this.door != null) {
-                            this.door.destroy();
-                            this.door = null;
-                        }
-                        this.doorClosed = false;
-                    } 
-                    else if(this.ritualFailed) {console.log("ritual failed at circle 2");} //if the ritual failed already, do nothing
-                    else { //continue on to check the third circle
-                        this.circle2Active = true;
-
-                        //check to see if another circle has been filled before the third one
-                        if(this.circle4Present && !this.circle3Active) {
-                            this.circle4Active = false;
-                            this.scene.physics.world.collide(this.circle4, this.scene.flowerTrail, (circle, flower) => {
-                                this.circle4Active = true;
-                                this.ritualFailed = true;
-                            });
-                        }
-                        if(this.circle5Present && !this.circle3Active) {
-                            this.circle5Active = false;
-                            this.scene.physics.world.collide(this.circle5, this.scene.flowerTrail, (circle, flower) => {
-                                this.circle5Active = true;
-                                this.ritualFailed = true;
-                            });
-                        }
-
-                        //check to see if the third circle has been filled
-                        this.circle3Active = false;
-                        this.scene.physics.world.collide(this.circle3, this.scene.flowerTrail, (circle, flower) => {
-                            if(!this.circle4Present) { //if no other circles exist, complete ritual
-                                if(this.door != null) {
-                                    this.door.destroy();
-                                    this.door = null;
-                                }
-                                this.doorClosed = false;
-                            } 
-                            else if(this.ritualFailed) {console.log("ritual failed at circle 3");} //if the ritual failed already, do nothing 
-                            else { //continue on to check the fourth circle
-                                this.circle3Active = true;
-                
-                                //check to see if another circle has been filled before the fourth one
-                                if(this.circle5Present && !this.circle4Active) {
-                                    this.circle5Active = false;
-                                    this.scene.physics.world.collide(this.circle5, this.scene.flowerTrail, (circle, flower) => {
-                                        this.circle5Active = true;
-                                        this.ritualFailed = true;
-                                    });
-                                }
-                
-                                //check to see if the fourth circle has been filled
-                                this.circle4Active = false;
-                                this.scene.physics.world.collide(this.circle4, this.scene.flowerTrail, (circle, flower) => {
-                                    if(!this.circle5Present) { //if no other circles exist, complete ritual
-                                        if(this.door != null) {
-                                            this.door.destroy();
-                                            this.door = null;
-                                        }
-                                        this.doorClosed = false;
-                                    } 
-                                    else if(this.ritualFailed) {console.log("ritual failed at circle 4");} //if the ritual failed already, do nothing
-                                    else { //continue on to check the fifth circle
-                                        this.circle4Active = true;
-                                        this.scene.physics.world.collide(this.circle5, this.scene.flowerTrail, (circle, flower) => {
-                                            //if all circles are active in correct order, complete ritual
-                                            this.circle5Active = true;
-                                            if(this.door != null) {
-                                                this.door.destroy();
-                                                this.door = null;
-                                            }
-                                            this.doorClosed = false;
-                                        });
-                                    }
-                                });
-                            }
-                        });
+            }
+            //if no circles are filled out of order, check current circle
+            if(!this.outOfOrder) {
+                this.scene.physics.world.collide(this.circleArray[this.index], this.scene.flowerTrail, (circle, flower) => {
+                    this.ritualFailed = false; //if this circle is filled correctly, continue loop
+                    if(this.index < this.circleArray.length - 1) {
+                        this.lastCorrectIndex.push(this.index);
+                        this.index++;
+                        //console.log(this.index);
                     }
                 });
             }
-        });
+        }
+
+        if(this.ritualFinished) { //check to see if any flowers are removed from a completed ritual
+            for(this.i = 0; this.i < this.circleArray.length; this.i++) {
+                this.colliding = false;
+                this.scene.physics.world.collide(this.circleArray[this.i], this.scene.flowerTrail, (circle, flower) => {
+                    this.colliding = true;
+                });
+                if(!this.colliding) {
+                    this.ritualFinished = false;
+                    this.index = this.i;
+                    this.done = false;
+                    while(!this.done) {
+                        if(this.lastCorrectIndex.pop() == this.index) {
+                            this.done = true;
+                        }
+                    }
+                    break;
+                }
+            }
+        }
+
         if(this.doorClosed && this.door == null) {
             this.closeDoor();
         }
@@ -205,42 +105,20 @@ class Ritual {
         this.door.body.setImmovable();
     }
 
+    openDoor() {
+        if(this.door != null) {
+            this.door.destroy();
+            this.door = null;
+        }
+        this.doorClosed = false;
+    }
+
     createCircles() {
-        this.circle1 = this.scene.add.sprite(this.circle1Obj.x, this.circle1Obj.y, this.circle1Texture);
-        this.scene.add.existing(this.circle1);
-        this.scene.physics.add.existing(this.circle1);
-        this.circle1.body.setImmovable();
-
-        if(this.circle2Obj != null) {
-            this.circle2Present = true;
-            this.circle2 = this.scene.add.sprite(this.circle2Obj.x, this.circle2Obj.y, this.circle2Texture);
-            this.scene.add.existing(this.circle2);
-            this.scene.physics.add.existing(this.circle2);
-            this.circle2.body.setImmovable();
-        }
-
-        if(this.circle3Obj != null) {
-            this.circle3Present = true;
-            this.circle3 = this.scene.add.sprite(this.circle3Obj.x, this.circle3Obj.y, this.circle3Texture);
-            this.scene.add.existing(this.circle3);
-            this.scene.physics.add.existing(this.circle3);
-            this.circle3.body.setImmovable();
-        }
-
-        if(this.circle4Obj != null) {
-            this.circle4Present = true;
-            this.circle4 = this.scene.add.sprite(this.circle4Obj.x, this.circle4Obj.y, this.circle4Texture);
-            this.scene.add.existing(this.circle4);
-            this.scene.physics.add.existing(this.circle4);
-            this.circle4.body.setImmovable();
-        }
-
-        if(this.circle5Obj != null) {
-            this.circle5Present = true;
-            this.circle5 = this.scene.add.sprite(this.circle5Obj.x, this.circle5Obj.y, this.circle5Texture);
-            this.scene.add.existing(this.circle5);
-            this.scene.physics.add.existing(this.circle5);
-            this.circle5.body.setImmovable();
+        for(this.i = 0; this.i < this.circleObjArray.length; this.i++) {
+            this.circleArray[this.i] = this.scene.add.sprite(this.circleObjArray[this.i][0].x, this.circleObjArray[this.i][0].y, this.circleObjArray[this.i][1]);
+            this.scene.add.existing(this.circleArray[this.i]);
+            this.scene.physics.add.existing(this.circleArray[this.i]);
+            this.circleArray[this.i].body.setImmovable();
         }
     }
 }
