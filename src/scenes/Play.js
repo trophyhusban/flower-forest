@@ -108,7 +108,7 @@ class Play extends Phaser.Scene {
 
         //create halfNote ritual
         this.halfNoteRitual = new Ritual(this,
-            this.level1Map.findObject("rituals", obj => obj.name ==="halfdoor"), "ritualTree", "up", [
+            this.level1Map.findObject("rituals", obj => obj.name ==="halfdoor"), "ritualDoor", "up", [
             [this.level1Map.findObject("rituals", obj => obj.name ==="half4"), "ritualHalf4"],
             [this.level1Map.findObject("rituals", obj => obj.name ==="half3"), "ritualHalf3"],
             [this.level1Map.findObject("rituals", obj => obj.name ==="half1"), "ritualHalf1"],
