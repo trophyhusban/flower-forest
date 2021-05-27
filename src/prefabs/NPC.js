@@ -1,3 +1,11 @@
+// for the purposes of this class, an "NPC" is a character that players talk to and a "note" are notes that 
+// players encounter and can look at. they are both in a class called "NPC," because at first the class was only
+// for characters that players talk to before we added the notes
+//
+// this class does two things:
+// it exists in space, colliding with the player and checking if they are next to them
+// and it opens a scene, DialogueScene or NoteScene, if the player presses space next to them
+
 class NPC extends Phaser.Physics.Arcade.Sprite {
     constructor(scene, player, x, y, texture, frame, content, kind) {
         super(scene, x, y, texture[0], frame);
@@ -5,30 +13,31 @@ class NPC extends Phaser.Physics.Arcade.Sprite {
         scene.physics.add.existing(this);
         this.scene = scene;
         this.body.setImmovable();
-        this.content = content;
+        this.content = content;             // stores the image if its a note or array of text if it's an npc
         if (this.kind == "note") {
-            this.content = content[0];
+            this.content = content[0];  
         }
-        this.player = player;
-        this.talking = false;
+        this.player = player;   
+        this.talking = false;               // i will need this for when i put the animations in
         this.setOrigin(0, 0);
-        this.x -= this.x%gridUnit;
-        this.y -= this.y%gridUnit;
-        this.gridX = this.x/gridUnit + 1;
+        this.x -= this.x%gridUnit;          // aligns it to the grid 
+        this.y -= this.y%gridUnit;          // the x and y are taken almost arbitrarily from the tiled file
+        this.gridX = this.x/gridUnit + 1;   // so i can properly compare the grid locations to the player's grid variable
         this.gridY = this.y/gridUnit + 1;
         if (kind == "NPC") {
-            this.static = texture[0];
+            this.static = texture[0];       // these two are to animate the NPC when it is talking (but it doesn't work yet)
             this.talkingAnimation = texture[1];
         }
         this.kind = kind;
-        this.align = "up";
+        this.align = "up";                  // this is used to align the text box for NPCs above or below them
 
-        this.justPressedKey = false;
+        this.justPressedKey = false;        // i need to use this because i can't count if a key is pressed once 
+                                            // across more than one object
     }
 
     update() {
 
-        if (this.checkNextToPlayer()) {
+        if (this.checkNextToPlayer()) {     // this is used so the player can't plant flowers if they're next to an NPC
             this.player.nextToNPC = true;
         }
         
@@ -39,49 +48,63 @@ class NPC extends Phaser.Physics.Arcade.Sprite {
             this.justPressedkey = true;
 
 
-             if (this.checkNextToPlayer()) {
-
-                if (this.kind == "NPC"){
+             if (this.checkNextToPlayer()) {    // if the player is next to an NPC
+                                                // i can't just use player.nextToNPC here bc that applies to any NPC,
+                                                // not specifically this one
+                if (this.kind == "NPC"){        
                     
                     if (this.player.y > this.y) {
-                        this.align = "up";
+                        this.align = "up";      // align up if the player is below the NPC
                     } else {
-                        this.align = "down";
+                        this.align = "down";    // align down if they are above
                     }
 
-                    this.openDialogue(
-                        this.x + this.width/2,
-                        this.content,
-                        this.config,
-                        this.align
+                    this.openDialogue(          // launches the dialogue scene with these arguments
+                        this.x + this.width/2,  // tailX
+                        this.content,           // text
+                        this.config,            // config
+                        this.align              // align
                     ); 
                 } else if (this.kind == "note") {
-                    this.openNote();
+                    this.openNote();            // launches the note scene 
                 }
              }
         }
     }
 
     openDialogue(tailX, text, config, align) {
+
+        // this is so that i can align the value from the Play scene (which is many times larger than the dialogue scene)
+        // to the dialogue scene
+        // i don't remember exactly how i got this formula but it works :-)
         textBox.tailX = tailX - this.scene.camCenterX + game.config.width/2;
         textBox.text = text;
         textBox.config = config;
         textBox.align = align;
-        this.scene.scene.pause();
-        this.scene.scene.launch("dialogueScene");
+
+        // i store them in a global variable so i can access them in the next scene
+        this.scene.scene.pause(); 
+        this.scene.scene.launch("dialogueScene");   
     }
 
-    openNote() {
+    openNote() {    // this one is much simpler than for NPCs
+
         noteGlobal = this.content;
+
+        // i store them in a global variable so i can access them in the next scene
         this.scene.scene.pause();
         this.scene.scene.launch("noteScene");
     }
 
-    checkNextToPlayer() {
-        if (this.gridY == this.player.gridY) { // if y is the same, check x
+    checkNextToPlayer() {   // this code gets run every frame on every NPC
+
+        // if the y is the same, than we need to check to see if the x is one greater than or less than it
+        if (this.gridY == this.player.gridY) { 
             if (this.gridX == this.player.gridX + 1 || this.gridX == this.player.gridX - 1) {
                 return true;
             }
+        
+        // if the x is the same, than we need to check to see if the y is one greater than or less than it
         } else if (this.gridX == this.player.gridX) {
             if (this.gridY == this.player.gridY + 1 || this.gridY == this.player.gridY - 1) {
                 return true;

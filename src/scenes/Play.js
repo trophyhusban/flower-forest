@@ -1,3 +1,5 @@
+// this is the scene where most of the gameplay takes place
+
 class Play extends Phaser.Scene {
     constructor() {
         super("playScene");
@@ -15,7 +17,7 @@ class Play extends Phaser.Scene {
         this.load.image("text box", "./assets/ui/textbox.png");
         this.load.image("text box flowers", "./assets/ui/textbox_flowers.png");
         this.load.image("text box tail", "./assets/ui/textbox_tail.png");
-        this.load.image("text box tail mask", "./assets/ui/textbox_tail.png");
+        this.load.image("text box tail mask", "./assets/ui/textbox_tail_mask.png");
         this.load.image("oneSprite", "./assets/gamepieces/player1.png");
         this.load.image("ritualCircleBasic", "./assets/gamepieces/ritualCircleBasic.png");
         this.load.spritesheet("ritualTree", "./assets/gamepieces/treeSheet.png",
@@ -58,10 +60,15 @@ class Play extends Phaser.Scene {
         this.load.audio("talking", "./assets/sound/CharacterSpeak.wav");
     }
     create() {
-        this.initializeAudio();
+        this.initializeAudio();     // all the making of the audio variables go in here 
 
-        this.camera = this.cameras.main;
+        // the camera variable that we use in the rest of it
+        this.camera = this.cameras.main;    
+
+        // it starts at zoom 8, really close up. i tween it to zoom 1 after a short delay
         this.camera.zoom = 8;
+
+        // fade in from black from the Menu scene
         this.camera.fadeIn(500);
 
         this.level1Map = this.make.tilemap({key: "level1"});
@@ -135,7 +142,7 @@ class Play extends Phaser.Scene {
             runChildUpdate: true
         });
 
-        this.initializeAnimations();
+        this.initializeAnimations();    // create all the animations
 
         this.spawnPoint = this.level1Map.findObject("triggers", obj => obj.name === "Spawnpoint");
         this.camCenterX = this.spawnPoint.x;
@@ -163,18 +170,333 @@ class Play extends Phaser.Scene {
 
         //this.openDialogue(uiUnit, 64, textJSON.puck1, textConfig);
 
+        this.initializeNPCs();   // create all the NPC objects. there are a lot of them!
+        
+        // i create the color overlay rectangle. currentColor is set in main.js
+        this.coloredRectangle = this.add.rectangle(
+            0,
+            0,
+            this.level1Map.width*64,
+            this.level1Map.height*64,
+            currentColor,
+            .3
+        ).setOrigin(0, 0).setDepth(100);
+
+        //secret cheat code :-). press c quickly to engage rave mode 
+        this.input.keyboard.on("keydown-C", () => {
+            this.changeColor();
+        });
+
+        this.createTutorialKeys();  // adds all the keys that appear on screen to let the player know what buttons u can press
+
+        // zooms out the camera so it looks normal lol
+        this.tweens.add({
+            targets: [this.camera],
+            zoom: 1,
+            duration: 2500,
+            delay: 2000,
+            ease: "Quad.easeInOut"
+        }).on("complete", () => {
+
+            // when the camera is finished zooming out, tween the tutorial keys on screen. that way u can actually see them tween
+            this.tutorialKeysTweens();  
+        });
+    }
+
+    update() {
+        this.updateFootsteps();     // manages the footstep sounds
+
+        this.updateObjects();       // updates a bunch of objects
+              
+
+        this.physics.world.collide(this.player, this.wallLayer);
+        this.physics.world.collide(this.player, this.ritual1Door);
+        this.physics.world.collide(this.doppelganger, this.wallLayer);
+
+        this.simpleRitual1.update();
+        this.halfNoteRitual.update();
+        this.littleBigRitual.update();
+        this.slicedRitual.update();
+
+
+        this.doorCheck = this.level1Map.getTileAtWorldXY(this.player.x, this.player.y, false, this.camera, "doors");
+        if(this.doorCheck != null) {
+            if(this.doorCheck.properties.direction == "up") {
+                this.camCenterY -= (gridSize * gridUnit);
+                this.player.y -= 3 * gridUnit;
+                this.camera.centerOn(this.camCenterX, this.camCenterY);
+                console.log("door up");
+                this.changeColor();
+            }
+            else if(this.doorCheck.properties.direction == "down") {
+                this.camCenterY += (gridSize * gridUnit);
+                this.player.y += 3 * gridUnit;
+                this.camera.centerOn(this.camCenterX, this.camCenterY);
+                console.log("door down");
+                this.changeColor();
+            }
+            else if(this.doorCheck.properties.direction == "left") {
+                this.camCenterX -= (gridSize * gridUnit);
+                this.player.x -= 3 * gridUnit;
+                this.camera.centerOn(this.camCenterX, this.camCenterY);
+                console.log("door left");
+                this.changeColor();
+            }
+            else if(this.doorCheck.properties.direction == "right") {
+                this.camCenterX += (gridSize * gridUnit);
+                this.player.x += 3 * gridUnit;
+                this.camera.centerOn(this.camCenterX, this.camCenterY);
+                console.log("door right");
+                this.changeColor();
+            }
+        }
+        if(this.player.gridX * gridUnit - (gridUnit / 2) == this.warp1.x && this.player.gridY * gridUnit - (gridUnit / 2) == this.warp1.y) {
+            this.camCenterX += 4 * (gridSize * gridUnit);
+            this.player.x += (4 * (gridSize * gridUnit)) - (2 * gridUnit);
+            this.camera.centerOn(this.camCenterX, this.camCenterY);
+            console.log("warp1");
+            this.changeColor();
+        }
+        if(this.player.gridX * gridUnit - (gridUnit / 2) == this.warp2down.x && this.player.gridY * gridUnit - (gridUnit / 2) == this.warp2down.y) {
+            this.camCenterY += 2 * (gridSize * gridUnit);
+            this.player.y += (gridSize * gridUnit) + (3 * gridUnit);
+            this.camera.centerOn(this.camCenterX, this.camCenterY);
+            console.log("warp2down");
+            this.changeColor();
+        }
+        if(this.player.gridX * gridUnit - (gridUnit / 2) == this.warp2up.x && this.player.gridY * gridUnit - (gridUnit / 2) == this.warp2up.y) {
+            this.camCenterY -= 2 * (gridSize * gridUnit);
+            this.player.y -= (gridSize * gridUnit) + (3 * gridUnit);
+            this.camera.centerOn(this.camCenterX, this.camCenterY);
+            console.log("warp2up");
+            this.changeColor();
+        }
+        if(this.player.gridX * gridUnit - (gridUnit / 2) == this.endLevel1.x && this.player.gridY * gridUnit - (gridUnit / 2) == this.endLevel1.y) {
+            this.add.text(this.camCenterX - (gridSize * gridUnit) / 4,
+                this.camCenterY,
+                "Thank you for completing\nthe Level 1 demo.",
+                textConfig);
+            //this.changeColor();
+        }
+    }
+    
+    updateFootsteps() {
+
+        // if the player is walking and the footsteps aren't playing, play them
+        if (this.player.walking && this.footsteps.isPlaying == false) {
+            this.footsteps.resume();
+        }
+
+        // if the player is not walking and the footsteps are playing, pause them
+        if (this.player.walking == false && this.footsteps.isPlaying) {
+            this.footsteps.pause();
+        }
+    }
+
+    initializeAudio() {
+        this.footsteps = this.sound.add("footsteps");
+        this.talking = this.sound.add("talking");
+
+        // i play the footsteps and then pause them immediately so i can play them later lol
+        this.footsteps.setLoop(true);
+        this.footsteps.play();
+        this.footsteps.pause();
+        this.footsteps.setVolume(.2);
+    }
+
+    initializeAnimations() {
+        //configure flower animations
+        this.anims.create({
+            key: 'plantCrumb',
+            frames: this.anims.generateFrameNumbers("flowerCrumb", 
+                {start: 0, end: 6, first: 0}),
+            frameRate: 6
+        });
+        this.anims.create({
+            key: 'killCrumb',
+            frames: this.anims.generateFrameNumbers("flowerCrumb", 
+                {start: 6, end: 0, first: 6}),
+            frameRate: 6
+        });
+        this.anims.create({
+            key: "puckTalking",
+            frames: this.anims.generateFrameNumbers("puck",
+                {start:0, end:1, first: 0}),
+            frameRate: 8,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: "titaniaTalking",
+            frames: this.anims.generateFrameNumbers("titania",
+                {start:0, end:1, first: 0}),
+            frameRate: 8,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: "flowerfaeTalking",
+            frames: this.anims.generateFrameNumbers("flowerfae",
+                {start:0, end:1, first: 0}),
+            frameRate: 8,
+            repeat: -1
+        });
+
+        //create ritual tree anim
+        this.anims.create({
+            key: 'treeStand',
+            frames: this.anims.generateFrameNumbers("ritualTree",
+                {start: 0, end: 2, first: 0}),
+            frameRate: 6
+        });
+        this.anims.create({
+            key: 'treeWalk',
+            frames: this.anims.generateFrameNumbers("ritualTree",
+                {start: 3, end: 4, first: 3}),
+            frameRate: 2,
+            repeat: -1
+        });
+
+        //create ritual door anim
+        this.anims.create({
+            key: 'doorStand',
+            frames: this.anims.generateFrameNumbers("ritualDoor",
+                {start: 0, end: 2, first: 0}),
+            frameRate: 6
+        });
+        this.anims.create({
+            key: 'doorWalk',
+            frames: this.anims.generateFrameNumbers("ritualDoor",
+                {start: 3, end: 4, first: 3}),
+            frameRate: 2,
+            repeat: -1
+        });
+    }
+
+    changeColor() {
+
+        // changes the color to another random color
+        // the while loop makes sure that you don't get the same color twice
+        while (prevColor == currentColor) {
+            currentColor = Phaser.Math.RND.pick(colors);
+        }
+
+        // prevColor is to keep track of the last color so we don't get it twice
+        prevColor = currentColor;
+
+        // actually changes the color of the rectangle 
+        this.coloredRectangle.fillColor = currentColor;
+    }
+
+    updateObjects() {
+        this.player.update();
+        this.doppelganger.update();
+        this.tutorialKeyUp.update();
+        this.tutorialKeyDown.update();
+        this.tutorialKeyLeft.update();
+        this.tutorialKeyRight.update();
+        this.tutorialKeySpace.update();
+
+        for (let i of this.NPCArray) {
+            i.update();
+        }
+    }
+
+    createTutorialKeys() {
+        // i put them in specific places so that when the tweens go off it looks good and everything
+        this.tutorialKeyUp = new TutorialKey(
+            this,                                                   // scene
+            this.camCenterX,                                        // x
+            this.camCenterY + config.height/2 - uiUnit*5 + 400,     // y
+            "arrow key up",                                         // texture
+            0,                                                      // frame
+            "up",                                                   // angle
+            "up"                                                    // key
+            ).setDepth(106);                                        // depth to 106 so it's above the player
+        this.tutorialKeyDown = new TutorialKey(
+            this,
+            this.camCenterX,
+            this.camCenterY + config.height/2 - uiUnit*5 + 34 + 400,
+            "arrow key up",
+            0,
+            "down",
+            "down"
+            ).setDepth(106);
+        this.tutorialKeyLeft = new TutorialKey(
+            this,
+            this.camCenterX - 33,
+            this.camCenterY + config.height/2 - uiUnit*5 + 34 + 400,
+            "arrow key up",
+            0,
+            "left",
+            "left"
+            ).setDepth(106);
+        this.tutorialKeyRight = new TutorialKey(
+            this,
+            this.camCenterX + 33,
+            this.camCenterY + config.height/2 - uiUnit*5 + 34 + 400,
+            "arrow key up",
+            0,
+            "right",
+            "right"
+            ).setDepth(106);
+
+        this.tutorialKeySpace = new TutorialKey(
+            this,
+            this.camCenterX,
+            this.camCenterY + config.height/2 - uiUnit*5 + 34*2 + 400,
+            "space key",
+            0,
+            "up",
+            "space"
+            ).setDepth(106);
+
+    }
+
+    tutorialKeysTweens() {
+
+        // i tween the keys so they go into place correctly
+        this.add.tween({
+            targets: [this.tutorialKeyUp],
+            y: this.camCenterY + config.height/2 - uiUnit*5,
+            duration: 1500,
+            ease: "Quad.easeOut",
+            delay: 750
+        });
+
+        this.add.tween({
+            targets: [this.tutorialKeyDown, this.tutorialKeyRight,this.tutorialKeyLeft],
+            y: this.camCenterY + config.height/2 - uiUnit*5 + 34,
+            duration: 1500,
+            ease: "Quad.easeOut",
+            delay: 750
+        });
+
+        this.add.tween({
+            targets: [this.tutorialKeySpace],
+            y: this.camCenterY + config.height/2 - uiUnit*5 + 34*2,
+            duration: 1500,
+            ease: "Quad.easeOut",
+            delay: 750
+        });
+    }
+
+    initializeNPCs() {
+        // creates all the NPCs and adds them to an array so i can update them all easily
+        // the x and y values i took from the tiled file. i round them automatically in the NPC create function so i don't have to
+        // do it myself
         this.NPCArray = [];
 
         this.testNote = new NPC(
-            this,
-            this.player,
-            3868,
-            2406,
-            ["little big note"],
-            0,
-            "little big UI",
-            "note"
-        ).setDepth(105);
+            this,                   // scene
+            this.player,            // player
+            3868,                   // x
+            2406,                   // y
+            ["little big note"],    // content (image or array of strings)
+            0,                      // frame
+            "little big UI",        // texture
+            "note"                  // kind of NPC ("NPC" or "note")
+        ).setDepth(105);            
 
         this.NPCArray.push(this.testNote);
 
@@ -268,298 +590,5 @@ class Play extends Phaser.Scene {
         );
 
         this.NPCArray.push(this.flowerfaeNPC1);
-        
-        while (prevColor == currentColor) {
-            currentColor = Phaser.Math.RND.pick(colors);
-        }
-        prevColor = currentColor;
-
-        this.coloredRectangle = this.add.rectangle(
-            0,
-            0,
-            this.level1Map.width*64,
-            this.level1Map.height*64,
-            currentColor,
-            .3
-        ).setOrigin(0, 0).setDepth(100);
-
-        this.input.keyboard.on("keydown-C", () => {
-            this.changeColor();
-        });
-
-        this.createTutorialKeys();
-
-        this.tweens.add({
-            targets: [this.camera],
-            zoom: 1,
-            duration: 2500,
-            delay: 2000,
-            ease: "Quad.easeInOut"
-        }).on("complete", () => {
-            this.tutorialKeysTweens();
-        });
-    }
-
-    update() {
-        this.updateFootsteps();
-
-        this.updateObjects();
-              
-
-        this.physics.world.collide(this.player, this.wallLayer);
-        this.physics.world.collide(this.player, this.ritual1Door);
-        this.physics.world.collide(this.doppelganger, this.wallLayer);
-
-        this.simpleRitual1.update();
-        this.halfNoteRitual.update();
-        this.littleBigRitual.update();
-        this.slicedRitual.update();
-
-
-        this.doorCheck = this.level1Map.getTileAtWorldXY(this.player.x, this.player.y, false, this.camera, "doors");
-        if(this.doorCheck != null) {
-            if(this.doorCheck.properties.direction == "up") {
-                this.camCenterY -= (gridSize * gridUnit);
-                this.player.y -= 3 * gridUnit;
-                this.camera.centerOn(this.camCenterX, this.camCenterY);
-                console.log("door up");
-                this.changeColor();
-            }
-            else if(this.doorCheck.properties.direction == "down") {
-                this.camCenterY += (gridSize * gridUnit);
-                this.player.y += 3 * gridUnit;
-                this.camera.centerOn(this.camCenterX, this.camCenterY);
-                console.log("door down");
-                this.changeColor();
-            }
-            else if(this.doorCheck.properties.direction == "left") {
-                this.camCenterX -= (gridSize * gridUnit);
-                this.player.x -= 3 * gridUnit;
-                this.camera.centerOn(this.camCenterX, this.camCenterY);
-                console.log("door left");
-                this.changeColor();
-            }
-            else if(this.doorCheck.properties.direction == "right") {
-                this.camCenterX += (gridSize * gridUnit);
-                this.player.x += 3 * gridUnit;
-                this.camera.centerOn(this.camCenterX, this.camCenterY);
-                console.log("door right");
-                this.changeColor();
-            }
-        }
-        if(this.player.gridX * gridUnit - (gridUnit / 2) == this.warp1.x && this.player.gridY * gridUnit - (gridUnit / 2) == this.warp1.y) {
-            this.camCenterX += 4 * (gridSize * gridUnit);
-            this.player.x += (4 * (gridSize * gridUnit)) - (2 * gridUnit);
-            this.camera.centerOn(this.camCenterX, this.camCenterY);
-            console.log("warp1");
-            this.changeColor();
-        }
-        if(this.player.gridX * gridUnit - (gridUnit / 2) == this.warp2down.x && this.player.gridY * gridUnit - (gridUnit / 2) == this.warp2down.y) {
-            this.camCenterY += 2 * (gridSize * gridUnit);
-            this.player.y += (gridSize * gridUnit) + (3 * gridUnit);
-            this.camera.centerOn(this.camCenterX, this.camCenterY);
-            console.log("warp2down");
-            this.changeColor();
-        }
-        if(this.player.gridX * gridUnit - (gridUnit / 2) == this.warp2up.x && this.player.gridY * gridUnit - (gridUnit / 2) == this.warp2up.y) {
-            this.camCenterY -= 2 * (gridSize * gridUnit);
-            this.player.y -= (gridSize * gridUnit) + (3 * gridUnit);
-            this.camera.centerOn(this.camCenterX, this.camCenterY);
-            console.log("warp2up");
-            this.changeColor();
-        }
-        if(this.player.gridX * gridUnit - (gridUnit / 2) == this.endLevel1.x && this.player.gridY * gridUnit - (gridUnit / 2) == this.endLevel1.y) {
-            this.add.text(this.camCenterX - (gridSize * gridUnit) / 4,
-                this.camCenterY,
-                "Thank you for completing\nthe Level 1 demo.",
-                textConfig);
-            //this.changeColor();
-        }
-    }
-    
-    updateFootsteps() {
-        if (this.player.walking && this.footsteps.isPlaying == false) {
-            this.footsteps.resume();
-        }
-        if (this.player.walking == false && this.footsteps.isPlaying) {
-            this.footsteps.pause();
-        }
-    }
-
-    initializeAudio() {
-        this.footsteps = this.sound.add("footsteps");
-        this.talking = this.sound.add("talking");
-
-        this.footsteps.setLoop(true);
-        this.footsteps.play();
-        this.footsteps.pause();
-        this.footsteps.setVolume(.2);
-    }
-
-    initializeAnimations() {
-        //configure flower animations
-        this.anims.create({
-            key: 'plantCrumb',
-            frames: this.anims.generateFrameNumbers("flowerCrumb", 
-                {start: 0, end: 6, first: 0}),
-            frameRate: 6
-        });
-        this.anims.create({
-            key: 'killCrumb',
-            frames: this.anims.generateFrameNumbers("flowerCrumb", 
-                {start: 6, end: 0, first: 6}),
-            frameRate: 6
-        });
-        this.anims.create({
-            key: "puckTalking",
-            frames: this.anims.generateFrameNumbers("puck",
-                {start:0, end:1, first: 0}),
-            frameRate: 8,
-            repeat: -1
-        });
-
-        this.anims.create({
-            key: "titaniaTalking",
-            frames: this.anims.generateFrameNumbers("titania",
-                {start:0, end:1, first: 0}),
-            frameRate: 8,
-            repeat: -1
-        });
-
-        this.anims.create({
-            key: "flowerfaeTalking",
-            frames: this.anims.generateFrameNumbers("flowerfae",
-                {start:0, end:1, first: 0}),
-            frameRate: 8,
-            repeat: -1
-        });
-
-        //create ritual tree anim
-        this.anims.create({
-            key: 'treeStand',
-            frames: this.anims.generateFrameNumbers("ritualTree",
-                {start: 0, end: 2, first: 0}),
-            frameRate: 6
-        });
-        this.anims.create({
-            key: 'treeWalk',
-            frames: this.anims.generateFrameNumbers("ritualTree",
-                {start: 3, end: 4, first: 3}),
-            frameRate: 2,
-            repeat: -1
-        });
-
-        //create ritual door anim
-        this.anims.create({
-            key: 'doorStand',
-            frames: this.anims.generateFrameNumbers("ritualDoor",
-                {start: 0, end: 2, first: 0}),
-            frameRate: 6
-        });
-        this.anims.create({
-            key: 'doorWalk',
-            frames: this.anims.generateFrameNumbers("ritualDoor",
-                {start: 3, end: 4, first: 3}),
-            frameRate: 2,
-            repeat: -1
-        });
-    }
-
-    changeColor() {
-        while (prevColor == currentColor) {
-            currentColor = Phaser.Math.RND.pick(colors);
-        }
-        prevColor = currentColor;
-        this.coloredRectangle.fillColor = currentColor;
-    }
-
-    updateObjects() {
-        this.player.update();
-        this.doppelganger.update();
-        this.tutorialKeyUp.update();
-        this.tutorialKeyDown.update();
-        this.tutorialKeyLeft.update();
-        this.tutorialKeyRight.update();
-        this.tutorialKeySpace.update();
-
-        for (let i of this.NPCArray) {
-            i.update();
-        }
-    }
-
-    createTutorialKeys() {
-        this.tutorialKeyUp = new TutorialKey(
-            this,
-            this.camCenterX,
-            this.camCenterY + config.height/2 - uiUnit*5 + 400,
-            "arrow key up",
-            0,
-            "up",
-            "up"
-            ).setDepth(106);
-        this.tutorialKeyDown = new TutorialKey(
-            this,
-            this.camCenterX,
-            this.camCenterY + config.height/2 - uiUnit*5 + 34 + 400,
-            "arrow key up",
-            0,
-            "down",
-            "down"
-            ).setDepth(106);
-        this.tutorialKeyLeft = new TutorialKey(
-            this,
-            this.camCenterX - 33,
-            this.camCenterY + config.height/2 - uiUnit*5 + 34 + 400,
-            "arrow key up",
-            0,
-            "left",
-            "left"
-            ).setDepth(106);
-        this.tutorialKeyRight = new TutorialKey(
-            this,
-            this.camCenterX + 33,
-            this.camCenterY + config.height/2 - uiUnit*5 + 34 + 400,
-            "arrow key up",
-            0,
-            "right",
-            "right"
-            ).setDepth(106);
-
-        this.tutorialKeySpace = new TutorialKey(
-            this,
-            this.camCenterX,
-            this.camCenterY + config.height/2 - uiUnit*5 + 34*2 + 400,
-            "space key",
-            0,
-            "up",
-            "space"
-            ).setDepth(106);
-
-    }
-
-    tutorialKeysTweens() {
-        this.add.tween({
-            targets: [this.tutorialKeyUp],
-            y: this.camCenterY + config.height/2 - uiUnit*5,
-            duration: 1500,
-            ease: "Quad.easeOut",
-            delay: 750
-        });
-
-        this.add.tween({
-            targets: [this.tutorialKeyDown, this.tutorialKeyRight,this.tutorialKeyLeft],
-            y: this.camCenterY + config.height/2 - uiUnit*5 + 34,
-            duration: 1500,
-            ease: "Quad.easeOut",
-            delay: 750
-        });
-
-        this.add.tween({
-            targets: [this.tutorialKeySpace],
-            y: this.camCenterY + config.height/2 - uiUnit*5 + 34*2,
-            duration: 1500,
-            ease: "Quad.easeOut",
-            delay: 750
-        });
     }
 }
