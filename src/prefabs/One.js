@@ -107,49 +107,58 @@ class One extends Phaser.Physics.Arcade.Sprite {
         }
         
         if(!this.walking) {
-            this.dontReset = false;
-            if(keyUP.isDown) {
-                this.dontReset = true;
-                this.body.setVelocityY(-this.walkSpd);
-                if(this.direction != "up") {
-                    this.direction = "up";
-                    this.anims.play("oneWalk_Up");
-                }
-                this.scene.time.delayedCall(100, () => {this.walking = true;});
-            }
-            if(keyDOWN.isDown) {
-                this.dontReset = true;
-                this.body.setVelocityY(this.walkSpd);
-                if(this.direction != "down") {
-                    this.direction = "down";
-                    this.anims.play("oneWalk_Down");
-                }
-                this.scene.time.delayedCall(100, () => {this.walking = true;});
-            }
-            if(keyRIGHT.isDown) {
-                this.dontReset = true;
-                this.body.setVelocityX(this.walkSpd);
-                if(this.direction != "right") {
-                    this.direction = "right";
-                    this.anims.play("oneWalk_Right");
-                }
-                this.scene.time.delayedCall(100, () => {this.walking = true;});
-            }
-            if(keyLEFT.isDown) {
-                this.dontReset = true;
-                this.body.setVelocityX(-this.walkSpd);
-                if(this.direction != "left") {
-                    this.direction = "left";
-                    this.anims.play("oneWalk_Left");
-                }
-                this.scene.time.delayedCall(100, () => {this.walking = true;});
-            }
-
             if(this.body.speed == 0) {
                 this.x = this.gridX * gridUnit - (gridUnit / 2);
                 this.y = this.gridY * gridUnit - (gridUnit / 2);
                 if(!this.dontReset) {
                     this.anims.play("one_reset");
+                    this.direction = "";
+                }
+            }
+
+            this.dontReset = false;
+
+            if(keyUP.isDown) {
+                this.dontReset = true;
+                this.body.setVelocityY(-this.walkSpd);
+                this.scene.time.delayedCall(100, () => {this.walking = true;});
+            }
+            else if(keyDOWN.isDown) {
+                this.dontReset = true;
+                this.body.setVelocityY(this.walkSpd);
+                this.scene.time.delayedCall(100, () => {this.walking = true;});
+            }
+            else if(keyRIGHT.isDown) {
+                this.dontReset = true;
+                this.body.setVelocityX(this.walkSpd);
+                this.scene.time.delayedCall(100, () => {this.walking = true;});
+            }
+            else if(keyLEFT.isDown) {
+                this.dontReset = true;
+                this.body.setVelocityX(-this.walkSpd);
+                this.scene.time.delayedCall(100, () => {this.walking = true;});
+            }
+
+            //console.log(Phaser.Math.RadToDeg(this.body.angle));
+            if(Phaser.Math.RadToDeg(this.body.angle) == 0 && this.body.speed != 0) {
+                if(this.direction != "right") {
+                    this.direction = "right";
+                    this.anims.play("oneWalk_Right");
+                }
+            } else if(Phaser.Math.RadToDeg(this.body.angle) == -90) {
+                if(this.direction != "up") {
+                    this.direction = "up";
+                    this.anims.play("oneWalk_Up");
+                }
+            } else if(Phaser.Math.RadToDeg(this.body.angle) == 180) {
+                if(this.direction != "left") {
+                    this.direction = "left";
+                    this.anims.play("oneWalk_Left");
+                }
+            } else if(Phaser.Math.RadToDeg(this.body.angle) == 90) {
+                if(this.direction != "down") {
+                    this.direction = "down";
+                    this.anims.play("oneWalk_Down");
                 }
             }
         }

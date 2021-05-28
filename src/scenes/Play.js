@@ -336,7 +336,7 @@ class Play extends Phaser.Scene {
             key: "one_reset",
             frames: this.anims.generateFrameNumbers("oneSheet", 
             {start: 0, end: 0, first: 0}),
-            frameRate: 6
+            frameRate: 1000
         });
         this.anims.create({
             key: "oneWalk_Down",
@@ -372,7 +372,7 @@ class Play extends Phaser.Scene {
             key: "other_reset",
             frames: this.anims.generateFrameNumbers("otherSheet", 
             {start: 0, end: 0, first: 0}),
-            frameRate: 6
+            frameRate: 1000
         });
         this.anims.create({
             key: "otherWalk_Down",
