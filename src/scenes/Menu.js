@@ -7,6 +7,8 @@ class Menu extends Phaser.Scene {
     }
     preload() {
         this.load.image("menu ui", "./assets/ui/title_screen.png");
+        this.load.image("menu text", "./assets/ui/title_screen_text.png");
+        this.load.image("menu names", "./assets/ui/title_screen_names.png");
         this.load.spritesheet("flowerCrumb", "./assets/gamepieces/flower.png", 
             {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 6});
         this.load.json("text JSON", "./assets/text/text.json");
@@ -25,6 +27,28 @@ class Menu extends Phaser.Scene {
         this.select.setVolume(1.5);
 
         this.add.sprite(0, 0, "menu ui").setOrigin(0, 0);
+
+        this.menuText = this.add.sprite(config.width*-1, 0, "menu text").setOrigin(0, 0);
+
+        this.menuNames = this.add.sprite(0, config.height*-1, "menu names").setOrigin(0, 0);
+
+        this.tweens.add({
+            targets: [this.menuText],
+            x: {from: config.width*-1, to: 0},
+            duration: 2000,
+            ease: "Sine.Out",
+            delay: 1500
+        });
+
+        this.tweens.add({
+            targets: [this.menuNames],
+            y: {from: config.height*-1, to: 0},
+            duration: 2000,
+            ease: "Sine.Out",
+            delay: 1500
+        });
+
+        
         
         this.input.keyboard.on("keydown-SPACE", () => {
             this.select.play();
