@@ -19,6 +19,9 @@ class Ritual {
         this.scene.add.existing(this.door);
         this.scene.physics.add.existing(this.door);
         this.door.body.setImmovable();
+        if(doorTexture == "ritualDoor") {
+            this.door.setDepth(101);
+        }
 
         this.circleObjArray = circleArray;
         this.circleArray = [];
@@ -120,6 +123,9 @@ class Ritual {
             this.scene.add.existing(this.door);
             this.scene.physics.add.existing(this.door);
             this.door.body.setImmovable();
+            if(doorTexture == "ritualDoor") {
+                this.door.setDepth(101);
+            }
 
             this.walking = true;
             this.walkSFX.play();
