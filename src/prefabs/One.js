@@ -145,21 +145,24 @@ class One extends Phaser.Physics.Arcade.Sprite {
                     this.direction = "right";
                     this.anims.play("oneWalk_Right");
                 }
-            } else if(Phaser.Math.RadToDeg(this.body.angle) == -90) {
+            } else if(Phaser.Math.RadToDeg(this.body.angle) == -90 && this.body.speed != 0) {
                 if(this.direction != "up") {
                     this.direction = "up";
                     this.anims.play("oneWalk_Up");
                 }
-            } else if(Phaser.Math.RadToDeg(this.body.angle) == 180) {
+            } else if(Phaser.Math.RadToDeg(this.body.angle) == 180 && this.body.speed != 0) {
                 if(this.direction != "left") {
                     this.direction = "left";
                     this.anims.play("oneWalk_Left");
                 }
-            } else if(Phaser.Math.RadToDeg(this.body.angle) == 90) {
+            } else if(Phaser.Math.RadToDeg(this.body.angle) == 90 && this.body.speed != 0) {
                 if(this.direction != "down") {
                     this.direction = "down";
                     this.anims.play("oneWalk_Down");
                 }
+            } else if(this.body.speed != 0) {
+                this.tempAngle = Phaser.Math.RadToDeg(this.body.angle);
+                this.body.angle = Phaser.Math.DegToRad(this.tempAngle - (this.tempAngle % 90));
             }
         }
 

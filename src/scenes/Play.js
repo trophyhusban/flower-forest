@@ -58,7 +58,7 @@ class Play extends Phaser.Scene {
         this.load.tilemapTiledJSON("level1", "./assets/tilesets/level1.json");
         this.load.audio("footsteps", "./assets/sound/Footsteps.wav");
         this.load.audio("talking", "./assets/sound/CharacterSpeak.wav");
-        this.load.audio("ritualFootsteps", "./assets/sound/treeWalk.wav");
+        this.load.audio("ritualFootsteps", "./assets/sound/TreeWalk.wav");
         this.load.audio("level one music", "./assets/sound/BackgroundMusic.wav");
         this.load.audio("speaking", "./assets/sound/CharacterSpeak.wav");
         this.load.audio("plant flower audio", "./assets/sound/PlantFlower.wav");
