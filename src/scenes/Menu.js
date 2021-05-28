@@ -22,6 +22,7 @@ class Menu extends Phaser.Scene {
 
         // play a sound
         this.select = this.sound.add("select");
+        this.select.setVolume(1.5);
 
         this.add.sprite(0, 0, "menu ui").setOrigin(0, 0);
         

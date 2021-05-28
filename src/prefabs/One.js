@@ -24,6 +24,11 @@ class One extends Phaser.Physics.Arcade.Sprite {
             }
         }
 
+        this.plantFlowerAudio = this.scene.sound.add("plant flower audio");
+        this.plantFlowerReverseAudio = this.scene.sound.add("plant flower reverse audio");
+        this.plantFlowerAudio.setVolume(.6);
+        this.plantFlowerReverseAudio.setVolume(.6);
+
         //console.log("player x: " + this.x);
         //console.log("player y: " + this.y);
     }
@@ -54,6 +59,7 @@ class One extends Phaser.Physics.Arcade.Sprite {
             if(!this.plantCooldown) {
                 this.plantCooldown = true;
             }
+            this.plantFlowerAudio.play();
             this.scene.flowerTrail.add(new FlowerCrumb(
                 this.scene,
                 this.gridX * gridUnit - (gridUnit / 2),
@@ -67,6 +73,8 @@ class One extends Phaser.Physics.Arcade.Sprite {
                 });
             }
             this.scene.physics.world.collide(this.scene.flowerTrail, this.scene.flowerTrail, (flower1, flower2) => {
+                this.plantFlowerAudio.pause();
+                this.plantFlowerReverseAudio.play();
                 flower1.anims.play("killCrumb");
                 this.scene.time.delayedCall(1000, () => {
                     flower1.destroy();

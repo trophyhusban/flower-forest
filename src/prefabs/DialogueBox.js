@@ -14,7 +14,8 @@ class DialogueBox {
     //      maybe add flowers uwu
     // make it appear above/below the 
     // impement audio blips
-    // let players skip the text coming in by pressing spcae
+    // let players skip the text coming in by pressing space
+    // make the camera zoom in on the person who is talking before the scene starts :ooo
 
     constructor(scene, tailX, text, textConfig, align) {
 
@@ -63,6 +64,10 @@ class DialogueBox {
 
         // this is used in the DialogueScene to end the scene
         this.allTextRead = false;
+
+        // creates the speaking sound
+        this.speakingSound = this.scene.sound.add("speaking");
+        this.speakingSound.setLoop(true);
     }
 
     drawText() {    // this scene has a lot of sprites so i will talk thru all of them
@@ -162,6 +167,10 @@ class DialogueBox {
 
         // this.text becomes an empty string if the player advances to the next page while there are no pages left
         if (this.text != "") {
+
+            if (this.speakingSound.isPlaying == false) {
+                this.speakingSound.play();
+            }
             
             // if the entire string is already drawn, don't change it
             if (this.currentSliceIndex <= this.text[this.currentPage].length) {
@@ -176,8 +185,13 @@ class DialogueBox {
                 // textDrawnInBox is the slice of the current page of this.text
                 // this.text is the array that contains all of the text that we will draw, one index at a time
                 this.currentText.text = this.textDrawnInBox;
+            } else {
+                if (this.speakingSound.isPlaying == true) {
+                    this.speakingSound.pause();
+                }
             }
         } else {
+            
             // if this.text is an empty string, than we know that there is nothing else to draw, so we mark allTextRead as true
             this.allTextRead = true;
         }

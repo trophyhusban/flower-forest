@@ -59,14 +59,16 @@ class Play extends Phaser.Scene {
         this.load.audio("footsteps", "./assets/sound/Footsteps.wav");
         this.load.audio("talking", "./assets/sound/CharacterSpeak.wav");
         this.load.audio("ritualFootsteps", "./assets/sound/treeWalk.wav");
+        this.load.audio("level one music", "./assets/sound/BackgroundMusic.wav");
+        this.load.audio("speaking", "./assets/sound/CharacterSpeak.wav");
+        this.load.audio("plant flower audio", "./assets/sound/PlantFlower.wav");
+        this.load.audio("plant flower reverse audio", "./assets/sound/PlantFlowerReverse.wav");
         this.load.spritesheet("oneSheet", "./assets/gamepieces/playerAtlas.png", 
             {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 15});
             this.load.spritesheet("otherSheet", "./assets/gamepieces/dopplAtlas.png", 
             {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 15});
     }
     create() {
-        this.initializeAudio();     // all the making of the audio variables go in here 
-
         // the camera variable that we use in the rest of it
         this.camera = this.cameras.main;    
 
@@ -197,17 +199,18 @@ class Play extends Phaser.Scene {
         this.createTutorialKeys();  // adds all the keys that appear on screen to let the player know what buttons u can press
 
         // zooms out the camera so it looks normal lol
-        this.tweens.add({
+        this.cameraZoomOut = this.tweens.add({
             targets: [this.camera],
             zoom: 1,
             duration: 2500,
             delay: 2000,
             ease: "Quad.easeInOut"
         }).on("complete", () => {
-
             // when the camera is finished zooming out, tween the tutorial keys on screen. that way u can actually see them tween
             this.tutorialKeysTweens();  
         });
+
+        this.initializeAudio();     // all the making of the audio variables go in here
     }
 
     update() {
@@ -303,12 +306,28 @@ class Play extends Phaser.Scene {
     initializeAudio() {
         this.footsteps = this.sound.add("footsteps");
         this.talking = this.sound.add("talking");
+        this.music = this.sound.add("level one music");
+
+        this.music.setLoop(true);
+        
+        this.music.volume = 0;
+
+        this.tweens.add({
+            targets: [this.music],
+            volume: 1,
+            duration: 2500,
+            ease: "Quad.easeInOut",
+            delay: 2000
+        }).on("start", () => {
+            this.music.play();
+        });
 
         // i play the footsteps and then pause them immediately so i can play them later lol
         this.footsteps.setLoop(true);
         this.footsteps.play();
         this.footsteps.pause();
-        this.footsteps.setVolume(.2);
+        this.footsteps.setVolume(.3);
+        this.footsteps.setRate(1.5);
     }
 
     initializeAnimations() {
