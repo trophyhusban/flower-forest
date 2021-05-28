@@ -28,24 +28,25 @@ class Menu extends Phaser.Scene {
 
         this.add.sprite(0, 0, "menu ui").setOrigin(0, 0);
 
-        this.menuText = this.add.sprite(config.width*-1, 0, "menu text").setOrigin(0, 0);
+        this.menuText = this.add.sprite(0, 0, "menu text").setOrigin(0, 0);
 
-        this.menuNames = this.add.sprite(0, config.height*-1, "menu names").setOrigin(0, 0);
+        this.menuNames = this.add.sprite(0, 0, "menu names").setOrigin(0, 0);
+
+        this.menuText.alpha = 0;
+        this.menuNames.alpha = 0;
 
         this.tweens.add({
             targets: [this.menuText],
-            x: {from: config.width*-1, to: 0},
-            duration: 2000,
-            ease: "Sine.Out",
+            alpha: {from: 0, to: 1},
+            duration: 1500,
             delay: 1500
         });
 
         this.tweens.add({
             targets: [this.menuNames],
-            y: {from: config.height*-1, to: 0},
-            duration: 2000,
-            ease: "Sine.Out",
-            delay: 1500
+            alpha: {from: 0, to: 1},
+            duration: 1500,
+            delay: 3000
         });
 
         

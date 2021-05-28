@@ -9,8 +9,6 @@ class DialogueScene extends Phaser.Scene {
     }
 
     create() {
-        this.add.sprite(100, 100, "text box tail");
-        this.add.sprite(110, 100, "text box tail mask");
         this.dialogue = new DialogueBox(    // makes a new DialogeBox
             this,
             textBox.tailX,
