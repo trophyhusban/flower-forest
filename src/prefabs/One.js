@@ -13,6 +13,8 @@ class One extends Phaser.Physics.Arcade.Sprite {
         scene.add.existing(this);
         scene.physics.add.existing(this);
 
+        console.log(this);
+
         for(this.j = 0; this.j <= gridSize * levelWidth; this.j++) {
             if(Math.abs(this.x - (this.j * gridUnit - (gridUnit / 2))) < Math.abs(this.x - (this.gridX * gridUnit - (gridUnit / 2)))) {
                 this.gridX = this.j;

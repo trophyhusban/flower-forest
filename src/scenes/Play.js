@@ -211,6 +211,8 @@ class Play extends Phaser.Scene {
         });
 
         this.initializeAudio();     // all the making of the audio variables go in here
+
+        this.noteManger = new NoteManager(this);
     }
 
     update() {
