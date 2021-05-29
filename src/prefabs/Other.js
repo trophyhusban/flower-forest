@@ -65,6 +65,10 @@ class Other extends Phaser.Physics.Arcade.Sprite {
                 this.currentInstruction = "";
             }
 
+            if(this.currentInstruction == "die") {
+                this.destroy();
+            }
+
         } else if (this.scriptedMode) { //if the script is empty, change to mirror mode
             this.scriptedMode = false;
             this.mirrorMode = true;
@@ -73,7 +77,7 @@ class Other extends Phaser.Physics.Arcade.Sprite {
 
     plant() {
         if(!this.plantCooldown && !this.nextToNPC) {
-            console.log("plant");
+            //console.log("plant");
             if(!this.plantCooldown) {
                 this.plantCooldown = true;
             }
@@ -209,6 +213,7 @@ class Other extends Phaser.Physics.Arcade.Sprite {
             }
             if(this.body.speed == 0) {
                 this.walking = false;
+                this.currentInstruction = "";
                 // console.log("stopped");
             }
         }
@@ -228,34 +233,22 @@ class Other extends Phaser.Physics.Arcade.Sprite {
             if(this.currentInstruction == "up") {
                 this.dontReset = true;
                 this.body.setVelocityY(-this.walkSpd);
-                this.scene.time.delayedCall(100, () => {
-                    this.walking = true;
-                    this.currentInstruction = "";
-                });
+                this.scene.time.delayedCall(100, () => {this.walking = true;});
             }
             else if(this.currentInstruction == "down") {
                 this.dontReset = true;
                 this.body.setVelocityY(this.walkSpd);
-                this.scene.time.delayedCall(100, () => {
-                    this.walking = true;
-                    this.currentInstruction = "";
-                });
+                this.scene.time.delayedCall(100, () => {this.walking = true;});
             }
             else if(this.currentInstruction == "left") {
                 this.dontReset = true;
                 this.body.setVelocityX(-this.walkSpd);
-                this.scene.time.delayedCall(100, () => {
-                    this.walking = true;
-                    this.currentInstruction = "";
-                });
+                this.scene.time.delayedCall(100, () => {this.walking = true;});
             }
             else if(this.currentInstruction == "right") {
                 this.dontReset = true;
                 this.body.setVelocityX(this.walkSpd);
-                this.scene.time.delayedCall(100, () => {
-                    this.walking = true;
-                    this.currentInstruction = "";
-                });
+                this.scene.time.delayedCall(100, () => {this.walking = true;});
             } else if(this.currentInstruction == "stop") {
                 this.scene.time.delayedCall(1000, () => {
                     this.currentInstruction = "";
