@@ -71,7 +71,6 @@ class Other extends Phaser.Physics.Arcade.Sprite {
 
         } else if (this.scriptedMode) { //if the script is empty, change to mirror mode
             this.scriptedMode = false;
-            this.mirrorMode = true;
         }
     }
 
@@ -198,26 +197,6 @@ class Other extends Phaser.Physics.Arcade.Sprite {
     }
 
     scriptWalk() { //follow the script's current movement command
-        if(this.walking) {
-            // console.log("calcX: " + ((this.x + (gridUnit / 2)) / gridUnit) + "| gridX: " + this.gridX);
-            if(((this.x + (gridUnit / 2)) / gridUnit) <= this.gridX + 0.1 && ((this.x + (gridUnit / 2)) / gridUnit) >= this.gridX - 0.1) {
-                this.body.setVelocityX(0);
-                this.x = this.gridX * gridUnit - (gridUnit / 2);
-                //console.log("stopX");
-            }
-            // console.log("calcY: " + ((this.y + (gridUnit / 2)) / gridUnit) + "| gridY: " + this.gridY);
-            if(((this.y + (gridUnit / 2)) / gridUnit) <= this.gridY + 0.1 && ((this.y + (gridUnit / 2)) / gridUnit) >= this.gridY - 0.1) {
-                this.body.setVelocityY(0);
-                this.y = this.gridY * gridUnit - (gridUnit / 2);
-                // console.log("stopY");
-            }
-            if(this.body.speed == 0) {
-                this.walking = false;
-                this.currentInstruction = "";
-                // console.log("stopped");
-            }
-        }
-        
         if(!this.walking) {
             if(this.body.speed == 0) {
                 this.x = this.gridX * gridUnit - (gridUnit / 2);
@@ -279,6 +258,26 @@ class Other extends Phaser.Physics.Arcade.Sprite {
             } else if(this.body.speed != 0) {
                 this.tempAngle = Phaser.Math.RadToDeg(this.body.angle);
                 this.body.angle = Phaser.Math.DegToRad(this.tempAngle - (this.tempAngle % 90));
+            }
+        }
+
+        if(this.walking) {
+            // console.log("calcX: " + ((this.x + (gridUnit / 2)) / gridUnit) + "| gridX: " + this.gridX);
+            if(((this.x + (gridUnit / 2)) / gridUnit) <= this.gridX + 0.1 && ((this.x + (gridUnit / 2)) / gridUnit) >= this.gridX - 0.1) {
+                this.body.setVelocityX(0);
+                this.x = this.gridX * gridUnit - (gridUnit / 2);
+                //console.log("stopX");
+            }
+            // console.log("calcY: " + ((this.y + (gridUnit / 2)) / gridUnit) + "| gridY: " + this.gridY);
+            if(((this.y + (gridUnit / 2)) / gridUnit) <= this.gridY + 0.1 && ((this.y + (gridUnit / 2)) / gridUnit) >= this.gridY - 0.1) {
+                this.body.setVelocityY(0);
+                this.y = this.gridY * gridUnit - (gridUnit / 2);
+                // console.log("stopY");
+            }
+            if(this.body.speed == 0) {
+                this.walking = false;
+                this.currentInstruction = "";
+                // console.log("stopped");
             }
         }
 

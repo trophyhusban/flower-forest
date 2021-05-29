@@ -185,16 +185,21 @@ class Play extends Phaser.Scene {
 
         //create doppelganger
         this.dopple1Obj = this.level1Map.findObject("triggers", obj => obj.name === "dopplTest");
-        this.doppelganger1 = new Other(
+        this.doppelganger = new Other(
             this, 
             this.dopple1Obj.x, 
             this.dopple1Obj.y, 
             "otherSheet",
-            0);
-        this.doppelganger1.setDepth(105);
-        this.time.delayedCall(5000, () => {
-            this.doppelganger1.startScript(["right", "down", "right", "down", "right", "up", "left", "up", "plant", "up", "stop", "right"]);
-        });
+            0).setDepth(105);
+        // this.time.delayedCall(5000, () => {
+        //     this.doppelganger.startScript(["right", "down", "right", "down", "right", "up", "left", "up", "plant", "up", "stop", "right"]);
+        // });
+
+        //set up doppelganger scares
+        this.scare1Done = false;
+        this.scare1Going = false;
+        this.scare2Done = false;
+        this.scare2Going = false;
 
         // this.input.keyboard.on("keydown-M", () => {
         //     this.doppelganger.mirrorMode = !this.doppelganger.mirrorMode;
@@ -246,12 +251,14 @@ class Play extends Phaser.Scene {
 
         this.physics.world.collide(this.player, this.wallLayer);
         this.physics.world.collide(this.player, this.ritual1Door);
-        this.physics.world.collide(this.doppelganger1, this.wallLayer);
+        this.physics.world.collide(this.doppelganger, this.wallLayer);
 
         this.simpleRitual1.update();
         this.halfNoteRitual.update();
         this.littleBigRitual.update();
         this.slicedRitual.update();
+
+        this.checkScares();
 
 
         this.doorCheck = this.level1Map.getTileAtWorldXY(this.player.x, this.player.y, false, this.camera, "doors");
@@ -314,9 +321,66 @@ class Play extends Phaser.Scene {
             //this.changeColor();
         }
     }
+
+    checkScares() {
+        if(!this.scare1Done) { //Scare 1
+            if(this.player.gridX * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="scare1TriggerLeft").x &&
+                this.player.gridY * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="scare1TriggerLeft").y) { //left trigger
+                    this.scare1Done = true;
+                    this.scare1Going = true;
+                    this.doppelganger.x = this.level1Map.findObject("triggers", obj => obj.name ==="scare1Left").x;
+                    this.doppelganger.y = this.level1Map.findObject("triggers", obj => obj.name ==="scare1Left").y;
+                    this.doppelganger.startScript(["right", "right", "right", "right"]);
+            } 
+            else if(this.player.gridX * gridUnit - (gridUnit / 2) == this.warp2down.x &&
+            this.player.gridY * gridUnit - (gridUnit / 2) == this.warp2down.y) { //warp trigger
+                this.scare1Done = true;
+                this.scare1Going = true;
+                this.doppelganger.x = this.level1Map.findObject("triggers", obj => obj.name ==="scare1Left").x;
+                this.doppelganger.y = this.level1Map.findObject("triggers", obj => obj.name ==="scare1Left").y;
+                this.doppelganger.startScript(["right", "right", "right", "right"]);
+            }
+            else if(this.player.gridX * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="scare1TriggerRight").x &&
+                this.player.gridY * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="scare1TriggerRight").y) { //right trigger
+                    this.scare1Done = true;
+                    this.scare1Going = true;
+                    this.doppelganger.x = this.level1Map.findObject("triggers", obj => obj.name ==="scare1Right").x;
+                    this.doppelganger.y = this.level1Map.findObject("triggers", obj => obj.name ==="scare1Right").y;
+                    this.doppelganger.startScript(["left", "left", "left", "left"]);
+            }
+        }
+        if(this.scare1Going && !this.doppelganger.scriptedMode) { //hide doppelganger once scare 1 is over
+            this.scare1Going = false;
+            this.doppelganger.x = this.level1Map.findObject("triggers", obj => obj.name ==="dopplTest").x;
+            this.doppelganger.y = this.level1Map.findObject("triggers", obj => obj.name ==="dopplTest").y;
+        }
+
+        if(!this.scare2Done) { //Scare 2
+            if(this.player.gridX * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="scare2TriggerLeft").x &&
+                this.player.gridY * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="scare2TriggerLeft").y) { //left trigger
+                    this.scare2Done = true;
+                    this.scare2Going = true;
+                    this.doppelganger.x = this.level1Map.findObject("triggers", obj => obj.name ==="scare2").x;
+                    this.doppelganger.y = this.level1Map.findObject("triggers", obj => obj.name ==="scare2").y;
+                    this.doppelganger.startScript(["up", "up", "up", "up"]);
+            }
+            else if(this.player.gridX * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="scare2TriggerRight").x &&
+                this.player.gridY * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="scare2TriggerRight").y) { //right trigger
+                    this.scare2Done = true;
+                    this.scare2Going = true;
+                    this.doppelganger.x = this.level1Map.findObject("triggers", obj => obj.name ==="scare2").x;
+                    this.doppelganger.y = this.level1Map.findObject("triggers", obj => obj.name ==="scare2").y;
+                    this.doppelganger.startScript(["up", "up", "up", "up"]);
+            }
+        }
+        if(this.scare2Going && !this.doppelganger.scriptedMode) { //hide doppelganger once scare 2 is over
+            this.scare2Going = false;
+            this.doppelganger.x = this.level1Map.findObject("triggers", obj => obj.name ==="dopplTest").x;
+            this.doppelganger.y = this.level1Map.findObject("triggers", obj => obj.name ==="dopplTest").y;
+        }
+    }
     
     updateFootsteps() {
-
         // if the player is walking and the footsteps aren't playing, play them
         if (this.player.walking && this.footsteps.isPlaying == false) {
             this.footsteps.resume();
@@ -525,7 +589,7 @@ class Play extends Phaser.Scene {
 
     updateObjects() {
         this.player.update();
-        this.doppelganger1.update();
+        this.doppelganger.update();
         this.tutorialKeyUp.update();
         this.tutorialKeyDown.update();
         this.tutorialKeyLeft.update();

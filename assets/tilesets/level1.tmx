@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.6.0" orientation="orthogonal" renderorder="right-down" width="77" height="44" tilewidth="64" tileheight="64" infinite="0" nextlayerid="8" nextobjectid="78">
+<map version="1.5" tiledversion="1.6.0" orientation="orthogonal" renderorder="right-down" width="77" height="44" tilewidth="64" tileheight="64" infinite="0" nextlayerid="8" nextobjectid="86">
  <editorsettings>
   <export target="level1.json" format="json"/>
  </editorsettings>
@@ -152,8 +152,29 @@
   <object id="52" name="warp2down" x="1056" y="1376"/>
   <object id="53" name="warp2up" x="1056" y="2144"/>
   <object id="69" name="levelEnd" x="2464" y="736"/>
-  <object id="72" name="dopplTest" x="2272" y="1760">
+  <object id="72" name="dopplTest" x="3173.33" y="1745.33">
    <point/>
+  </object>
+  <object id="78" name="scare1Right" x="3744" y="2464">
+   <point/>
+  </object>
+  <object id="79" name="scare1Left" x="1184" y="2464">
+   <point/>
+  </object>
+  <object id="80" name="scare2" x="2464" y="2336">
+   <point/>
+  </object>
+  <object id="81" name="scare1TriggerRight" x="3872" y="2272">
+   <ellipse/>
+  </object>
+  <object id="82" name="scare2TriggerRight" x="2656" y="2464">
+   <ellipse/>
+  </object>
+  <object id="83" name="scare2TriggerLeft" x="2272" y="2464">
+   <ellipse/>
+  </object>
+  <object id="84" name="scare1TriggerLeft" x="864" y="2464">
+   <ellipse/>
   </object>
  </objectgroup>
  <objectgroup id="7" name="rituals">
