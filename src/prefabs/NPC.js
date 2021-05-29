@@ -87,9 +87,19 @@ class NPC extends Phaser.Physics.Arcade.Sprite {
         this.scene.scene.launch("dialogueScene");   
     }
 
-    openNote() {    // this one is much simpler than for NPCs
+    openNote() {    
 
         noteGlobal = this.content;
+
+        // if the key of the note is not in the array in the note manager, add it to the array
+        if (this.scene.noteManager.noteArray.includes(this.content) == false) {
+            this.scene.noteManager.noteArray.push(this.content);
+
+            // also create a tutorial key on screen for the key that opens the new note <3
+            // the new note is made now but because we pause the play scene in 5 lines, it doesn't show up until the player
+            // leaves the note scene
+            this.createTutorialKeyForNote(this.scene.noteManager.noteArray.length);
+        }
 
         // i store them in a global variable so i can access them in the next scene
         this.scene.scene.pause();
@@ -111,6 +121,38 @@ class NPC extends Phaser.Physics.Arcade.Sprite {
             }
         }
         return false;
+    }
+
+    createTutorialKeyForNote(numberKey) {
+        this.numberName = numberKey.toString();
+
+        // make a new tutorial key for the specific number
+        this.tutorialKey = new TutorialKey(
+            this.scene,
+            this.scene.camCenterX,
+            this.scene.camCenterY - config.height/2 + uiUnit*4 - 400,
+            this.numberName + " key",
+            0,
+            "up",
+            this.numberName
+        ).setDepth(200);
+
+        // make it blink a little 
+        this.scene.add.tween({
+            targets: [this.tutorialKey],
+            alpha: {from: 1, to: .5},
+            duration: 250,
+            repeat: 4,
+            yoyo: true
+        });
+
+        // move it into place
+        this.scene.add.tween({
+            targets: [this.tutorialKey],
+            y: this.scene.camCenterY - config.height/2 + uiUnit*4,
+            duration: 1500,
+            ease: "Quad.easeOut",
+        });
     }
     
 }

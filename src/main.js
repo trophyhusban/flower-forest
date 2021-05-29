@@ -21,7 +21,7 @@ let unit = game.config.height / 15;
 
 let levelWidth, levelHeight;
 
-let keySPACE, keyUP, keyDOWN, keyLEFT, keyRIGHT;
+let keySPACE, keyUP, keyDOWN, keyLEFT, keyRIGHT, keyONE, keyTWO, keyTHREE, keyFOUR;
 let textConfig;
 let textJSON;
 let textBox = {};

@@ -34,33 +34,37 @@ class TutorialKey extends Phaser.Physics.Arcade.Sprite {
 
         // so that when the tween is over the object gets destroyed
         this.finishedTweening = false;
+        this.scene.input.keyboard.on("keydown-UP", () => {
+            if (this.key == "up") this.tweenFunction();
+        });
+        this.scene.input.keyboard.on("keydown-DOWN", () => {
+            if (this.key == "down") this.tweenFunction();
+        });
+        this.scene.input.keyboard.on("keydown-LEFT", () => {
+            if (this.key == "left") this.tweenFunction();
+        });
+        this.scene.input.keyboard.on("keydown-RIGHT", () => {
+            if (this.key == "right") this.tweenFunction();
+        });
+        this.scene.input.keyboard.on("keydown-SPACE", () => {
+            if (this.key == "space") this.tweenFunction();
+        });
+        this.scene.input.keyboard.on("keydown-ONE", () => {
+            if (this.key == "1") this.tweenFunction();
+        });
+        this.scene.input.keyboard.on("keydown-TWO", () => {
+            if (this.key == "2") this.tweenFunction();
+        });
+        this.scene.input.keyboard.on("keydown-THREE", () => {
+            if (this.key == "3") this.tweenFunction();
+        });
+        this.scene.input.keyboard.on("keydown-FOUR", () => {
+            if (this.key == "4") this.tweenFunction();
+        });
 
     }
     update() {
         
-        if(this.key == "up" && keyUP.isDown) {
-            this.tweenFunction();
-        }
-
-        if(this.key == "left" && keyLEFT.isDown) {
-            this.tweenFunction();
-        }
-
-        if(this.key == "down" && keyDOWN.isDown) {
-            this.tweenFunction();
-        }
-
-        if(this.key == "right" && keyRIGHT.isDown) {
-            this.tweenFunction();
-        }
-
-        if(this.key == "space" && keySPACE.isDown) {
-            this.tweenFunction();
-        }
-        
-        if (this.finishedTweening) {
-            this.destroy();
-        }
     }
 
     tweenFunction() {
@@ -69,10 +73,11 @@ class TutorialKey extends Phaser.Physics.Arcade.Sprite {
             this.tweenOnce = true;
             this.scene.add.tween({
                 targets: [this],
-                alpha: {from: 1, to: 0},
+                alpha: 0,
                 duration: 500
             }).on("complete", () => {
                 this.finishedTweening = true;
+                this.destroy();
             });
         }
     }

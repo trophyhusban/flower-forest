@@ -11,6 +11,10 @@ class Play extends Phaser.Scene {
         keyDOWN = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
+        keyONE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ONE);
+        keyTWO = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TWO);
+        keyTHREE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.THREE);
+        keyFOUR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.FOUR);
     }
 
     preload() {
@@ -46,6 +50,10 @@ class Play extends Phaser.Scene {
         this.load.image("half right note", "./assets/gamepieces/halfNoteB/noteBRight.png");
         this.load.image("arrow key up", "./assets/ui/arrow_key_up.png");
         this.load.image("space key", "./assets/ui/space_key.png");
+        this.load.image("1 key", "./assets/ui/one_key.png");
+        this.load.image("2 key", "./assets/ui/two_key.png");
+        this.load.image("3 key", "./assets/ui/three_key.png");
+        this.load.image("4 key", "./assets/ui/four_key.png");
         this.load.spritesheet("flowerCrumb", "./assets/gamepieces/flower.png", 
             {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 6});
         this.load.spritesheet("puck", "./assets/gamepieces/puckSheet.png",
@@ -212,7 +220,7 @@ class Play extends Phaser.Scene {
 
         this.initializeAudio();     // all the making of the audio variables go in here
 
-        this.noteManger = new NoteManager(this);
+        this.noteManager = new NoteManager(this);
     }
 
     update() {
@@ -563,9 +571,26 @@ class Play extends Phaser.Scene {
             "space"
             ).setDepth(106);
 
+        
+
     }
 
     tutorialKeysTweens() {
+
+        // i make it blink a little to draw the player's attention >:-)
+        this.add.tween({
+            targets: [
+                this.tutorialKeyUp, 
+                this.tutorialKeyDown, 
+                this.tutorialKeyLeft, 
+                this.tutorialKeyRight, 
+                this.tutorialKeySpace],
+            alpha: {from: 1, to: .5},
+            duration: 250,
+            repeat: 4,
+            yoyo: true,
+            delay: 750
+            });
 
         // i tween the keys so they go into place correctly
         this.add.tween({

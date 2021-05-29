@@ -10,7 +10,7 @@ class NoteManager {
         // whenever a player encounters a new note
         //      1. the key of the note gets added to this list
         //      2. a TutorialKey corrosponding to the total number of notes gets created
-        this.noteArray = ["little big UI", "sliced UI", "half left UI", "half right UI"]; 
+        this.noteArray = []; 
 
         // a number 0 through 3. if it's at negative one, there is no note open
         this.currentOpenNote = -1;
