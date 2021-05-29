@@ -140,27 +140,12 @@ class Play extends Phaser.Scene {
             [this.level1Map.findObject("rituals", obj => obj.name ==="half3"), "ritualHalfTopRight"],
             [this.level1Map.findObject("rituals", obj => obj.name ==="half9"), "ritualHalfBotRight"],
             [this.level1Map.findObject("rituals", obj => obj.name ==="half5"), "ritualHalfMidMid"],
-            [this.level1Map.findObject("rituals", obj => obj.name ==="half1"), "ritualHalfTopLeft"]]);
-        this.add.sprite(
-            this.level1Map.findObject("rituals", obj => obj.name ==="half2").x,
-            this.level1Map.findObject("rituals", obj => obj.name ==="half2").y,
-            "ritualHalfTopMid"
-        ).setDepth(101);
-        this.add.sprite(
-            this.level1Map.findObject("rituals", obj => obj.name ==="half4").x,
-            this.level1Map.findObject("rituals", obj => obj.name ==="half4").y,
-            "ritualHalfMidLeft"
-        ).setDepth(101);
-        this.add.sprite(
-            this.level1Map.findObject("rituals", obj => obj.name ==="half6").x,
-            this.level1Map.findObject("rituals", obj => obj.name ==="half6").y,
-            "ritualHalfMidRight"
-        ).setDepth(101);
-        this.add.sprite(
-            this.level1Map.findObject("rituals", obj => obj.name ==="half8").x,
-            this.level1Map.findObject("rituals", obj => obj.name ==="half8").y,
-            "ritualHalfBotMid"
-        ).setDepth(101);
+            [this.level1Map.findObject("rituals", obj => obj.name ==="half1"), "ritualHalfTopLeft"]], [
+                [this.level1Map.findObject("rituals", obj => obj.name ==="half2"), "ritualHalfTopMid"],
+                [this.level1Map.findObject("rituals", obj => obj.name ==="half4"), "ritualHalfMidLeft"],
+                [this.level1Map.findObject("rituals", obj => obj.name ==="half6"), "ritualHalfMidRight"],
+                [this.level1Map.findObject("rituals", obj => obj.name ==="half8"), "ritualHalfBotMid"]
+            ]);
         
         //create little2Big ritual
         this.littleBigRitual = new Ritual(this,

@@ -1,5 +1,5 @@
 class Ritual {
-    constructor(scene, doorObj, doorTexture, doorDirection, circleArray) {
+    constructor(scene, doorObj, doorTexture, doorDirection, circleArray, lineArray) {
         this.scene = scene;
         this.doorClosed = true;
         this.ritualFailed = true;
@@ -26,6 +26,12 @@ class Ritual {
         this.circleObjArray = circleArray;
         this.circleArray = [];
         this.circleArray.length = this.circleObjArray.length;
+
+        if(lineArray) {
+            console.log("drawing lines");
+            this.lineArray = lineArray;
+            this.drawLines();
+        }
 
         this.walkSFX = scene.sound.add("ritualFootsteps");
 
@@ -230,6 +236,14 @@ class Ritual {
             this.scene.physics.add.existing(this.circleArray[this.i]);
             this.circleArray[this.i].body.setImmovable();
             this.circleArray[this.i].setDepth(101);
+        }
+    }
+
+    drawLines() {
+        for(this.i = 0; this.i < this.lineArray.length; this.i++) {
+            this.temp = this.scene.add.sprite(this.lineArray[this.i][0].x, this.lineArray[this.i][0].y, this.lineArray[this.i][1]);
+            this.scene.add.existing(this.temp);
+            this.temp.setDepth(101);
         }
     }
 }
