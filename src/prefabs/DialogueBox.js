@@ -141,6 +141,7 @@ class DialogueBox {
             this.textBox.destroy();         // destroy the text box sprite
             this.textBoxTail.destroy();     // destroy the tail sprite
             this.textBoxTailMask.destroy(); // destroy the tail mask sprite
+            this.speakingSound.pause();     // pause the talking sound (if it is not paused already)
 
             // none of this is necessary because the scene is about to end but i like the drama of using destroy()
             
