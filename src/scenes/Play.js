@@ -28,10 +28,15 @@ class Play extends Phaser.Scene {
             {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 4});
         this.load.spritesheet("ritualDoor", "./assets/gamepieces/door-Sheet.png",
             {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 4});
-        this.load.image("ritualHalf1", "./assets/gamepieces/halfNoteB/halfNoteB1.png");
-        this.load.image("ritualHalf2", "./assets/gamepieces/halfNoteB/halfNoteB2.png");
-        this.load.image("ritualHalf3", "./assets/gamepieces/halfNoteB/halfNoteB3.png");
-        this.load.image("ritualHalf4", "./assets/gamepieces/halfNoteB/halfNoteB4.png");
+        this.load.image("ritualHalfTopLeft", "./assets/gamepieces/halfNoteB/halfNoteupperLeft.png");
+        this.load.image("ritualHalfTopMid", "./assets/gamepieces/halfNoteB/halfNoteUpperMid.png");
+        this.load.image("ritualHalfTopRight", "./assets/gamepieces/halfNoteB/halfNoteUpperRight.png");
+        this.load.image("ritualHalfMidLeft", "./assets/gamepieces/halfNoteB/halfNoteMidLeft.png");
+        this.load.image("ritualHalfMidMid", "./assets/gamepieces/halfNoteB/halfNoteMidMid.png");
+        this.load.image("ritualHalfMidRight", "./assets/gamepieces/halfNoteB/halfNoteMidRight.png");
+        this.load.image("ritualHalfBotLeft", "./assets/gamepieces/halfNoteB/halfNoteBottomLeft.png");
+        this.load.image("ritualHalfBotMid", "./assets/gamepieces/halfNoteB/halfNoteBottomMid.png");
+        this.load.image("ritualHalfBotRight", "./assets/gamepieces/halfNoteB/halfNoteBottomRight.png");
         this.load.image("ritualLittleBig1", "./assets/gamepieces/little2BigA/little2BigA1.png");
         this.load.image("ritualLittleBig2", "./assets/gamepieces/little2BigA/little2BigA2.png");
         this.load.image("ritualLittleBig3", "./assets/gamepieces/little2BigA/little2BigA3.png");
@@ -131,10 +136,16 @@ class Play extends Phaser.Scene {
         //create halfNote ritual
         this.halfNoteRitual = new Ritual(this,
             this.level1Map.findObject("rituals", obj => obj.name ==="halfdoor"), "ritualDoor", "up", [
-            [this.level1Map.findObject("rituals", obj => obj.name ==="half4"), "ritualHalf4"],
-            [this.level1Map.findObject("rituals", obj => obj.name ==="half3"), "ritualHalf3"],
-            [this.level1Map.findObject("rituals", obj => obj.name ==="half1"), "ritualHalf1"],
-            [this.level1Map.findObject("rituals", obj => obj.name ==="half2"), "ritualHalf2"]]);
+            [this.level1Map.findObject("rituals", obj => obj.name ==="half7"), "ritualHalfBotLeft"],
+            [this.level1Map.findObject("rituals", obj => obj.name ==="half3"), "ritualHalfTopRight"],
+            [this.level1Map.findObject("rituals", obj => obj.name ==="half9"), "ritualHalfBotRight"],
+            [this.level1Map.findObject("rituals", obj => obj.name ==="half5"), "ritualHalfMidMid"],
+            [this.level1Map.findObject("rituals", obj => obj.name ==="half1"), "ritualHalfTopLeft"]], [
+                [this.level1Map.findObject("rituals", obj => obj.name ==="half2"), "ritualHalfTopMid"],
+                [this.level1Map.findObject("rituals", obj => obj.name ==="half4"), "ritualHalfMidLeft"],
+                [this.level1Map.findObject("rituals", obj => obj.name ==="half6"), "ritualHalfMidRight"],
+                [this.level1Map.findObject("rituals", obj => obj.name ==="half8"), "ritualHalfBotMid"]
+            ]);
         
         //create little2Big ritual
         this.littleBigRitual = new Ritual(this,
@@ -173,17 +184,26 @@ class Play extends Phaser.Scene {
             0).setDepth(105);
 
         //create doppelganger
+        this.dopple1Obj = this.level1Map.findObject("triggers", obj => obj.name === "dopplTest");
         this.doppelganger = new Other(
             this, 
-            (Math.floor(gridSize / 2) - 1) * gridUnit, 
-            Math.floor(gridSize / 2) * gridUnit, 
+            this.dopple1Obj.x, 
+            this.dopple1Obj.y, 
             "otherSheet",
-            0);
-        this.doppelganger.setDepth(105);
+            0).setDepth(105);
+        // this.time.delayedCall(5000, () => {
+        //     this.doppelganger.startScript(["right", "down", "right", "down", "right", "up", "left", "up", "plant", "up", "stop", "right"]);
+        // });
 
-        this.input.keyboard.on("keydown-M", () => {
-            this.doppelganger.mirrorMode = !this.doppelganger.mirrorMode;
-        });
+        //set up doppelganger scares
+        this.scare1Done = false;
+        this.scare1Going = false;
+        this.scare2Done = false;
+        this.scare2Going = false;
+
+        // this.input.keyboard.on("keydown-M", () => {
+        //     this.doppelganger.mirrorMode = !this.doppelganger.mirrorMode;
+        // });
 
         //this.openDialogue(uiUnit, 64, textJSON.puck1, textConfig);
 
@@ -237,6 +257,8 @@ class Play extends Phaser.Scene {
         this.halfNoteRitual.update();
         this.littleBigRitual.update();
         this.slicedRitual.update();
+
+        this.checkScares();
 
 
         this.doorCheck = this.level1Map.getTileAtWorldXY(this.player.x, this.player.y, false, this.camera, "doors");
@@ -299,9 +321,66 @@ class Play extends Phaser.Scene {
             //this.changeColor();
         }
     }
+
+    checkScares() {
+        if(!this.scare1Done) { //Scare 1
+            if(this.player.gridX * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="scare1TriggerLeft").x &&
+                this.player.gridY * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="scare1TriggerLeft").y) { //left trigger
+                    this.scare1Done = true;
+                    this.scare1Going = true;
+                    this.doppelganger.x = this.level1Map.findObject("triggers", obj => obj.name ==="scare1Left").x;
+                    this.doppelganger.y = this.level1Map.findObject("triggers", obj => obj.name ==="scare1Left").y;
+                    this.doppelganger.startScript(["right", "right", "right", "right"]);
+            } 
+            else if(this.player.gridX * gridUnit - (gridUnit / 2) == this.warp2down.x &&
+            this.player.gridY * gridUnit - (gridUnit / 2) == this.warp2down.y) { //warp trigger
+                this.scare1Done = true;
+                this.scare1Going = true;
+                this.doppelganger.x = this.level1Map.findObject("triggers", obj => obj.name ==="scare1Left").x;
+                this.doppelganger.y = this.level1Map.findObject("triggers", obj => obj.name ==="scare1Left").y;
+                this.doppelganger.startScript(["right", "right", "right", "right"]);
+            }
+            else if(this.player.gridX * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="scare1TriggerRight").x &&
+                this.player.gridY * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="scare1TriggerRight").y) { //right trigger
+                    this.scare1Done = true;
+                    this.scare1Going = true;
+                    this.doppelganger.x = this.level1Map.findObject("triggers", obj => obj.name ==="scare1Right").x;
+                    this.doppelganger.y = this.level1Map.findObject("triggers", obj => obj.name ==="scare1Right").y;
+                    this.doppelganger.startScript(["left", "left", "left", "left"]);
+            }
+        }
+        if(this.scare1Going && !this.doppelganger.scriptedMode) { //hide doppelganger once scare 1 is over
+            this.scare1Going = false;
+            this.doppelganger.x = this.level1Map.findObject("triggers", obj => obj.name ==="dopplTest").x;
+            this.doppelganger.y = this.level1Map.findObject("triggers", obj => obj.name ==="dopplTest").y;
+        }
+
+        if(!this.scare2Done) { //Scare 2
+            if(this.player.gridX * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="scare2TriggerLeft").x &&
+                this.player.gridY * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="scare2TriggerLeft").y) { //left trigger
+                    this.scare2Done = true;
+                    this.scare2Going = true;
+                    this.doppelganger.x = this.level1Map.findObject("triggers", obj => obj.name ==="scare2").x;
+                    this.doppelganger.y = this.level1Map.findObject("triggers", obj => obj.name ==="scare2").y;
+                    this.doppelganger.startScript(["up", "up", "up", "up"]);
+            }
+            else if(this.player.gridX * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="scare2TriggerRight").x &&
+                this.player.gridY * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="scare2TriggerRight").y) { //right trigger
+                    this.scare2Done = true;
+                    this.scare2Going = true;
+                    this.doppelganger.x = this.level1Map.findObject("triggers", obj => obj.name ==="scare2").x;
+                    this.doppelganger.y = this.level1Map.findObject("triggers", obj => obj.name ==="scare2").y;
+                    this.doppelganger.startScript(["up", "up", "up", "up"]);
+            }
+        }
+        if(this.scare2Going && !this.doppelganger.scriptedMode) { //hide doppelganger once scare 2 is over
+            this.scare2Going = false;
+            this.doppelganger.x = this.level1Map.findObject("triggers", obj => obj.name ==="dopplTest").x;
+            this.doppelganger.y = this.level1Map.findObject("triggers", obj => obj.name ==="dopplTest").y;
+        }
+    }
     
     updateFootsteps() {
-
         // if the player is walking and the footsteps aren't playing, play them
         if (this.player.walking && this.footsteps.isPlaying == false) {
             this.footsteps.resume();
@@ -392,14 +471,14 @@ class Play extends Phaser.Scene {
             repeat: -1
         });
         this.anims.create({
-            key: "otherWalk_Left",
+            key: "otherWalk_Right",
             frames: this.anims.generateFrameNumbers("otherSheet", 
             {start: 4, end: 7, first: 4}),
             frameRate: 6,
             repeat: -1
         });
         this.anims.create({
-            key: "otherWalk_Right",
+            key: "otherWalk_Left",
             frames: this.anims.generateFrameNumbers("otherSheet", 
             {start: 8, end: 11, first: 8}),
             frameRate: 6,
