@@ -123,7 +123,7 @@ class Ritual {
             this.scene.add.existing(this.door);
             this.scene.physics.add.existing(this.door);
             this.door.body.setImmovable();
-            if(doorTexture == "ritualDoor") {
+            if(this.doorTexture == "ritualDoor") {
                 this.door.setDepth(101);
             }
 
