@@ -229,6 +229,7 @@ class Ritual {
             this.scene.add.existing(this.circleArray[this.i]);
             this.scene.physics.add.existing(this.circleArray[this.i]);
             this.circleArray[this.i].body.setImmovable();
+            this.circleArray[this.i].setDepth(101);
         }
     }
 }

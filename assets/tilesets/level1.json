@@ -245,7 +245,7 @@
                  "ellipse":true,
                  "height":0,
                  "id":61,
-                 "name":"half3",
+                 "name":"half4",
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -257,7 +257,7 @@
                  "ellipse":true,
                  "height":0,
                  "id":62,
-                 "name":"half4",
+                 "name":"half5",
                  "rotation":0,
                  "type":"",
                  "visible":true,
@@ -335,6 +335,66 @@
                  "width":0,
                  "x":1056,
                  "y":992
+                }, 
+                {
+                 "ellipse":true,
+                 "height":0,
+                 "id":73,
+                 "name":"half6",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":2528,
+                 "y":992
+                }, 
+                {
+                 "ellipse":true,
+                 "height":0,
+                 "id":74,
+                 "name":"half3",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":2528,
+                 "y":928
+                }, 
+                {
+                 "ellipse":true,
+                 "height":0,
+                 "id":75,
+                 "name":"half7",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":2400,
+                 "y":1056
+                }, 
+                {
+                 "ellipse":true,
+                 "height":0,
+                 "id":76,
+                 "name":"half8",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":2464,
+                 "y":1056
+                }, 
+                {
+                 "ellipse":true,
+                 "height":0,
+                 "id":77,
+                 "name":"half9",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":2528,
+                 "y":1056
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -343,7 +403,7 @@
          "y":0
         }],
  "nextlayerid":8,
- "nextobjectid":73,
+ "nextobjectid":78,
  "orientation":"orthogonal",
  "properties":[
         {

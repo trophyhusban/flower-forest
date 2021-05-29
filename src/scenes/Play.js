@@ -28,10 +28,15 @@ class Play extends Phaser.Scene {
             {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 4});
         this.load.spritesheet("ritualDoor", "./assets/gamepieces/door-Sheet.png",
             {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 4});
-        this.load.image("ritualHalf1", "./assets/gamepieces/halfNoteB/halfNoteB1.png");
-        this.load.image("ritualHalf2", "./assets/gamepieces/halfNoteB/halfNoteB2.png");
-        this.load.image("ritualHalf3", "./assets/gamepieces/halfNoteB/halfNoteB3.png");
-        this.load.image("ritualHalf4", "./assets/gamepieces/halfNoteB/halfNoteB4.png");
+        this.load.image("ritualHalfTopLeft", "./assets/gamepieces/halfNoteB/halfNoteupperLeft.png");
+        this.load.image("ritualHalfTopMid", "./assets/gamepieces/halfNoteB/halfNoteUpperMid.png");
+        this.load.image("ritualHalfTopRight", "./assets/gamepieces/halfNoteB/halfNoteUpperRight.png");
+        this.load.image("ritualHalfMidLeft", "./assets/gamepieces/halfNoteB/halfNoteMidLeft.png");
+        this.load.image("ritualHalfMidMid", "./assets/gamepieces/halfNoteB/halfNoteMidMid.png");
+        this.load.image("ritualHalfMidRight", "./assets/gamepieces/halfNoteB/halfNoteMidRight.png");
+        this.load.image("ritualHalfBotLeft", "./assets/gamepieces/halfNoteB/halfNoteBottomLeft.png");
+        this.load.image("ritualHalfBotMid", "./assets/gamepieces/halfNoteB/halfNoteBottomMid.png");
+        this.load.image("ritualHalfBotRight", "./assets/gamepieces/halfNoteB/halfNoteBottomRight.png");
         this.load.image("ritualLittleBig1", "./assets/gamepieces/little2BigA/little2BigA1.png");
         this.load.image("ritualLittleBig2", "./assets/gamepieces/little2BigA/little2BigA2.png");
         this.load.image("ritualLittleBig3", "./assets/gamepieces/little2BigA/little2BigA3.png");
@@ -131,10 +136,31 @@ class Play extends Phaser.Scene {
         //create halfNote ritual
         this.halfNoteRitual = new Ritual(this,
             this.level1Map.findObject("rituals", obj => obj.name ==="halfdoor"), "ritualDoor", "up", [
-            [this.level1Map.findObject("rituals", obj => obj.name ==="half4"), "ritualHalf4"],
-            [this.level1Map.findObject("rituals", obj => obj.name ==="half3"), "ritualHalf3"],
-            [this.level1Map.findObject("rituals", obj => obj.name ==="half1"), "ritualHalf1"],
-            [this.level1Map.findObject("rituals", obj => obj.name ==="half2"), "ritualHalf2"]]);
+            [this.level1Map.findObject("rituals", obj => obj.name ==="half7"), "ritualHalfBotLeft"],
+            [this.level1Map.findObject("rituals", obj => obj.name ==="half3"), "ritualHalfTopRight"],
+            [this.level1Map.findObject("rituals", obj => obj.name ==="half9"), "ritualHalfBotRight"],
+            [this.level1Map.findObject("rituals", obj => obj.name ==="half5"), "ritualHalfMidMid"],
+            [this.level1Map.findObject("rituals", obj => obj.name ==="half1"), "ritualHalfTopLeft"]]);
+        this.add.sprite(
+            this.level1Map.findObject("rituals", obj => obj.name ==="half2").x,
+            this.level1Map.findObject("rituals", obj => obj.name ==="half2").y,
+            "ritualHalfTopMid"
+        ).setDepth(101);
+        this.add.sprite(
+            this.level1Map.findObject("rituals", obj => obj.name ==="half4").x,
+            this.level1Map.findObject("rituals", obj => obj.name ==="half4").y,
+            "ritualHalfMidLeft"
+        ).setDepth(101);
+        this.add.sprite(
+            this.level1Map.findObject("rituals", obj => obj.name ==="half6").x,
+            this.level1Map.findObject("rituals", obj => obj.name ==="half6").y,
+            "ritualHalfMidRight"
+        ).setDepth(101);
+        this.add.sprite(
+            this.level1Map.findObject("rituals", obj => obj.name ==="half8").x,
+            this.level1Map.findObject("rituals", obj => obj.name ==="half8").y,
+            "ritualHalfBotMid"
+        ).setDepth(101);
         
         //create little2Big ritual
         this.littleBigRitual = new Ritual(this,
