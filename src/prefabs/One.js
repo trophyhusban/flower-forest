@@ -94,7 +94,7 @@ class One extends Phaser.Physics.Arcade.Sprite {
             if(((this.x + (gridUnit / 2)) / gridUnit) <= this.gridX + 0.1 && ((this.x + (gridUnit / 2)) / gridUnit) >= this.gridX - 0.1) {
                 this.body.setVelocityX(0);
                 this.x = this.gridX * gridUnit - (gridUnit / 2);
-                console.log("stopX");
+                //console.log("stopX");
             }
             // console.log("calcY: " + ((this.y + (gridUnit / 2)) / gridUnit) + "| gridY: " + this.gridY);
             if(((this.y + (gridUnit / 2)) / gridUnit) <= this.gridY + 0.1 && ((this.y + (gridUnit / 2)) / gridUnit) >= this.gridY - 0.1) {

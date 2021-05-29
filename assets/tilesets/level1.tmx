@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.6.0" orientation="orthogonal" renderorder="right-down" width="77" height="44" tilewidth="64" tileheight="64" infinite="0" nextlayerid="8" nextobjectid="72">
+<map version="1.5" tiledversion="1.6.0" orientation="orthogonal" renderorder="right-down" width="77" height="44" tilewidth="64" tileheight="64" infinite="0" nextlayerid="8" nextobjectid="73">
  <editorsettings>
   <export target="level1.json" format="json"/>
  </editorsettings>
@@ -152,6 +152,9 @@
   <object id="52" name="warp2down" x="1056" y="1376"/>
   <object id="53" name="warp2up" x="1056" y="2144"/>
   <object id="69" name="levelEnd" x="2464" y="736"/>
+  <object id="72" name="dopplTest" x="2272" y="1760">
+   <point/>
+  </object>
  </objectgroup>
  <objectgroup id="7" name="rituals">
   <object id="49" name="SimpleRitual1Door" type="Door" x="2464" y="1504"/>

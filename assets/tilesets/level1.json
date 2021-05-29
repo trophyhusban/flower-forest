@@ -112,6 +112,18 @@
                  "width":0,
                  "x":2464,
                  "y":736
+                }, 
+                {
+                 "height":0,
+                 "id":72,
+                 "name":"dopplTest",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":2272,
+                 "y":1760
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -331,7 +343,7 @@
          "y":0
         }],
  "nextlayerid":8,
- "nextobjectid":72,
+ "nextobjectid":73,
  "orientation":"orthogonal",
  "properties":[
         {

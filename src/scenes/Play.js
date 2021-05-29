@@ -173,17 +173,21 @@ class Play extends Phaser.Scene {
             0).setDepth(105);
 
         //create doppelganger
-        this.doppelganger = new Other(
+        this.dopple1Obj = this.level1Map.findObject("triggers", obj => obj.name === "dopplTest");
+        this.doppelganger1 = new Other(
             this, 
-            (Math.floor(gridSize / 2) - 1) * gridUnit, 
-            Math.floor(gridSize / 2) * gridUnit, 
+            this.dopple1Obj.x, 
+            this.dopple1Obj.y, 
             "otherSheet",
             0);
-        this.doppelganger.setDepth(105);
-
-        this.input.keyboard.on("keydown-M", () => {
-            this.doppelganger.mirrorMode = !this.doppelganger.mirrorMode;
+        this.doppelganger1.setDepth(105);
+        this.time.delayedCall(5000, () => {
+            this.doppelganger1.startScript(["right", "down", "right", "down", "right", "up", "left", "up", "plant", "up", "stop", "right"]);
         });
+
+        // this.input.keyboard.on("keydown-M", () => {
+        //     this.doppelganger.mirrorMode = !this.doppelganger.mirrorMode;
+        // });
 
         //this.openDialogue(uiUnit, 64, textJSON.puck1, textConfig);
 
@@ -231,7 +235,7 @@ class Play extends Phaser.Scene {
 
         this.physics.world.collide(this.player, this.wallLayer);
         this.physics.world.collide(this.player, this.ritual1Door);
-        this.physics.world.collide(this.doppelganger, this.wallLayer);
+        this.physics.world.collide(this.doppelganger1, this.wallLayer);
 
         this.simpleRitual1.update();
         this.halfNoteRitual.update();
@@ -392,14 +396,14 @@ class Play extends Phaser.Scene {
             repeat: -1
         });
         this.anims.create({
-            key: "otherWalk_Left",
+            key: "otherWalk_Right",
             frames: this.anims.generateFrameNumbers("otherSheet", 
             {start: 4, end: 7, first: 4}),
             frameRate: 6,
             repeat: -1
         });
         this.anims.create({
-            key: "otherWalk_Right",
+            key: "otherWalk_Left",
             frames: this.anims.generateFrameNumbers("otherSheet", 
             {start: 8, end: 11, first: 8}),
             frameRate: 6,
@@ -510,7 +514,7 @@ class Play extends Phaser.Scene {
 
     updateObjects() {
         this.player.update();
-        this.doppelganger.update();
+        this.doppelganger1.update();
         this.tutorialKeyUp.update();
         this.tutorialKeyDown.update();
         this.tutorialKeyLeft.update();
