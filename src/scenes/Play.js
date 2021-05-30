@@ -82,6 +82,11 @@ class Play extends Phaser.Scene {
             {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 15});
     }
     create() {
+
+        this.input.keyboard.on("keydown-R", () => {
+            this.scene.start("creditsScene");
+        });
+
         // the camera variable that we use in the rest of it
         this.camera = this.cameras.main;    
 
@@ -117,7 +122,8 @@ class Play extends Phaser.Scene {
             align: "center",
             padding: 4,
             wordWrap: {width: config.width - uiUnit*2},
-            align: "left"
+            align: "left",
+            lineHeight: "normal"
         };
 
         //create anomaly doors

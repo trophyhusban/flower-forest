@@ -3,7 +3,6 @@
 // it all works! hehehe i am proud of it
 // i was gonna add a lot more features to make it more profesisonal looking and polished, like having the text scroll
 // in a smarter way like in earthbound but i couldn't figure it out
-// to be honest this code is not great! but it is 100% functional
 // ideally it would take any kind of text, with each line in the array being able to be any length so the writer (also me) wouldn't
 // have to edit the text so it all fits well. the game is small enough that it isn't a problem.
 
