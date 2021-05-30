@@ -68,6 +68,9 @@ class Play extends Phaser.Scene {
         this.load.spritesheet("flowerfae", "./assets/gamepieces/flowerfaeSheet.png",
             {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 1});
         this.load.image("tileSheet", "./assets/tilesets/tilesheet.png");
+        this.load.image("riverTiles", "./assets/tilesets/riverTile.png");
+        this.load.image("moatTiles", "./assets/tilesets/moatTileSheet.png");
+        this.load.image("towerTiles", "./assets/tilesets/tower.png");
         this.load.tilemapTiledJSON("level1", "./assets/tilesets/level1.json");
         this.load.audio("footsteps", "./assets/sound/Footsteps.wav");
         this.load.audio("talking", "./assets/sound/CharacterSpeak.wav");
@@ -98,8 +101,11 @@ class Play extends Phaser.Scene {
 
         this.level1Map = this.make.tilemap({key: "level1"});
         this.tileSet = this.level1Map.addTilesetImage("tilesheet", "tileSheet");
+        this.riverTiles = this.level1Map.addTilesetImage("river", "riverTiles");
+        this.moatTiles = this.level1Map.addTilesetImage("moat", "moatTiles");
+        this.towerTiles = this.level1Map.addTilesetImage("tower", "towerTiles");
         levelWidth = 7;
-        levelHeight = 4;
+        levelHeight = 10;
         this.camera.setBounds(0, 0, this.level1Map.displayWidth, this.level1Map.displayHeight);
 
         this.groundLayer = this.level1Map.createLayer("floor", this.tileSet, 0, 0);
@@ -324,7 +330,15 @@ class Play extends Phaser.Scene {
                 this.camCenterY,
                 "Thank you for completing\nthe Level 1 demo.",
                 textConfig);
-            //this.changeColor();
+            this.camCenterX = this.level1Map.findObject("triggers", obj => obj.name ==="cameraLvl3Start").x;
+            this.camCenterY = this.level1Map.findObject("triggers", obj => obj.name ==="cameraLvl3Start").y;
+            this.player.x = this.level1Map.findObject("triggers", obj => obj.name ==="playerLvl3Start").x;
+            this.player.y = this.level1Map.findObject("triggers", obj => obj.name ==="playerLvl3Start").y;
+            this.doppelganger.x = this.level1Map.findObject("triggers", obj => obj.name ==="doplLvl3Start").x;
+            this.doppelganger.y = this.level1Map.findObject("triggers", obj => obj.name ==="doplLvl3Start").y;
+            this.doppelganger.mirrorMode = true;
+            this.camera.centerOn(this.camCenterX, this.camCenterY);
+            this.changeColor();
         }
     }
 
