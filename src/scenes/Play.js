@@ -111,6 +111,9 @@ class Play extends Phaser.Scene {
         this.groundLayer = this.level1Map.createLayer("floor", this.tileSet, 0, 0);
         this.wallLayer = this.level1Map.createLayer("terrain", this.tileSet, 0, 0);
         this.wallLayer.setCollisionByProperty({wall: true});
+        this.riverLayer = this.level1Map.createLayer("riverVisuals", this.riverTiles, 0, 0);
+        this.moatLayer = this.level1Map.createLayer("moatVisuals", this.moatTiles, 0, 0);
+        this.towerLayer = this.level1Map.createLayer("towerVisuals", this.towerTiles, 0, 0);
         this.doorLayer = this.level1Map.createLayer("doors", this.tileSet, 0, 0);
 
         // //debug hitboxes for wall tiles
