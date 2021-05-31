@@ -34,7 +34,7 @@ class Play extends Phaser.Scene {
         this.load.image("ritualHalfMidLeft", "./assets/gamepieces/halfNoteB/halfNoteMidLeft.png");
         this.load.image("ritualHalfMidMid", "./assets/gamepieces/halfNoteB/halfNoteMidMid.png");
         this.load.image("ritualHalfMidRight", "./assets/gamepieces/halfNoteB/halfNoteMidRight.png");
-        this.load.image("ritualHalfBotLeft", "./assets/gamepieces/halfNoteB/halfNoteBottomLeft.png");
+        this.load.image("ritualHalfBotLeft", "./assets/gamepieces/halfNoteB/halfNoteBottomleft.png");
         this.load.image("ritualHalfBotMid", "./assets/gamepieces/halfNoteB/halfNoteBottomMid.png");
         this.load.image("ritualHalfBotRight", "./assets/gamepieces/halfNoteB/halfNoteBottomRight.png");
         this.load.image("ritualLittleBig1", "./assets/gamepieces/little2BigA/little2BigA1.png");
@@ -111,6 +111,9 @@ class Play extends Phaser.Scene {
         this.groundLayer = this.level1Map.createLayer("floor", this.tileSet, 0, 0);
         this.wallLayer = this.level1Map.createLayer("terrain", this.tileSet, 0, 0);
         this.wallLayer.setCollisionByProperty({wall: true});
+        this.riverLayer = this.level1Map.createLayer("riverVisuals", this.riverTiles, 0, 0);
+        this.moatLayer = this.level1Map.createLayer("moatVisuals", this.moatTiles, 0, 0);
+        this.towerLayer = this.level1Map.createLayer("towerVisuals", this.towerTiles, 0, 0);
         this.doorLayer = this.level1Map.createLayer("doors", this.tileSet, 0, 0);
 
         // //debug hitboxes for wall tiles
