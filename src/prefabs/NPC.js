@@ -63,7 +63,9 @@ class NPC extends Phaser.Physics.Arcade.Sprite {
                         this.x + this.width/2,  // tailX
                         this.content,           // text
                         this.config,            // config
-                        this.align              // align
+                        this.align,             // align
+                        this.talkingAnimation,  // the sprite to draw for the talking animation
+                        this.y + this.width/2   // the Y location of the sprite to draw for the talking animation
                     ); 
                 } else if (this.kind == "note") {
                     this.openNote();            // launches the note scene 
@@ -72,7 +74,7 @@ class NPC extends Phaser.Physics.Arcade.Sprite {
         }
     }
 
-    openDialogue(tailX, text, config, align) {
+    openDialogue(tailX, text, config, align, NPCSprite, NPCY) {
 
         // this is so that i can align the value from the Play scene (which is many times larger than the dialogue scene)
         // to the dialogue scene
@@ -81,10 +83,13 @@ class NPC extends Phaser.Physics.Arcade.Sprite {
         textBox.text = text;
         textBox.config = config;
         textBox.align = align;
+        textBox.NPCSprite = NPCSprite;
+        textBox.NPCY = NPCY - this.scene.camCenterY + game.config.height/2;
 
         // i store them in a global variable so i can access them in the next scene
         this.scene.scene.pause(); 
-        this.scene.scene.launch("dialogueScene");   
+        this.scene.scene.launch("dialogueScene"); 
+        this.scene.scene.bringToTop("dialogueScene");  
     }
 
     openNote() {    
@@ -102,8 +107,8 @@ class NPC extends Phaser.Physics.Arcade.Sprite {
         }
 
         // i store them in a global variable so i can access them in the next scene
-        this.scene.scene.pause();
-        this.scene.scene.launch("noteScene");
+        //this.scene.scene.pause();
+        this.scene.scene.start("noteScene");
     }
 
     checkNextToPlayer() {   // this code gets run every frame on every NPC

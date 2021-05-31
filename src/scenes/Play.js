@@ -228,8 +228,11 @@ class Play extends Phaser.Scene {
             this.level1Map.width*64,
             this.level1Map.height*64,
             currentColor,
-            .3
+            overlayAlpha
         ).setOrigin(0, 0).setDepth(100);
+
+        console.log(currentColor);
+        console.log(overlayAlpha);
 
         //secret cheat code :-). press c quickly to engage rave mode 
         this.input.keyboard.on("keydown-C", () => {
@@ -242,8 +245,8 @@ class Play extends Phaser.Scene {
         this.cameraZoomOut = this.tweens.add({
             targets: [this.camera],
             zoom: 1,
-            duration: 2500,
-            delay: 2000,
+            duration: 10, // 2500
+            delay: 0,    // 2000
             ease: "Quad.easeInOut"
         }).on("complete", () => {
             // when the camera is finished zooming out, tween the tutorial keys on screen. that way u can actually see them tween

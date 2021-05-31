@@ -78,7 +78,7 @@ class CreditsScene extends Phaser.Scene {
 
         textConfig.align = "center";
 
-        // the sprite for pucky
+        // the next huge chunk of this is the cast of characters
         this.puckSprite = this.add.sprite(
             this.castAlignL,
             this.rolesText.y + this.rolesText.height + 64,  // i draw him based on the y value and height of the previous thing

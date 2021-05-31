@@ -5,6 +5,8 @@
 // in a smarter way like in earthbound but i couldn't figure it out
 // ideally it would take any kind of text, with each line in the array being able to be any length so the writer (also me) wouldn't
 // have to edit the text so it all fits well. the game is small enough that it isn't a problem.
+//
+// perhaps the entirety of this object could have been in the DialogueScene?
 
 class DialogueBox {
 
@@ -16,7 +18,7 @@ class DialogueBox {
     // let players skip the text coming in by pressing space
     // make the camera zoom in on the person who is talking before the scene starts :ooo
 
-    constructor(scene, tailX, text, textConfig, align) {
+    constructor(scene, tailX, text, textConfig, align, NPCSprite, NPCY) {
 
         // the scene
         this.scene = scene;
@@ -54,6 +56,12 @@ class DialogueBox {
         // the dialogue box
         this.tailX = tailX;
 
+        // the Y value of the NPC sprite
+        this.NPCY = NPCY;
+
+        // the sprite to draw for the talking NPC
+        this.NPCSprite = NPCSprite;
+
         // i take the config and put it in uwu
         this.textConfig = textConfig;
 
@@ -69,7 +77,7 @@ class DialogueBox {
         this.speakingSound.setLoop(true);
     }
 
-    drawText() {    // this scene has a lot of sprites so i will talk thru all of them
+    drawText() {    // this scene has a lot of sprites so i will walk thru all of them
         
         // this is the actual box part that the text goes on. it is a pretty simple rectangle (for now?)
         this.textBox = this.scene.add.sprite(
@@ -117,6 +125,17 @@ class DialogueBox {
             this.textBoxTailMask.flipY = true;
         }
 
+        // make the talking animation
+        // i need to make the talking animation in this scene because the play scene is currently paused, so if i animate something
+        // there, it won't do anything
+        this.NPCAnimation = this.scene.add.sprite(
+            this.tailX,
+            this.NPCY,
+            this.NPCSprite,
+        ).setOrigin(.5, .5);
+        
+        this.NPCAnimation.play(this.NPCSprite);
+
         // adds the text that we are drawing to the scene
         this.updateText();
     }
@@ -143,7 +162,7 @@ class DialogueBox {
             this.speakingSound.pause();     // pause the talking sound (if it is not paused already)
 
             // none of this is necessary because the scene is about to end but i like the drama of using destroy()
-            
+
             // so that when nextLetter() is called, it marks all text as being read
             this.text = "";
         }
@@ -170,6 +189,7 @@ class DialogueBox {
 
             if (this.speakingSound.isPlaying == false) {
                 this.speakingSound.play();
+                this.NPCAnimation.play(this.NPCSprite);
             }
             
             // if the entire string is already drawn, don't change it
@@ -188,6 +208,7 @@ class DialogueBox {
             } else {
                 if (this.speakingSound.isPlaying == true) {
                     this.speakingSound.pause();
+                    this.NPCAnimation.stop();
                 }
             }
         } else {

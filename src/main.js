@@ -1,5 +1,5 @@
 let config = {
-    type: Phaser.AUTO,
+    type: Phaser.WEB,
     width: 640,
     height: 640,
     physics: {
@@ -37,3 +37,4 @@ let noteGlobal;
 let colors = [0xff0060, 0xff6000, 0xffbf00, 0xdfff00, 0x00ff20, 0x00ffdf, 0x0080ff, 0x2000ff];
 let currentColor = Phaser.Math.RND.pick(colors);
 let prevColor = currentColor;
+let overlayAlpha = .3;
