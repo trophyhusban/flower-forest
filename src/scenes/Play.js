@@ -34,7 +34,7 @@ class Play extends Phaser.Scene {
         this.load.image("ritualHalfMidLeft", "./assets/gamepieces/halfNoteB/halfNoteMidLeft.png");
         this.load.image("ritualHalfMidMid", "./assets/gamepieces/halfNoteB/halfNoteMidMid.png");
         this.load.image("ritualHalfMidRight", "./assets/gamepieces/halfNoteB/halfNoteMidRight.png");
-        this.load.image("ritualHalfBotLeft", "./assets/gamepieces/halfNoteB/halfNoteBottomLeft.png");
+        this.load.image("ritualHalfBotLeft", "./assets/gamepieces/halfNoteB/halfNoteBottomleft.png");
         this.load.image("ritualHalfBotMid", "./assets/gamepieces/halfNoteB/halfNoteBottomMid.png");
         this.load.image("ritualHalfBotRight", "./assets/gamepieces/halfNoteB/halfNoteBottomRight.png");
         this.load.image("ritualLittleBig1", "./assets/gamepieces/little2BigA/little2BigA1.png");
