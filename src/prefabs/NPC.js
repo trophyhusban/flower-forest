@@ -107,8 +107,8 @@ class NPC extends Phaser.Physics.Arcade.Sprite {
         }
 
         // i store them in a global variable so i can access them in the next scene
-        //this.scene.scene.pause();
-        this.scene.scene.start("noteScene");
+        this.scene.scene.pause();
+        this.scene.scene.launch("noteScene");
     }
 
     checkNextToPlayer() {   // this code gets run every frame on every NPC

@@ -19,6 +19,10 @@ class CreditsScene extends Phaser.Scene {
 
         // so that the tween at the end only happens once
         this.tweenOnce = false;
+
+        // to be played at the very end if you press space to restart
+        this.selectSound = this.sound.add("select");
+        this.selectSound.volume = masterSFXVolume;
         
         // i arranged this text in illustrator first, which is where i got the number of newlines from
         this.namesText = "Alex Basinksi\n\n\n\n\nAlexa Wilbert\n\n\n\n\nArdent Eliot :-) Reinhard\n\n\n\n\n\nStar Hagen-Esquerra";
@@ -213,6 +217,7 @@ class CreditsScene extends Phaser.Scene {
         // if the tween is finished, the player can go back to the title screen
         if (this.finishedTweening) {
             if (keySPACE.isDown) {
+                this.selectSound.play();
                 this.cameras.main.fadeOut(500).on("camerafadeoutcomplete", () => {
                     this.scene.start("menuScene");
                 });

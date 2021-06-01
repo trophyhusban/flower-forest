@@ -86,6 +86,8 @@ class Play extends Phaser.Scene {
 
         this.load.image("menu box", "./assets/ui/menu_box.png");
         this.load.image("menu select", "./assets/ui/menu_select.png");
+        this.load.image("volume box", "./assets/ui/volume_box.png");
+        this.load.image("volume select", "./assets/ui/volume_select.png");
     }
     create() {
 
@@ -270,6 +272,8 @@ class Play extends Phaser.Scene {
     }
 
     update() {
+        this.updateSFXVolume();     // changes the SFX volume to the global variable masterSFXVolume
+
         this.updateFootsteps();     // manages the footstep sounds
 
         this.updateObjects();       // updates a bunch of objects
@@ -427,30 +431,42 @@ class Play extends Phaser.Scene {
     }
 
     initializeAudio() {
+        this.sounds = [];
         this.footsteps = this.sound.add("footsteps");
         this.talking = this.sound.add("talking");
-        this.music = this.sound.add("level one music");
 
-        this.music.setLoop(true);
+        this.sounds.push(this.footsteps);
+        this.sounds.push(this.talking);
+        this.sounds.push(this.player.plantFlowerAudio);
+        this.sounds.push(this.player.plantFlowerReverseAudio);
+
+        music = this.sound.add("level one music");
+
+        music.setLoop(true);
         
-        this.music.volume = 0;
+        music.volume = 0;
 
         this.tweens.add({
-            targets: [this.music],
-            volume: 1,
+            targets: [music],
+            volume: masterMusicVolume,
             duration: 2500,
             ease: "Quad.easeInOut",
             delay: 2000
         }).on("start", () => {
-            this.music.play();
+            music.play();
         });
 
         // i play the footsteps and then pause them immediately so i can play them later lol
         this.footsteps.setLoop(true);
         this.footsteps.play();
         this.footsteps.pause();
-        this.footsteps.setVolume(.3);
         this.footsteps.setRate(1.5);
+    }
+
+    updateSFXVolume() {
+        for (let i = 0; i < this.sounds.length; i++) {
+            this.sounds[i].volume = masterSFXVolume;
+        }
     }
 
     initializeAnimations() {

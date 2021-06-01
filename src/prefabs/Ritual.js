@@ -39,6 +39,10 @@ class Ritual {
     }
 
     update() {
+
+        // sets the tree walking sound volume to be equal to the master
+        this.walkSFX.volume = masterSFXVolume;
+
         //reset variables for every-frame checks
         this.doorClosed = true;
         this.ritualFailed = true;

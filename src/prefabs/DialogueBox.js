@@ -75,6 +75,7 @@ class DialogueBox {
         // creates the speaking sound
         this.speakingSound = this.scene.sound.add("speaking");
         this.speakingSound.setLoop(true);
+        this.speakingSound.volume = masterSFXVolume;
     }
 
     drawText() {    // this scene has a lot of sprites so i will walk thru all of them

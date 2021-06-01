@@ -27,6 +27,9 @@ let menuTextConfig;
 let textJSON;
 let textBox = {};
 let noteGlobal;
+let masterMusicVolume = 1;
+let masterSFXVolume = 1;
+let music;
 
 // this is the array of colors that we use in the overlay
 // the idea is that every in every room, we randomize the color overlay
