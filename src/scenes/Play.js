@@ -83,6 +83,9 @@ class Play extends Phaser.Scene {
             {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 15});
             this.load.spritesheet("otherSheet", "./assets/gamepieces/dopplAtlas.png", 
             {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 15});
+
+        this.load.image("menu box", "./assets/ui/menu_box.png");
+        this.load.image("menu select", "./assets/ui/menu_select.png");
     }
     create() {
 
@@ -248,8 +251,8 @@ class Play extends Phaser.Scene {
         this.cameraZoomOut = this.tweens.add({
             targets: [this.camera],
             zoom: 1,
-            duration: 10, // 2500
-            delay: 0,    // 2000
+            duration: 2500,
+            delay: 2000,
             ease: "Quad.easeInOut"
         }).on("complete", () => {
             // when the camera is finished zooming out, tween the tutorial keys on screen. that way u can actually see them tween
@@ -259,6 +262,11 @@ class Play extends Phaser.Scene {
         this.initializeAudio();     // all the making of the audio variables go in here
 
         this.noteManager = new NoteManager(this);
+
+        this.input.keyboard.on("keydown-ESC", () => {
+            this.scene.pause();
+            this.scene.launch("pauseScene");
+        });
     }
 
     update() {

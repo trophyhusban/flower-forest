@@ -212,9 +212,7 @@ class CreditsScene extends Phaser.Scene {
 
         // if the tween is finished, the player can go back to the title screen
         if (this.finishedTweening) {
-            console.log("here first");
             if (keySPACE.isDown) {
-                console.log('here');
                 this.cameras.main.fadeOut(500).on("camerafadeoutcomplete", () => {
                     this.scene.start("menuScene");
                 });
