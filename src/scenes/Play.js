@@ -822,20 +822,7 @@ class Play extends Phaser.Scene {
             this,
             this.player,
             3168,
-            482,
-            ["titania", "titaniaTalking"],
-            0,
-            textJSON.titania1,
-            "NPC"
-        );
-
-        this.NPCArray.push(this.titaniaNPC1);
-
-        this.titaniaNPC1 = new NPC(
-            this,
-            this.player,
-            3168,
-            482,
+            482 - 64,
             ["titania", "titaniaTalking"],
             0,
             textJSON.titania1,
@@ -856,5 +843,18 @@ class Play extends Phaser.Scene {
         );
 
         this.NPCArray.push(this.flowerfaeNPC1);
+
+        this.puckNPC2 = new NPC(
+            this,
+            this.player,
+            224,
+            1060,
+            ["puck", "puckTalking"],
+            0,
+            textJSON.puck2,
+            "NPC"
+        );
+
+        this.NPCArray.push(this.puckNPC2);
     }
 }
