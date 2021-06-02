@@ -31,8 +31,14 @@ class NPC extends Phaser.Physics.Arcade.Sprite {
         this.kind = kind;
         this.align = "up";                  // this is used to align the text box for NPCs above or below them
 
-        this.justPressedKey = false;        // i need to use this because i can't count if a key is pressed once 
-                                            // across more than one object
+        // i need to use this because i can't count if a key is pressed once across more than one object
+        this.justPressedKey = false;        
+        
+        // a sprite that looks like a little speech bubble with an exclamation mark
+        if (this.kind == "NPC") {
+            this.alert = this.scene.add.sprite(this.x, this.y - 64, "alert").setOrigin(0, 0);
+            this.alert.play("alert");
+        }
     }
 
     update() {
@@ -47,11 +53,12 @@ class NPC extends Phaser.Physics.Arcade.Sprite {
         if (keySPACE.isDown && this.justPressedKey == false) {
             this.justPressedkey = true;
 
-
              if (this.checkNextToPlayer()) {    // if the player is next to an NPC
                                                 // i can't just use player.nextToNPC here bc that applies to any NPC,
                                                 // not specifically this one
-                if (this.kind == "NPC"){        
+                if (this.kind == "NPC"){
+                    
+                    if (this.alert != undefined) this.alert.destroy();
                     
                     if (this.player.y > this.y) {
                         this.align = "up";      // align up if the player is below the NPC

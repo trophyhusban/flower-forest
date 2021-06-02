@@ -90,6 +90,8 @@ class Play extends Phaser.Scene {
         this.load.image("menu select", "./assets/ui/menu_select.png");
         this.load.image("volume box", "./assets/ui/volume_box.png");
         this.load.image("volume select", "./assets/ui/volume_select.png");
+        this.load.spritesheet("alert", "./assets/ui/alert.png",
+            {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 1});
     }
     create() {
 
@@ -561,13 +563,13 @@ class Play extends Phaser.Scene {
             key: 'plantCrumb2',
             frames: this.anims.generateFrameNumbers("flowerCrumb2", 
                 {start: 0, end: 8, first: 0}),
-            frameRate: 6
+            frameRate: 8
         });
         this.anims.create({
             key: 'killCrumb2',
             frames: this.anims.generateFrameNumbers("flowerCrumb2", 
                 {start: 8, end: 0, first: 8}),
-            frameRate: 6
+            frameRate: 8
         });
 
         this.anims.create({
@@ -633,6 +635,14 @@ class Play extends Phaser.Scene {
             frames: this.anims.generateFrameNumbers("ritualDoor",
                 {start: 3, end: 4, first: 3}),
             frameRate: 6,
+            repeat: -1
+        });
+
+        this.anims.create({
+            key: "alert",
+            frames: this.anims.generateFrameNumbers("alert",
+                {start: 0, end: 1, first: 0}),
+            frameRate: 2,
             repeat: -1
         });
     }
@@ -819,7 +829,7 @@ class Play extends Phaser.Scene {
         ).setDepth(105);
 
         this.NPCArray.push(this.halfNoteRight);
-
+        
         this.puckNPC1 = new NPC(
             this,
             this.player,
