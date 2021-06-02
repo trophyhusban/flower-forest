@@ -61,6 +61,8 @@ class Play extends Phaser.Scene {
         this.load.image("4 key", "./assets/ui/four_key.png");
         this.load.spritesheet("flowerCrumb", "./assets/gamepieces/flower.png", 
             {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 6});
+        this.load.spritesheet("flowerCrumb2", "./assets/gamepieces/flower2.png", 
+            {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 8});
         this.load.spritesheet("puck", "./assets/gamepieces/puckSheet.png",
             {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 1});
         this.load.spritesheet("titania", "./assets/gamepieces/titannaSheet.png",
@@ -81,7 +83,7 @@ class Play extends Phaser.Scene {
         this.load.audio("plant flower reverse audio", "./assets/sound/PlantFlowerReverse.wav");
         this.load.spritesheet("oneSheet", "./assets/gamepieces/playerAtlas.png", 
             {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 15});
-            this.load.spritesheet("otherSheet", "./assets/gamepieces/dopplAtlas.png", 
+        this.load.spritesheet("otherSheet", "./assets/gamepieces/dopplAtlas.png", 
             {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 15});
 
         this.load.image("menu box", "./assets/ui/menu_box.png");
@@ -253,7 +255,7 @@ class Play extends Phaser.Scene {
         this.cameraZoomOut = this.tweens.add({
             targets: [this.camera],
             zoom: 1,
-            duration: 2500,
+            duration: 2500, 
             delay: 2000,
             ease: "Quad.easeInOut"
         }).on("complete", () => {
@@ -555,6 +557,19 @@ class Play extends Phaser.Scene {
                 {start: 6, end: 0, first: 6}),
             frameRate: 6
         });
+        this.anims.create({
+            key: 'plantCrumb2',
+            frames: this.anims.generateFrameNumbers("flowerCrumb2", 
+                {start: 0, end: 8, first: 0}),
+            frameRate: 6
+        });
+        this.anims.create({
+            key: 'killCrumb2',
+            frames: this.anims.generateFrameNumbers("flowerCrumb2", 
+                {start: 8, end: 0, first: 8}),
+            frameRate: 6
+        });
+
         this.anims.create({
             key: "puckTalking",
             frames: this.anims.generateFrameNumbers("puck",

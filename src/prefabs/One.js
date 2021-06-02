@@ -33,6 +33,9 @@ class One extends Phaser.Physics.Arcade.Sprite {
 
         //console.log("player x: " + this.x);
         //console.log("player y: " + this.y);
+        this.plantFlowerAnimations = ["plantCrumb", "plantCrumb2"];
+        this.pickFlowerAnimations = ["killCrumb", "killCrumb2"];
+        this.randomFlower = Phaser.Math.RND.integerInRange(1, this.plantFlowerAnimations.length) - 1;
     }
     
     update() {
@@ -62,12 +65,15 @@ class One extends Phaser.Physics.Arcade.Sprite {
                 this.plantCooldown = true;
             }
             this.plantFlowerAudio.play();
+            this.randomFlower = Phaser.Math.RND.integerInRange(1, this.plantFlowerAnimations.length) - 1;
             this.scene.flowerTrail.add(new FlowerCrumb(
                 this.scene,
                 this.gridX * gridUnit - (gridUnit / 2),
                 this.gridY * gridUnit - (gridUnit / 2),
-                "flowerCrumb",
-                0
+                // the texture argument is an array
+                // the first one is the plant animation and the second one is the pick animation
+                [this.plantFlowerAnimations[this.randomFlower], this.pickFlowerAnimations[this.randomFlower]],
+                0,
             ));
             if(this.plantCooldown) {
                     this.scene.time.delayedCall(500, () => {
@@ -77,7 +83,7 @@ class One extends Phaser.Physics.Arcade.Sprite {
             this.scene.physics.world.collide(this.scene.flowerTrail, this.scene.flowerTrail, (flower1, flower2) => {
                 this.plantFlowerAudio.pause();
                 this.plantFlowerReverseAudio.play();
-                flower1.anims.play("killCrumb");
+                flower1.anims.play(flower1.pickAnimation);
                 this.scene.time.delayedCall(1000, () => {
                     flower1.destroy();
                 });
