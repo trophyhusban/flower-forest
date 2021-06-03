@@ -18,10 +18,15 @@ class DialogueBox {
     // let players skip the text coming in by pressing space
     // make the camera zoom in on the person who is talking before the scene starts :ooo
 
-    constructor(scene, tailX, text, textConfig, align, NPCSprite, NPCY) {
+    constructor(scene, NPC, text, textConfig, align) {
 
         // the scene
         this.scene = scene;
+
+        // the NPC
+        this.NPC = NPC;
+
+        this.NPCSprite = this.NPC.talkingAnimation;
 
         // this contains all of the text to draw, in an array
         this.text = text;   
@@ -38,10 +43,10 @@ class DialogueBox {
         this.currentSliceIndex = 0;
 
         // this is positioned so the text box is centered along x
-        this.x = uiUnit;
+        this.x = this.scene.camCenterX - config.width/2 + uiUnit;
 
         // the y value matches the x value so it looks right
-        this.y = uiUnit;
+        this.y = this.NPC.y - 128 - 32;             // this.scene.camCenterY - config.height/2 + uiUnit;
         
         // if align is up, we don't need to change it
         this.align = align;
@@ -49,18 +54,18 @@ class DialogueBox {
         // i use a magic number here bc idk another way to get the height of a sprite that doesn't exist yet
         // so 128 is the height of the text box sprite
         if (this.align == "down") {
-            this.y = config.height - 128 - uiUnit;
+            this.y = this.NPC.y + 64 + 32;
         }
         
         // i put the tail of the text box at the right place. the tailX comes from the center of the NPC sprite that creates
         // the dialogue box
-        this.tailX = tailX;
+        this.NPCX = this.NPC.x;
 
         // the Y value of the NPC sprite
-        this.NPCY = NPCY;
+        this.NPCY = this.NPC.y;
 
         // the sprite to draw for the talking NPC
-        this.NPCSprite = NPCSprite;
+        this.NPCSprite = this.NPC.talkingAnimation;
 
         // i take the config and put it in uwu
         this.textConfig = textConfig;
@@ -79,37 +84,28 @@ class DialogueBox {
     }
 
     drawText() {    // this scene has a lot of sprites so i will walk thru all of them
-        
+
         // this is the actual box part that the text goes on. it is a pretty simple rectangle (for now?)
         this.textBox = this.scene.add.sprite(
-            this.x-4,   // this is so it aligns properly w/ the border 
-            this.y-4,   // ^
-            "text box"
-            ).setOrigin(0, 0);
+            this.x - 4,   // this is so it aligns properly w/ the border 
+            this.y - 4,   // ^
+            "textbox" + colorIndex.toString()
+        ).setOrigin(0, 0).setDepth(150);
 
         // this is the "tail" of the text box, meant to mimic speech bubbles in comics
         // technically u don't need this cuz there is only ever one NPC in any screen, but it makes it cuter and clearer
         // this is drawn so that it overlaps textBox in a way that makes it look like one sprite
         // i push the y down by three because that is the width of line around the edges of textBox
         this.textBoxTail = this.scene.add.sprite(
-            this.tailX,                                 // the center of the NPC that made the dialoge box
+            this.NPCX + 32,                             // the center of the NPC that made the dialoge box
             this.textBox.y+this.textBox.height-3,       // the bottom of the dialoge box (changes later on if align is "down")
-            "text box tail"
-            ).setOrigin(0, 0);
-        
-        // this sprite goes in the same place at textBoxTail
-        // it is almost identical to it, except that the top three lines of pixels are transparent
-        // this is so that when i draw the color overlay rectangles and make clipping masks, the masks don't overlap 
-        this.textBoxTailMask = this.scene.add.sprite(
-            this.tailX,                                 // these values are the same as for textBoxTail
-            this.textBox.y+this.textBox.height-3,       // ^^
-            "text box tail mask"
-            ).setOrigin(0, 0);
-        
+            "textbox tail" + colorIndex.toString()
+            ).setOrigin(0, 0).setDepth(150);
+            
         // sometimes flips the tail horizontally so that the side of it that is at an angle is always facing outwards
-        if (this.tailX < this.textBox.x + this.textBox.width/2) {
+        if (this.NPCX < this.textBox.x + this.textBox.width/2) {
             this.textBoxTail.flipX = true;
-            this.textBoxTailMask.flipX = true;
+            this.textBoxTail.x -= 17;
         }
 
         // sometimes flips the tail vertically and moves it so that if the align is "down," the tail appears at the top of the text box
@@ -121,21 +117,7 @@ class DialogueBox {
             this.textBoxTail.setOrigin(0, 1);
             this.textBoxTail.y -= this.textBox.height - 6;
             this.textBoxTail.flipY = true;
-            this.textBoxTailMask.setOrigin(0, 1);
-            this.textBoxTailMask.y -= this.textBox.height - 6;
-            this.textBoxTailMask.flipY = true;
         }
-
-        // make the talking animation
-        // i need to make the talking animation in this scene because the play scene is currently paused, so if i animate something
-        // there, it won't do anything
-        this.NPCAnimation = this.scene.add.sprite(
-            this.tailX,
-            this.NPCY,
-            this.NPCSprite,
-        ).setOrigin(.5, .5);
-        
-        this.NPCAnimation.play(this.NPCSprite);
 
         // adds the text that we are drawing to the scene
         this.updateText();
@@ -159,8 +141,8 @@ class DialogueBox {
             this.currentText.destroy();     // destroy the text object
             this.textBox.destroy();         // destroy the text box sprite
             this.textBoxTail.destroy();     // destroy the tail sprite
-            this.textBoxTailMask.destroy(); // destroy the tail mask sprite
             this.speakingSound.pause();     // pause the talking sound (if it is not paused already)
+            this.NPC.stop();
 
             // none of this is necessary because the scene is about to end but i like the drama of using destroy()
 
@@ -177,7 +159,7 @@ class DialogueBox {
         this.currentText = this.scene.add.text(this.x, this.y, this.textDrawnInBox, textConfig);
 
         // 105 depth so it isn't affected by the color overlay
-        this.currentText.setDepth(105);
+        this.currentText.setDepth(155);
     }
 
     nextLetter() {
@@ -190,7 +172,7 @@ class DialogueBox {
 
             if (this.speakingSound.isPlaying == false) {
                 this.speakingSound.play();
-                this.NPCAnimation.play(this.NPCSprite);
+                this.NPC.play(this.NPCSprite);
             }
             
             // if the entire string is already drawn, don't change it
@@ -209,7 +191,7 @@ class DialogueBox {
             } else {
                 if (this.speakingSound.isPlaying == true) {
                     this.speakingSound.pause();
-                    this.NPCAnimation.stop();
+                    this.NPC.stop();
                 }
             }
         } else {

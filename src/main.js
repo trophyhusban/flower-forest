@@ -39,6 +39,7 @@ let music;
 // to make this work, everything that is below the overlay is drawn with a monochromatic color pallete
 // it is green originally which is a cute detail cuz forests are green
 let colors = [0xff0060, 0xff6000, 0xffbf00, 0xdfff00, 0x00ff20, 0x00ffdf, 0x0080ff, 0x2000ff];
-let currentColor = Phaser.Math.RND.pick(colors);
+let colorIndex = Phaser.Math.RND.integerInRange(0, 7);
+let currentColor = colors[colorIndex];
 let prevColor = currentColor;
 let overlayAlpha = .3;

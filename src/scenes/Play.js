@@ -18,10 +18,6 @@ class Play extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image("text box", "./assets/ui/textbox.png");
-        this.load.image("text box flowers", "./assets/ui/textbox_flowers.png");
-        this.load.image("text box tail", "./assets/ui/textbox_tail.png");
-        this.load.image("text box tail mask", "./assets/ui/textbox_tail_mask.png");
         this.load.image("oneSprite", "./assets/gamepieces/player1.png");
         this.load.image("ritualCircleBasic", "./assets/gamepieces/ritualCircleBasic.png");
         this.load.spritesheet("ritualTree", "./assets/gamepieces/treeSheet.png",
@@ -92,8 +88,27 @@ class Play extends Phaser.Scene {
         this.load.image("volume select", "./assets/ui/volume_select.png");
         this.load.spritesheet("alert", "./assets/ui/alert.png",
             {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 1});
+
+        this.load.image("textbox0", "./assets/ui/textboxes/textbox0.png");
+        this.load.image("textbox1", "./assets/ui/textboxes/textbox1.png");
+        this.load.image("textbox2", "./assets/ui/textboxes/textbox2.png");
+        this.load.image("textbox3", "./assets/ui/textboxes/textbox3.png");
+        this.load.image("textbox4", "./assets/ui/textboxes/textbox4.png");
+        this.load.image("textbox5", "./assets/ui/textboxes/textbox5.png");
+        this.load.image("textbox6", "./assets/ui/textboxes/textbox6.png");
+        this.load.image("textbox7", "./assets/ui/textboxes/textbox7.png");
+        this.load.image("textbox tail0", "./assets/ui/textboxes/textbox_tail0.png");
+        this.load.image("textbox tail1", "./assets/ui/textboxes/textbox_tail1.png");
+        this.load.image("textbox tail2", "./assets/ui/textboxes/textbox_tail2.png");
+        this.load.image("textbox tail3", "./assets/ui/textboxes/textbox_tail3.png");
+        this.load.image("textbox tail4", "./assets/ui/textboxes/textbox_tail4.png");
+        this.load.image("textbox tail5", "./assets/ui/textboxes/textbox_tail5.png");
+        this.load.image("textbox tail6", "./assets/ui/textboxes/textbox_tail6.png");
+        this.load.image("textbox tail7", "./assets/ui/textboxes/textbox_tail7.png");
     }
     create() {
+
+        this.currentDialogueBox = undefined;
 
         this.input.keyboard.on("keydown-R", () => {
             this.scene.start("creditsScene");
@@ -243,9 +258,6 @@ class Play extends Phaser.Scene {
             overlayAlpha
         ).setOrigin(0, 0).setDepth(100);
 
-        console.log(currentColor);
-        console.log(overlayAlpha);
-
         //secret cheat code :-). press c quickly to engage rave mode 
         this.input.keyboard.on("keydown-C", () => {
             this.changeColor();
@@ -273,9 +285,16 @@ class Play extends Phaser.Scene {
             this.scene.pause();
             this.scene.launch("pauseScene");
         });
+
+        this.input.keyboard.on("keydown-L", () => {
+            this.nextColor();
+        });
     }
 
     update() {
+
+        this.updateDialogueBox();   // updates the dialogue box if there is one
+
         this.updateSFXVolume();     // changes the SFX volume to the global variable masterSFXVolume
 
         this.updateFootsteps();     // manages the footstep sounds
@@ -361,6 +380,16 @@ class Play extends Phaser.Scene {
             this.doppelganger.mirrorMode = true;
             this.camera.centerOn(this.camCenterX, this.camCenterY);
             this.changeColor();
+        }
+    }
+
+    updateDialogueBox() {
+        if (this.currentDialogueBox != undefined) {
+            this.currentDialogueBox.nextLetter();
+            if (this.currentDialogueBox.allTextRead && this.currentDialogueBox != undefined) {
+                delete this.currentDialogueBox;
+                this.currentDialogueBox = undefined;
+            }
         }
     }
 
@@ -652,13 +681,22 @@ class Play extends Phaser.Scene {
         // changes the color to another random color
         // the while loop makes sure that you don't get the same color twice
         while (prevColor == currentColor) {
-            currentColor = Phaser.Math.RND.pick(colors);
+            colorIndex = Phaser.Math.RND.integerInRange(0, 7);
+            currentColor = colors[colorIndex];
         }
 
         // prevColor is to keep track of the last color so we don't get it twice
         prevColor = currentColor;
 
         // actually changes the color of the rectangle 
+        this.coloredRectangle.fillColor = currentColor;
+    }
+
+    nextColor() {
+        colorIndex++;
+        if (colorIndex == 8) colorIndex = 0;
+        currentColor = colors[colorIndex];
+        console.log(colorIndex);
         this.coloredRectangle.fillColor = currentColor;
     }
 

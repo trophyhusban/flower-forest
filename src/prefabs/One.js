@@ -126,51 +126,55 @@ class One extends Phaser.Physics.Arcade.Sprite {
 
             this.dontReset = false;
 
-            if(keyUP.isDown) {
-                this.dontReset = true;
-                this.body.setVelocityY(-this.walkSpd);
-                this.scene.time.delayedCall(100, () => {this.walking = true;});
-            }
-            else if(keyDOWN.isDown) {
-                this.dontReset = true;
-                this.body.setVelocityY(this.walkSpd);
-                this.scene.time.delayedCall(100, () => {this.walking = true;});
-            }
-            else if(keyRIGHT.isDown) {
-                this.dontReset = true;
-                this.body.setVelocityX(this.walkSpd);
-                this.scene.time.delayedCall(100, () => {this.walking = true;});
-            }
-            else if(keyLEFT.isDown) {
-                this.dontReset = true;
-                this.body.setVelocityX(-this.walkSpd);
-                this.scene.time.delayedCall(100, () => {this.walking = true;});
-            }
+            // if the dialogue box is not undefined, there is a dialogue box, and you should be unable to move
+            if (this.scene.currentDialogueBox == undefined) {
 
-            //console.log(Phaser.Math.RadToDeg(this.body.angle));
-            if(Phaser.Math.RadToDeg(this.body.angle) == 0 && this.body.speed != 0) {
-                if(this.direction != "right") {
-                    this.direction = "right";
-                    this.anims.play("oneWalk_Right");
+                if(keyUP.isDown) {
+                    this.dontReset = true;
+                    this.body.setVelocityY(-this.walkSpd);
+                    this.scene.time.delayedCall(100, () => {this.walking = true;});
                 }
-            } else if(Phaser.Math.RadToDeg(this.body.angle) == -90 && this.body.speed != 0) {
-                if(this.direction != "up") {
-                    this.direction = "up";
-                    this.anims.play("oneWalk_Up");
+                else if(keyDOWN.isDown) {
+                    this.dontReset = true;
+                    this.body.setVelocityY(this.walkSpd);
+                    this.scene.time.delayedCall(100, () => {this.walking = true;});
                 }
-            } else if(Phaser.Math.RadToDeg(this.body.angle) == 180 && this.body.speed != 0) {
-                if(this.direction != "left") {
-                    this.direction = "left";
-                    this.anims.play("oneWalk_Left");
+                else if(keyRIGHT.isDown) {
+                    this.dontReset = true;
+                    this.body.setVelocityX(this.walkSpd);
+                    this.scene.time.delayedCall(100, () => {this.walking = true;});
                 }
-            } else if(Phaser.Math.RadToDeg(this.body.angle) == 90 && this.body.speed != 0) {
-                if(this.direction != "down") {
-                    this.direction = "down";
-                    this.anims.play("oneWalk_Down");
+                else if(keyLEFT.isDown) {
+                    this.dontReset = true;
+                    this.body.setVelocityX(-this.walkSpd);
+                    this.scene.time.delayedCall(100, () => {this.walking = true;});
                 }
-            } else if(this.body.speed != 0) {
-                this.tempAngle = Phaser.Math.RadToDeg(this.body.angle);
-                this.body.angle = Phaser.Math.DegToRad(this.tempAngle - (this.tempAngle % 90));
+
+                //console.log(Phaser.Math.RadToDeg(this.body.angle));
+                if(Phaser.Math.RadToDeg(this.body.angle) == 0 && this.body.speed != 0) {
+                    if(this.direction != "right") {
+                        this.direction = "right";
+                        this.anims.play("oneWalk_Right");
+                    }
+                } else if(Phaser.Math.RadToDeg(this.body.angle) == -90 && this.body.speed != 0) {
+                    if(this.direction != "up") {
+                        this.direction = "up";
+                        this.anims.play("oneWalk_Up");
+                    }
+                } else if(Phaser.Math.RadToDeg(this.body.angle) == 180 && this.body.speed != 0) {
+                    if(this.direction != "left") {
+                        this.direction = "left";
+                        this.anims.play("oneWalk_Left");
+                    }
+                } else if(Phaser.Math.RadToDeg(this.body.angle) == 90 && this.body.speed != 0) {
+                    if(this.direction != "down") {
+                        this.direction = "down";
+                        this.anims.play("oneWalk_Down");
+                    }
+                } else if(this.body.speed != 0) {
+                    this.tempAngle = Phaser.Math.RadToDeg(this.body.angle);
+                    this.body.angle = Phaser.Math.DegToRad(this.tempAngle - (this.tempAngle % 90));
+                }
             }
         }
 

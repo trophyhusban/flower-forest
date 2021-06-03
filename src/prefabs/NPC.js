@@ -39,6 +39,9 @@ class NPC extends Phaser.Physics.Arcade.Sprite {
             this.alert = this.scene.add.sprite(this.x, this.y - 64, "alert").setOrigin(0, 0);
             this.alert.play("alert");
         }
+        this.scene.input.keyboard.on("keydown-SPACE", () => {
+            this.handleInput();
+        });
     }
 
     update() {
@@ -49,54 +52,50 @@ class NPC extends Phaser.Physics.Arcade.Sprite {
         
         this.scene.physics.world.collide(this, this.player);
 
-        this.justPressedKey = false;
-        if (keySPACE.isDown && this.justPressedKey == false) {
-            this.justPressedkey = true;
+    }
 
-             if (this.checkNextToPlayer()) {    // if the player is next to an NPC
-                                                // i can't just use player.nextToNPC here bc that applies to any NPC,
-                                                // not specifically this one
-                if (this.kind == "NPC"){
-                    
-                    if (this.alert != undefined) this.alert.destroy();
-                    
-                    if (this.player.y > this.y) {
-                        this.align = "up";      // align up if the player is below the NPC
-                    } else {
-                        this.align = "down";    // align down if they are above
-                    }
+    handleInput() {
+        // if the player is next to an NPC i can't just use player.nextToNPC here bc that applies to any NPC,
+        // not specifically this one
+        if (this.checkNextToPlayer()) {    
+
+            console.log('here');
+
+            if (this.kind == "NPC"){
+
+                if (this.alert != undefined) this.alert.destroy();
+                
+                if (this.player.y > this.y) {
+                    this.align = "up";      // align up if the player is below the NPC
+                } else {
+                    this.align = "down";    // align down if they are above
+                }
+
+                // if there is a dialouge box, space next to an NPC advances to the next page
+                if (this.scene.currentDialogueBox != undefined) {
+
+                    this.scene.currentDialogueBox.nextPage();
+
+                // if there is not a dialouge box, space makes one
+                } else {
 
                     this.openDialogue(          // launches the dialogue scene with these arguments
-                        this.x + this.width/2,  // tailX
                         this.content,           // text
                         this.config,            // config
                         this.align,             // align
-                        this.talkingAnimation,  // the sprite to draw for the talking animation
-                        this.y + this.width/2   // the Y location of the sprite to draw for the talking animation
                     ); 
-                } else if (this.kind == "note") {
-                    this.openNote();            // launches the note scene 
                 }
-             }
+            } else if (this.kind == "note") {
+                this.openNote();            // launches the note scene 
+            }
         }
     }
 
-    openDialogue(tailX, text, config, align, NPCSprite, NPCY) {
+    openDialogue(text, config, align) {
 
-        // this is so that i can align the value from the Play scene (which is many times larger than the dialogue scene)
-        // to the dialogue scene
-        // i don't remember exactly how i got this formula but it works :-)
-        textBox.tailX = tailX - this.scene.camCenterX + game.config.width/2;
-        textBox.text = text;
-        textBox.config = config;
-        textBox.align = align;
-        textBox.NPCSprite = NPCSprite;
-        textBox.NPCY = NPCY - this.scene.camCenterY + game.config.height/2;
-
-        // i store them in a global variable so i can access them in the next scene
-        this.scene.scene.pause(); 
-        this.scene.scene.launch("dialogueScene"); 
-        this.scene.scene.bringToTop("dialogueScene");  
+        if (this.scene.currentDialogueBox == undefined) {
+            this.scene.currentDialogueBox = new DialogueBox(this.scene, this, text, config, align); 
+        }
     }
 
     openNote() {    
