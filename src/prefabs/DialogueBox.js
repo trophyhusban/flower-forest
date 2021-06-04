@@ -35,9 +35,7 @@ class DialogueBox {
         this.currentPage = 0;
 
         // if there is a choice or not
-        this.choice = true;
-
-        if (choice == "none") this.choice = false;
+        this.choice = choice
 
         // this is the variable that has text that actually gets drawn
         // the slice method cuts out text from the first index of the string to the last
@@ -82,10 +80,16 @@ class DialogueBox {
         // this is used in the DialogueScene to end the scene
         this.allTextRead = false;
 
-        // creates the speaking sound
-        this.speakingSound = this.scene.sound.add("speaking");
-        this.speakingSound.setLoop(true);
-        this.speakingSound.volume = masterSFXVolume;
+        if (this.choice == false) {
+            console.log("here");
+            // creates the speaking sound depending on the key of the npc 
+            if (this.NPC.static == "puck") this.speakingSound = this.scene.talkingPuck;
+            if (this.NPC.static == "titania") this.speakingSound = this.scene.talkingTitania;
+            if (this.NPC.static == "flowerfae") this.speakingSound = this.scene.talkingFlowerfae;
+            
+            this.speakingSound.setLoop(true);
+            this.speakingSound.volume = masterSFXVolume;
+        }
     }
 
     drawText() {    // this scene has a lot of sprites so i will walk thru all of them
@@ -186,14 +190,11 @@ class DialogueBox {
 
             // this.text becomes an empty string if the player advances to the next page while there are no pages left
             if (this.text != "") {
-
-                if (this.speakingSound.isPlaying == false) {
-                    
-                    // if the NPC is a choice npc, (which only appears at the very end) we don't need to play SFX or animate anything
-                    if (this.choice == false) {
-                        this.speakingSound.play();
-                        this.NPC.play(this.NPCSprite);
-                    }
+                
+                // if the NPC is a choice npc, (which only appears at the very end) we don't need to play SFX or animate anything
+                if (this.choice == false && this.speakingSound.isPlaying == false) {  
+                    this.speakingSound.play();
+                    this.NPC.play(this.NPCSprite);
                 }
                 
                 // if the entire string is already drawn, don't change it

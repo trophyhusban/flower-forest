@@ -59,8 +59,6 @@ class NPC extends Phaser.Physics.Arcade.Sprite {
         // not specifically this one
         if (this.checkNextToPlayer()) {    
 
-            console.log('here');
-
             if (this.kind == "NPC"){
 
                 if (this.alert != undefined) this.alert.destroy();
@@ -83,7 +81,7 @@ class NPC extends Phaser.Physics.Arcade.Sprite {
                         this.content,           // text
                         this.config,            // config
                         this.align,             // align
-                        "none"                  // if it opens a choice dialogue or a regular one
+                        false                   // if it opens a choice dialogue or a regular one
                     ); 
                 }
             } else if (this.kind == "note") {
@@ -95,13 +93,13 @@ class NPC extends Phaser.Physics.Arcade.Sprite {
                 if (this.scene.currentDialogueBox != undefined) {
 
                     this.scene.currentDialogueBox.nextPage();
-                    
+
                 } else {
                     this.openDialogue(
                         this.content,
                         this.config,
                         this.align,
-                        "yes"
+                        true
                     );
                 }
             }
@@ -111,7 +109,7 @@ class NPC extends Phaser.Physics.Arcade.Sprite {
     openDialogue(text, config, align, choice) {
 
         if (this.scene.currentDialogueBox == undefined) {
-            this.scene.currentDialogueBox = new DialogueBox(this.scene, this, text, config, align); 
+            this.scene.currentDialogueBox = new DialogueBox(this.scene, this, text, config, align, choice); 
         }
     }
 

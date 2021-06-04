@@ -71,7 +71,6 @@ class Play extends Phaser.Scene {
         this.load.image("towerTiles", "./assets/tilesets/tower.png");
         this.load.tilemapTiledJSON("level1", "./assets/tilesets/level1.json");
         this.load.audio("footsteps", "./assets/sound/Footsteps.wav");
-        this.load.audio("talking", "./assets/sound/CharacterSpeak.wav");
         this.load.audio("ritualFootsteps", "./assets/sound/TreeWalk.wav");
         this.load.audio("level one music", "./assets/sound/BackgroundMusic.wav");
         this.load.audio("speaking", "./assets/sound/CharacterSpeak.wav");
@@ -107,6 +106,10 @@ class Play extends Phaser.Scene {
         this.load.image("textbox tail5", "./assets/ui/textboxes/textbox_tail5.png");
         this.load.image("textbox tail6", "./assets/ui/textboxes/textbox_tail6.png");
         this.load.image("textbox tail7", "./assets/ui/textboxes/textbox_tail7.png");
+
+        this.load.audio("talking puck", "./assets/sound/CharacterSpeak.wav");
+        this.load.audio("talking titania", "./assets/sound/TalkingTitania.wav");
+        this.load.audio("talking flowerfae", "./assets/sound/TalkingFlower.wav");
     }
     create() {
 
@@ -468,14 +471,18 @@ class Play extends Phaser.Scene {
     initializeAudio() {
         this.sounds = [];
         this.footsteps = this.sound.add("footsteps");
-        this.talking = this.sound.add("talking");
+        this.talkingPuck = this.sound.add("talking puck");
+        this.talkingTitania = this.sound.add("talking titania");
+        this.talkingFlowerfae = this.sound.add("talking flowerfae");
         this.select = this.sound.add("select");
 
         this.sounds.push(this.footsteps);
-        this.sounds.push(this.talking);
         this.sounds.push(this.player.plantFlowerAudio);
         this.sounds.push(this.player.plantFlowerReverseAudio);
         this.sounds.push(this.select);
+        this.sounds.push(this.talkingPuck);
+        this.sounds.push(this.talkingTitania);
+        this.sounds.push(this.talkingFlowerfae);
 
         music = this.sound.add("level one music");
 

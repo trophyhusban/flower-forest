@@ -92,8 +92,10 @@ class ChoiceManager {
 
         if (input == "left") {
             this.currentOption = 0;
+            this.scene.select.play();
         } else if (input == "right") {
             this.currentOption = 1;
+            this.scene.select.play();
         }
 
         if (this.currentOption == 0) {
