@@ -411,7 +411,7 @@
   <object id="89" name="cameraLvl3Start" x="1760" y="6688">
    <ellipse/>
   </object>
-  <object id="90" name="dopplWarpSend" x="2016" y="6112"/>
+  <object id="90" name="dopplWarpSend" x="2080" y="6112"/>
   <object id="91" name="dopplWarpRecieve" x="2272" y="5856"/>
  </objectgroup>
  <objectgroup id="7" name="rituals">
