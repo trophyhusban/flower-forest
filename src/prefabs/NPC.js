@@ -35,7 +35,7 @@ class NPC extends Phaser.Physics.Arcade.Sprite {
         this.justPressedKey = false;        
         
         // a sprite that looks like a little speech bubble with an exclamation mark
-        if (this.kind == "NPC") {
+        if (this.kind == "NPC" || this.king == "choice") {
             this.alert = this.scene.add.sprite(this.x, this.y - 64, "alert").setOrigin(0, 0);
             this.alert.play("alert");
         }
@@ -83,15 +83,32 @@ class NPC extends Phaser.Physics.Arcade.Sprite {
                         this.content,           // text
                         this.config,            // config
                         this.align,             // align
+                        "none"                  // if it opens a choice dialogue or a regular one
                     ); 
                 }
             } else if (this.kind == "note") {
-                this.openNote();            // launches the note scene 
+                this.openNote();                // creates a note object
+
+            } else if (this.kind == "choice") {
+
+                if (this.alert != undefined) this.alert.destroy();
+                if (this.scene.currentDialogueBox != undefined) {
+
+                    this.scene.currentDialogueBox.nextPage();
+                    
+                } else {
+                    this.openDialogue(
+                        this.content,
+                        this.config,
+                        this.align,
+                        "yes"
+                    );
+                }
             }
         }
     }
 
-    openDialogue(text, config, align) {
+    openDialogue(text, config, align, choice) {
 
         if (this.scene.currentDialogueBox == undefined) {
             this.scene.currentDialogueBox = new DialogueBox(this.scene, this, text, config, align); 

@@ -8,7 +8,7 @@ let config = {
             //debug: true
         }
     },
-    scene: [Menu, Play, DialogueScene, NoteScene, CreditsScene, PauseScene],
+    scene: [Menu, Play, DialogueScene, NoteScene, PreCreditsScene, CreditsScene, PauseScene],
     pixelArt: true,
 };
 
@@ -22,14 +22,22 @@ let unit = game.config.height / 15;
 let levelWidth, levelHeight;
 
 let keySPACE, keyUP, keyDOWN, keyLEFT, keyRIGHT, keyONE, keyTWO, keyTHREE, keyFOUR;
+
+// the text config object used in most of the game
 let textConfig;
+
+// the text config object used in the pause menu and at the choice at the end
 let menuTextConfig;
+
+// a json file that contains all of the dialogue in the game
 let textJSON;
+
 let textBox = {};
 let noteGlobal;
 let masterMusicVolume = 1;
 let masterSFXVolume = 1;
 let music;
+let option;
 
 // this is the array of colors that we use in the overlay
 // the idea is that every in every room, we randomize the color overlay

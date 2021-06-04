@@ -18,7 +18,7 @@ class DialogueBox {
     // let players skip the text coming in by pressing space
     // make the camera zoom in on the person who is talking before the scene starts :ooo
 
-    constructor(scene, NPC, text, textConfig, align) {
+    constructor(scene, NPC, text, textConfig, align, choice) {
 
         // the scene
         this.scene = scene;
@@ -33,6 +33,11 @@ class DialogueBox {
 
         // what index of ^ we draw text from
         this.currentPage = 0;
+
+        // if there is a choice or not
+        this.choice = true;
+
+        if (choice == "none") this.choice = false;
 
         // this is the variable that has text that actually gets drawn
         // the slice method cuts out text from the first index of the string to the last
@@ -101,6 +106,10 @@ class DialogueBox {
             this.textBox.y+this.textBox.height-3,       // the bottom of the dialoge box (changes later on if align is "down")
             "textbox tail" + colorIndex.toString()
             ).setOrigin(0, 0).setDepth(150);
+
+        if (this.choice) {
+            this.textBoxTail.x += 640;
+        }
             
         // sometimes flips the tail horizontally so that the side of it that is at an angle is always facing outwards
         if (this.NPCX < this.textBox.x + this.textBox.width/2) {
@@ -138,16 +147,20 @@ class DialogueBox {
 
         // if there is no more pages of text to display
         } else {
-            this.currentText.destroy();     // destroy the text object
-            this.textBox.destroy();         // destroy the text box sprite
-            this.textBoxTail.destroy();     // destroy the tail sprite
-            this.speakingSound.pause();     // pause the talking sound (if it is not paused already)
-            this.NPC.stop();
+            if (this.choice == false) {
+                this.currentText.destroy();     // destroy the text object
+                this.textBox.destroy();         // destroy the text box sprite
+                this.textBoxTail.destroy();     // destroy the tail sprite
+                this.speakingSound.pause();     // pause the talking sound (if it is not paused already)
+                this.NPC.stop();
 
-            // none of this is necessary because the scene is about to end but i like the drama of using destroy()
+                // none of this is necessary because the scene is about to end but i like the drama of using destroy()
 
-            // so that when nextLetter() is called, it marks all text as being read
-            this.text = "";
+                // so that when nextLetter() is called, it marks all text as being read
+                this.text = "";
+            } else if (this.choiceObject == undefined) {
+                this.choiceObject = new ChoiceManager(this.scene, this);
+            }
         }
 
     }
@@ -164,40 +177,51 @@ class DialogueBox {
 
     nextLetter() {
         
-        // adds the next letter to textDrawnInBox
-        this.currentSliceIndex++;
+        // only does any of this if there is no choice object
+        // if there is a choice object, that means that there is no more text to display
 
-        // this.text becomes an empty string if the player advances to the next page while there are no pages left
-        if (this.text != "") {
+        if (this.choiceObject == undefined) {
+            // adds the next letter to textDrawnInBox
+            this.currentSliceIndex++;
 
-            if (this.speakingSound.isPlaying == false) {
-                this.speakingSound.play();
-                this.NPC.play(this.NPCSprite);
-            }
-            
-            // if the entire string is already drawn, don't change it
-            if (this.currentSliceIndex <= this.text[this.currentPage].length) {
+            // this.text becomes an empty string if the player advances to the next page while there are no pages left
+            if (this.text != "") {
 
-                // changes the slice so that it is sliced from the new value
-                this.textDrawnInBox = this.text[this.currentPage].slice(0, this.currentSliceIndex);
-                
-                // edit the text in the currentText so that it is the newly sliced string
-                // i use the word "text" a million times so i will walk thru it again
-                // currentText is the text object, meaning text to be drawn on the screen
-                // currentText.text is the text value of the text object, which is a string that the text object draws
-                // textDrawnInBox is the slice of the current page of this.text
-                // this.text is the array that contains all of the text that we will draw, one index at a time
-                this.currentText.text = this.textDrawnInBox;
-            } else {
-                if (this.speakingSound.isPlaying == true) {
-                    this.speakingSound.pause();
-                    this.NPC.stop();
+                if (this.speakingSound.isPlaying == false) {
+                    
+                    // if the NPC is a choice npc, (which only appears at the very end) we don't need to play SFX or animate anything
+                    if (this.choice == false) {
+                        this.speakingSound.play();
+                        this.NPC.play(this.NPCSprite);
+                    }
                 }
+                
+                // if the entire string is already drawn, don't change it
+                if (this.currentSliceIndex <= this.text[this.currentPage].length) {
+
+                    // changes the slice so that it is sliced from the new value
+                    this.textDrawnInBox = this.text[this.currentPage].slice(0, this.currentSliceIndex);
+                    
+                    // edit the text in the currentText so that it is the newly sliced string
+                    // i use the word "text" a million times so i will walk thru it again
+                    // currentText is the text object, meaning text to be drawn on the screen
+                    // currentText.text is the text value of the text object, which is a string that the text object draws
+                    // textDrawnInBox is the slice of the current page of this.text
+                    // this.text is the array that contains all of the text that we will draw, one index at a time
+                    this.currentText.text = this.textDrawnInBox;
+                } else {
+
+                    // same thing as above when we check if choice == false
+                    if (this.choice == false && this.speakingSound.isPlaying == true) {
+                        this.speakingSound.pause();
+                        if (this.choice == false) this.NPC.stop();
+                    }
+                }
+            } else {
+                
+                // if this.text is an empty string, than we know that there is nothing else to draw, so we mark allTextRead as true
+                this.allTextRead = true;
             }
-        } else {
-            
-            // if this.text is an empty string, than we know that there is nothing else to draw, so we mark allTextRead as true
-            this.allTextRead = true;
         }
     }
 

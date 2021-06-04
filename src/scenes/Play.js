@@ -86,6 +86,8 @@ class Play extends Phaser.Scene {
         this.load.image("menu select", "./assets/ui/menu_select.png");
         this.load.image("volume box", "./assets/ui/volume_box.png");
         this.load.image("volume select", "./assets/ui/volume_select.png");
+        this.load.image("choice box", "./assets/ui/choice_box.png");
+        this.load.image("choice select", "./assets/ui/choice_select.png");
         this.load.spritesheet("alert", "./assets/ui/alert.png",
             {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 1});
 
@@ -269,8 +271,8 @@ class Play extends Phaser.Scene {
         this.cameraZoomOut = this.tweens.add({
             targets: [this.camera],
             zoom: 1,
-            duration: 2500, 
-            delay: 2000,
+            duration: 10, // 2500
+            delay: 10,    // 2000
             ease: "Quad.easeInOut"
         }).on("complete", () => {
             // when the camera is finished zooming out, tween the tutorial keys on screen. that way u can actually see them tween
@@ -467,11 +469,13 @@ class Play extends Phaser.Scene {
         this.sounds = [];
         this.footsteps = this.sound.add("footsteps");
         this.talking = this.sound.add("talking");
+        this.select = this.sound.add("select");
 
         this.sounds.push(this.footsteps);
         this.sounds.push(this.talking);
         this.sounds.push(this.player.plantFlowerAudio);
         this.sounds.push(this.player.plantFlowerReverseAudio);
+        this.sounds.push(this.select);
 
         music = this.sound.add("level one music");
 
@@ -919,5 +923,18 @@ class Play extends Phaser.Scene {
         );
 
         this.NPCArray.push(this.puckNPC2);
+
+        this.choiceTest = new NPC(
+            this,
+            this.player,
+            this.player.x - 128,
+            this.player.y,
+            ["titania", "titaniaTalking"],
+            0,
+            ["text before the choice is made goes here"],
+            "choice"
+        );
+
+        this.NPCArray.push(this.choiceTest);
     }
 }
