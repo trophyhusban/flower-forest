@@ -168,6 +168,8 @@ class Play extends Phaser.Scene {
         this.warp1 = this.level1Map.findObject("triggers", obj => obj.name ==="warp1");
         this.warp2down = this.level1Map.findObject("triggers", obj => obj.name ==="warp2down");
         this.warp2up = this.level1Map.findObject("triggers", obj => obj.name ==="warp2up");
+        this.dopplSend = this.level1Map.findObject("triggers", obj => obj.name ==="dopplWarpSend");
+        this.dopplRecieve = this.level1Map.findObject("triggers", obj => obj.name ==="dopplWarpRecieve");
 
         //create end of level trigger
         this.endLevel1 = this.level1Map.findObject("triggers", obj => obj.name ==="levelEnd");
@@ -319,6 +321,7 @@ class Play extends Phaser.Scene {
         this.checkScares();
 
 
+        //check to see if player is going through a door
         this.doorCheck = this.level1Map.getTileAtWorldXY(this.player.x, this.player.y, false, this.camera, "doors");
         if(this.doorCheck != null) {
             if(this.doorCheck.properties.direction == "up") {
@@ -385,6 +388,32 @@ class Play extends Phaser.Scene {
             this.doppelganger.mirrorMode = true;
             this.camera.centerOn(this.camCenterX, this.camCenterY);
             this.changeColor();
+        }
+
+        //check to see if doppl is going through a door
+        this.doorCheck2 = this.level1Map.getTileAtWorldXY(this.doppelganger.x, this.doppelganger.y, false, this.camera, "doors");
+        if(this.doorCheck2 != null) {
+            if(this.doorCheck2.properties.direction == "up") {
+                this.doppelganger.y -= 3 * gridUnit;
+                console.log("door up");
+            }
+            else if(this.doorCheck2.properties.direction == "down") {
+                this.doppelganger.y += 3 * gridUnit;
+                console.log("door down");
+            }
+            else if(this.doorCheck2.properties.direction == "left") {
+                this.doppelganger.x -= 3 * gridUnit;
+                console.log("door left");
+            }
+            else if(this.doorCheck2.properties.direction == "right") {
+                this.doppelganger.x += 3 * gridUnit;
+                console.log("door right");
+            }
+        }
+        if(this.player.gridX * gridUnit - (gridUnit / 2) == this.dopplSend.x && this.player.gridY * gridUnit - (gridUnit / 2) == this.dopplSend.y) {
+            this.doppelganger.x = this.dopplRecieve.x;
+            this.doppelganger.y = this.dopplRecieve.y;
+            console.log("doppl sent");
         }
     }
 
