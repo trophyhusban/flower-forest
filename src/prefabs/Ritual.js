@@ -112,6 +112,7 @@ class Ritual {
         }
         if(this.doorClosed && this.door != null) {
             this.scene.physics.world.collide(this.door, this.scene.player);
+            this.scene.physics.world.collide(this.door, this.scene.doppelganger);
         }
     }
 
