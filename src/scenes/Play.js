@@ -424,10 +424,11 @@ class Play extends Phaser.Scene {
             //zoom out camera to catch tower
             this.cameraZoomOut2 = this.tweens.add({
                 targets: [this.camera],
-                zoom: {from: 1, to: 0.9},
-                duration: 10, // 2500
-                delay: 10,    // 2000
-                ease: "Quad.easeInOut"
+                zoom: 0.85,
+                scrollY: this.camera.worldView.y - (gridUnit / 2),
+                duration: 2500,
+                delay: 1000,
+                ease: "Quad.easeOut"
             });
         }
 
