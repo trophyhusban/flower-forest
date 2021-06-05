@@ -14,6 +14,7 @@ class Other extends Phaser.Physics.Arcade.Sprite {
         this.currentInstruction = "";
         this.gridX = 0;
         this.gridY = 0;
+        this.stopped = false;
         this.violent = false;
         this.scene = scene;
         scene.add.existing(this);
@@ -40,43 +41,53 @@ class Other extends Phaser.Physics.Arcade.Sprite {
     }
     
     update() {
-        //recalculate the Other's grid position
-        for(this.j = 0; this.j <= gridSize * levelWidth; this.j++) {
-            if(Math.abs(this.x - (this.j * gridUnit - (gridUnit / 2))) < Math.abs(this.x - (this.gridX * gridUnit - (gridUnit / 2)))) {
-                this.gridX = this.j;
+        if(!this.stopped) {
+            //recalculate the Other's grid position
+            for(this.j = 0; this.j <= gridSize * levelWidth; this.j++) {
+                if(Math.abs(this.x - (this.j * gridUnit - (gridUnit / 2))) < Math.abs(this.x - (this.gridX * gridUnit - (gridUnit / 2)))) {
+                    this.gridX = this.j;
+                }
             }
-        }
-        for(this.i = 0; this.i <= gridSize * levelHeight; this.i++) {
-            if(Math.abs(this.y - (this.i * gridUnit - (gridUnit / 2))) < Math.abs(this.y - (this.gridY * gridUnit - (gridUnit / 2)))) {
-                this.gridY = this.i;
-            }
-        }
-
-        if(this.mirrorMode) { //mirror the player's movements in Mirror Mode
-            this.walk();
-
-            if(keySPACE.isDown) {
-                this.plant();
-            }
-        }
-        else if (this.scriptedMode && this.script.length != 0) { //if the Other is following a non-empty script, act accordingly
-            if(this.currentInstruction == "") {
-                this.currentInstruction = this.script.shift();
-                console.log("Reading instruction: " + this.currentInstruction);
-            }
-            this.scriptWalk();
-            
-            if(this.currentInstruction == "plant") {
-                this.plant();
-                this.currentInstruction = "";
+            for(this.i = 0; this.i <= gridSize * levelHeight; this.i++) {
+                if(Math.abs(this.y - (this.i * gridUnit - (gridUnit / 2))) < Math.abs(this.y - (this.gridY * gridUnit - (gridUnit / 2)))) {
+                    this.gridY = this.i;
+                }
             }
 
-            if(this.currentInstruction == "die") {
-                this.destroy();
-            }
+            if(this.mirrorMode) { //mirror the player's movements in Mirror Mode
+                this.walk();
 
-        } else if (this.scriptedMode) { //if the script is empty, change to mirror mode
-            this.scriptedMode = false;
+                if(keySPACE.isDown) {
+                    this.plant();
+                }
+            }
+            else if (this.scriptedMode && this.script.length != 0) { //if the Other is following a non-empty script, act accordingly
+                if(this.currentInstruction == "") {
+                    this.currentInstruction = this.script.shift();
+                    console.log("Reading instruction: " + this.currentInstruction);
+                }
+                this.scriptWalk();
+                
+                if(this.currentInstruction == "plant") {
+                    this.plant();
+                    this.currentInstruction = "";
+                }
+
+                if(this.currentInstruction == "die") {
+                    this.destroy();
+                }
+
+            } else if (this.scriptedMode) { //if the script is empty, change to mirror mode
+                this.scriptedMode = false;
+            }
+        } else {
+            this.body.setVelocity(0, 0);
+            this.x = this.gridX * gridUnit - (gridUnit / 2);
+            this.y = this.gridY * gridUnit - (gridUnit / 2);
+            this.anims.play("other_reset");
+            this.direction = "";
+            this.command = "";
+            this.takingInput = true;
         }
     }
 

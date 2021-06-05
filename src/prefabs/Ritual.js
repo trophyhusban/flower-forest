@@ -138,6 +138,10 @@ class Ritual {
                 this.door.setDepth(101);
             }
 
+            //prevent player from acting while door is moving
+            this.scene.player.stopped = true;
+            this.scene.doppelganger.stopped = true;
+
             this.walking = true;
             this.walkSFX.play();
             this.scene.time.delayedCall(this.walkTime / 2, () =>{this.walkSFX.play();});
@@ -178,6 +182,9 @@ class Ritual {
                 } else if(this.doorTexture == "ritualDoor") {
                     this.door.anims.play("doorSit");
                 }
+                //allow player to move again
+                this.scene.player.stopped = false;
+                this.scene.doppelganger.stopped = false;
             });
         }
     }
@@ -190,6 +197,10 @@ class Ritual {
             } else if(this.doorTexture == "ritualDoor") {
                 this.door.anims.play("doorStand");
             }
+
+            //prevent player from acting while door is moving
+            this.scene.player.stopped = true;
+            this.scene.doppelganger.stopped = true;
 
             this.door.on("animationcomplete", () => {
                 if(this.doorTexture == "ritualTree") {
@@ -228,6 +239,9 @@ class Ritual {
                     this.door.destroy();
                     this.door = null;
                     this.walking = false;
+                    //allow player to move again
+                    this.scene.player.stopped = false;
+                    this.scene.doppelganger.stopped = false;
                 });
             });
         }

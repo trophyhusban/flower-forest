@@ -12,6 +12,7 @@ class One extends Phaser.Physics.Arcade.Sprite {
         this.gridY = 0;
         this.scene = scene;
         this.nextToNPC = false;
+        this.stopped = false;
         scene.add.existing(this);
         scene.physics.add.existing(this);
 
@@ -41,23 +42,32 @@ class One extends Phaser.Physics.Arcade.Sprite {
     }
     
     update() {
-
-        this.walk();
-        for(this.j = 0; this.j <= gridSize * levelWidth; this.j++) {
-            if(Math.abs(this.x - (this.j * gridUnit - (gridUnit / 2))) < Math.abs(this.x - (this.gridX * gridUnit - (gridUnit / 2)))) {
-                this.gridX = this.j;
+        if(!this.stopped) {
+            this.walk();
+            for(this.j = 0; this.j <= gridSize * levelWidth; this.j++) {
+                if(Math.abs(this.x - (this.j * gridUnit - (gridUnit / 2))) < Math.abs(this.x - (this.gridX * gridUnit - (gridUnit / 2)))) {
+                    this.gridX = this.j;
+                }
             }
-        }
-        for(this.i = 0; this.i <= gridSize * levelHeight; this.i++) {
-            if(Math.abs(this.y - (this.i * gridUnit - (gridUnit / 2))) < Math.abs(this.y - (this.gridY * gridUnit - (gridUnit / 2)))) {
-                this.gridY = this.i;
+            for(this.i = 0; this.i <= gridSize * levelHeight; this.i++) {
+                if(Math.abs(this.y - (this.i * gridUnit - (gridUnit / 2))) < Math.abs(this.y - (this.gridY * gridUnit - (gridUnit / 2)))) {
+                    this.gridY = this.i;
+                }
             }
-        }
 
-        if(keySPACE.isDown) {
-            this.plant();
+            if(keySPACE.isDown) {
+                this.plant();
+            }
+            this.nextToNPC = false;
+        } else {
+            this.body.setVelocity(0, 0);
+            this.x = this.gridX * gridUnit - (gridUnit / 2);
+            this.y = this.gridY * gridUnit - (gridUnit / 2);
+            this.anims.play("one_reset");
+            this.direction = "";
+            this.command = "";
+            this.takingInput = true;
         }
-        this.nextToNPC = false;
     }
 
     plant() {
