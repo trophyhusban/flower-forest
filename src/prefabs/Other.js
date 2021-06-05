@@ -31,6 +31,9 @@ class Other extends Phaser.Physics.Arcade.Sprite {
         this.plantFlowerReverseAudio = this.scene.sound.add("plant flower reverse audio");
         this.plantFlowerAudio.setVolume(.6);
         this.plantFlowerReverseAudio.setVolume(.6);
+        this.plantFlowerAnimations = ["plantCrumb", "plantCrumb2"];
+        this.pickFlowerAnimations = ["killCrumb", "killCrumb2"];
+        this.nextFlower = Phaser.Math.RND.integerInRange(1, this.plantFlowerAnimations.length) - 1;
     }
     
     update() {
@@ -76,17 +79,20 @@ class Other extends Phaser.Physics.Arcade.Sprite {
 
     plant() {
         if(!this.plantCooldown && !this.nextToNPC) {
-            //console.log("plant");
+            console.log("plant");
             if(!this.plantCooldown) {
                 this.plantCooldown = true;
             }
             this.plantFlowerAudio.play();
+            this.chooseNextFlower();
             this.scene.flowerTrail.add(new FlowerCrumb(
                 this.scene,
                 this.gridX * gridUnit - (gridUnit / 2),
                 this.gridY * gridUnit - (gridUnit / 2),
-                "flowerCrumb",
-                0
+                // the texture argument is an array
+                // the first one is the plant animation and the second one is the pick animation
+                [this.plantFlowerAnimations[this.nextFlower], this.pickFlowerAnimations[this.nextFlower]],
+                0,
             ));
             if(this.plantCooldown) {
                     this.scene.time.delayedCall(500, () => {
@@ -96,7 +102,7 @@ class Other extends Phaser.Physics.Arcade.Sprite {
             this.scene.physics.world.collide(this.scene.flowerTrail, this.scene.flowerTrail, (flower1, flower2) => {
                 this.plantFlowerAudio.pause();
                 this.plantFlowerReverseAudio.play();
-                flower1.anims.play("killCrumb");
+                flower1.anims.play(flower1.pickAnimation);
                 this.scene.time.delayedCall(1000, () => {
                     flower1.destroy();
                 });
@@ -105,6 +111,12 @@ class Other extends Phaser.Physics.Arcade.Sprite {
         }
         
         this.plantTouching = false;
+    }
+
+    chooseNextFlower() {
+        this.nextFlower++;
+
+        if (this.nextFlower == this.plantFlowerAnimations.length) this.nextFlower = 0;
     }
 
     walk() {

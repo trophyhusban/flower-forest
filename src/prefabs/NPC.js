@@ -129,6 +129,12 @@ class NPC extends Phaser.Physics.Arcade.Sprite {
                 this.key
             ).setOrigin(0, 0).setDepth(150));
 
+            this.scene.add.tween({
+                targets: this.scene.inventoryNoteArray[this.scene.inventoryNoteArray.length - 1],
+                alpha: {from: 0, to: 1},
+                duration: 250
+            });
+
             // also create a tutorial key on screen for the key that opens the new note <3
             // the new note is made now but because we pause the play scene in 5 lines, it doesn't show up until the player
             // leaves the note scene

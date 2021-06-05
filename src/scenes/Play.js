@@ -41,6 +41,12 @@ class Play extends Phaser.Scene {
         this.load.image("ritualSliced2", "./assets/gamepieces/slicedC/slicedC2.png");
         this.load.image("ritualSliced3", "./assets/gamepieces/slicedC/slicedC3.png");
         this.load.image("ritualSliced4", "./assets/gamepieces/slicedC/slicedC4.png");
+        this.load.image("level3ritual1-1", "./assets/gamepieces/level three/1/1left1.png");
+        this.load.image("level3ritual1-2", "./assets/gamepieces/level three/1/1left2.png");
+        this.load.image("level3ritual1-3", "./assets/gamepieces/level three/1/1left3.png");
+        this.load.image("level3ritual2-1", "./assets/gamepieces/level three/1/1right1.png");
+        this.load.image("level3ritual2-2", "./assets/gamepieces/level three/1/1right2.png");
+        this.load.image("level3ritual2-3", "./assets/gamepieces/level three/1/1right3.png");
         this.load.image("little big UI", "./assets/gamepieces/little2BigA/little2BigBig.png");
         this.load.image("little big note", "./assets/gamepieces/noteOne.png");
         this.load.image("sliced note", "./assets/gamepieces/slicedC/noteC.png");
@@ -170,6 +176,8 @@ class Play extends Phaser.Scene {
         this.warp1 = this.level1Map.findObject("triggers", obj => obj.name ==="warp1");
         this.warp2down = this.level1Map.findObject("triggers", obj => obj.name ==="warp2down");
         this.warp2up = this.level1Map.findObject("triggers", obj => obj.name ==="warp2up");
+        this.dopplSend = this.level1Map.findObject("triggers", obj => obj.name ==="dopplWarpSend");
+        this.dopplRecieve = this.level1Map.findObject("triggers", obj => obj.name ==="dopplWarpRecieve");
 
         //create end of level trigger
         this.endLevel1 = this.level1Map.findObject("triggers", obj => obj.name ==="levelEnd");
@@ -179,6 +187,7 @@ class Play extends Phaser.Scene {
         this.ritual1Obj = this.level1Map.findObject("rituals", obj => obj.name ==="SimpleRitual1");
         this.simpleRitual1 = new Ritual(this, this.ritual1DoorObj, "ritualTree", "up", [[this.ritual1Obj, "ritualCircleBasic"]]);
 
+        //level 1 rituals
         //create halfNote ritual
         this.halfNoteRitual = new Ritual(this,
             this.level1Map.findObject("rituals", obj => obj.name ==="halfdoor"), "ritualDoor", "up", [
@@ -208,6 +217,24 @@ class Play extends Phaser.Scene {
             [this.level1Map.findObject("rituals", obj => obj.name ==="sliced3"), "ritualSliced3"],
             [this.level1Map.findObject("rituals", obj => obj.name ==="sliced4"), "ritualSliced4"],
             [this.level1Map.findObject("rituals", obj => obj.name ==="sliced1"), "ritualSliced1"]]);
+
+
+        //level 2 rituals
+        //
+
+
+        //level 3 rituals
+        //ritual 1
+        this.lvl3Ritual1_1 = new Ritual(this,
+            this.level1Map.findObject("rituals", obj => obj.name ==="lvl3ritual1door2"), "ritualDoor", "up", [
+                [this.level1Map.findObject("rituals", obj => obj.name ==="lvl3ritual1circle1-3"), "level3ritual1-3"],
+                [this.level1Map.findObject("rituals", obj => obj.name ==="lvl3ritual1circle1-1"), "level3ritual1-1"],
+                [this.level1Map.findObject("rituals", obj => obj.name ==="lvl3ritual1circle1-2"), "level3ritual1-2"]]);
+        this.lvl3Ritual1_2 = new Ritual(this,
+            this.level1Map.findObject("rituals", obj => obj.name ==="lvl3ritual1door1"), "ritualDoor", "up", [
+                [this.level1Map.findObject("rituals", obj => obj.name ==="lvl3ritual1circle2-3"), "level3ritual2-3"],
+                [this.level1Map.findObject("rituals", obj => obj.name ==="lvl3ritual1circle2-1"), "level3ritual2-1"],
+                [this.level1Map.findObject("rituals", obj => obj.name ==="lvl3ritual1circle2-2"), "level3ritual2-2"]]);
 
         //create flower group
         this.flowerTrail = this.add.group({
@@ -313,21 +340,16 @@ class Play extends Phaser.Scene {
 
         this.updateObjects();       // updates a bunch of objects
 
-        
-              
+        this.updateRituals(); // updates all rituals
 
         this.physics.world.collide(this.player, this.wallLayer);
         this.physics.world.collide(this.player, this.ritual1Door);
         this.physics.world.collide(this.doppelganger, this.wallLayer);
 
-        this.simpleRitual1.update();
-        this.halfNoteRitual.update();
-        this.littleBigRitual.update();
-        this.slicedRitual.update();
-
         this.checkScares();
 
 
+        //check to see if player is going through a door
         this.doorCheck = this.level1Map.getTileAtWorldXY(this.player.x, this.player.y, false, this.camera, "doors");
         if(this.doorCheck != null) {
             if(this.doorCheck.properties.direction == "up") {
@@ -396,6 +418,33 @@ class Play extends Phaser.Scene {
             this.changeColor();
         }
 
+
+        //check to see if doppl is going through a door
+        this.doorCheck2 = this.level1Map.getTileAtWorldXY(this.doppelganger.x, this.doppelganger.y, false, this.camera, "doors");
+        if(this.doorCheck2 != null) {
+            if(this.doorCheck2.properties.direction == "up") {
+                this.doppelganger.y -= 3 * gridUnit;
+                console.log("door up");
+            }
+            else if(this.doorCheck2.properties.direction == "down") {
+                this.doppelganger.y += 3 * gridUnit;
+                console.log("door down");
+            }
+            else if(this.doorCheck2.properties.direction == "left") {
+                this.doppelganger.x -= 3 * gridUnit;
+                console.log("door left");
+            }
+            else if(this.doorCheck2.properties.direction == "right") {
+                this.doppelganger.x += 3 * gridUnit;
+                console.log("door right");
+            }
+        }
+        if(this.player.gridX * gridUnit - (gridUnit / 2) == this.dopplSend.x && this.player.gridY * gridUnit - (gridUnit / 2) == this.dopplSend.y) {
+            this.doppelganger.x = this.dopplRecieve.x;
+            this.doppelganger.y = this.dopplRecieve.y;
+            console.log("doppl sent");
+        }
+
         // moves the inventory every frame relative to the center of the camera so that it is in the same place
         this.updateInventoryLocation();
     }
@@ -408,6 +457,15 @@ class Play extends Phaser.Scene {
                 this.currentDialogueBox = undefined;
             }
         }
+    }
+
+    updateRituals() {
+        this.simpleRitual1.update();
+        this.halfNoteRitual.update();
+        this.littleBigRitual.update();
+        this.slicedRitual.update();
+        this.lvl3Ritual1_1.update();
+        this.lvl3Ritual1_2.update();
     }
 
     checkScares() {
