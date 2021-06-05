@@ -219,6 +219,8 @@ class CreditsScene extends Phaser.Scene {
             if (keySPACE.isDown) {
                 this.selectSound.play();
                 this.cameras.main.fadeOut(500).on("camerafadeoutcomplete", () => {
+                    this.sound.get("endcredit1").stop();
+                    this.sound.get("endcredit2").stop();
                     this.scene.start("menuScene");
                 });
             }
