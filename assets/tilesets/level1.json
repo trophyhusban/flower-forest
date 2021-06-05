@@ -579,6 +579,100 @@
                  "width":0,
                  "x":2528,
                  "y":1056
+                }, 
+                {
+                 "ellipse":true,
+                 "height":0,
+                 "id":92,
+                 "name":"lvl3ritual1circle1-1",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":1632,
+                 "y":6560
+                }, 
+                {
+                 "ellipse":true,
+                 "height":0,
+                 "id":93,
+                 "name":"lvl3ritual1circle1-2",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":1632,
+                 "y":6624
+                }, 
+                {
+                 "ellipse":true,
+                 "height":0,
+                 "id":94,
+                 "name":"lvl3ritual1circle1-3",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":1632,
+                 "y":6688
+                }, 
+                {
+                 "height":0,
+                 "id":95,
+                 "name":"lvl3ritual1door1",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":1632,
+                 "y":6432
+                }, 
+                {
+                 "ellipse":true,
+                 "height":0,
+                 "id":104,
+                 "name":"lvl3ritual1circle2-1",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":1888,
+                 "y":6560
+                }, 
+                {
+                 "ellipse":true,
+                 "height":0,
+                 "id":105,
+                 "name":"lvl3ritual1circle2-2",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":1888,
+                 "y":6624
+                }, 
+                {
+                 "ellipse":true,
+                 "height":0,
+                 "id":106,
+                 "name":"lvl3ritual1circle2-3",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":1888,
+                 "y":6688
+                }, 
+                {
+                 "height":0,
+                 "id":107,
+                 "name":"lvl3ritual1door2",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":1888,
+                 "y":6432
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -587,7 +681,7 @@
          "y":0
         }],
  "nextlayerid":11,
- "nextobjectid":92,
+ "nextobjectid":108,
  "orientation":"orthogonal",
  "properties":[
         {

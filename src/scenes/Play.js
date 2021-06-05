@@ -41,6 +41,12 @@ class Play extends Phaser.Scene {
         this.load.image("ritualSliced2", "./assets/gamepieces/slicedC/slicedC2.png");
         this.load.image("ritualSliced3", "./assets/gamepieces/slicedC/slicedC3.png");
         this.load.image("ritualSliced4", "./assets/gamepieces/slicedC/slicedC4.png");
+        this.load.image("level3ritual1-1", "./assets/gamepieces/level three/1/1left1.png");
+        this.load.image("level3ritual1-2", "./assets/gamepieces/level three/1/1left2.png");
+        this.load.image("level3ritual1-3", "./assets/gamepieces/level three/1/1left3.png");
+        this.load.image("level3ritual2-1", "./assets/gamepieces/level three/1/1right1.png");
+        this.load.image("level3ritual2-2", "./assets/gamepieces/level three/1/1right2.png");
+        this.load.image("level3ritual2-3", "./assets/gamepieces/level three/1/1right3.png");
         this.load.image("little big UI", "./assets/gamepieces/little2BigA/little2BigBig.png");
         this.load.image("little big note", "./assets/gamepieces/noteOne.png");
         this.load.image("sliced note", "./assets/gamepieces/slicedC/noteC.png");
@@ -179,6 +185,7 @@ class Play extends Phaser.Scene {
         this.ritual1Obj = this.level1Map.findObject("rituals", obj => obj.name ==="SimpleRitual1");
         this.simpleRitual1 = new Ritual(this, this.ritual1DoorObj, "ritualTree", "up", [[this.ritual1Obj, "ritualCircleBasic"]]);
 
+        //level 1 rituals
         //create halfNote ritual
         this.halfNoteRitual = new Ritual(this,
             this.level1Map.findObject("rituals", obj => obj.name ==="halfdoor"), "ritualDoor", "up", [
@@ -208,6 +215,24 @@ class Play extends Phaser.Scene {
             [this.level1Map.findObject("rituals", obj => obj.name ==="sliced3"), "ritualSliced3"],
             [this.level1Map.findObject("rituals", obj => obj.name ==="sliced4"), "ritualSliced4"],
             [this.level1Map.findObject("rituals", obj => obj.name ==="sliced1"), "ritualSliced1"]]);
+
+
+        //level 2 rituals
+        //
+
+
+        //level 3 rituals
+        //ritual 1
+        this.lvl3Ritual1_1 = new Ritual(this,
+            this.level1Map.findObject("rituals", obj => obj.name ==="lvl3ritual1door2"), "ritualDoor", "up", [
+                [this.level1Map.findObject("rituals", obj => obj.name ==="lvl3ritual1circle1-3"), "level3ritual1-3"],
+                [this.level1Map.findObject("rituals", obj => obj.name ==="lvl3ritual1circle1-1"), "level3ritual1-1"],
+                [this.level1Map.findObject("rituals", obj => obj.name ==="lvl3ritual1circle1-2"), "level3ritual1-2"]]);
+        this.lvl3Ritual1_2 = new Ritual(this,
+            this.level1Map.findObject("rituals", obj => obj.name ==="lvl3ritual1door1"), "ritualDoor", "up", [
+                [this.level1Map.findObject("rituals", obj => obj.name ==="lvl3ritual1circle2-3"), "level3ritual2-3"],
+                [this.level1Map.findObject("rituals", obj => obj.name ==="lvl3ritual1circle2-1"), "level3ritual2-1"],
+                [this.level1Map.findObject("rituals", obj => obj.name ==="lvl3ritual1circle2-2"), "level3ritual2-2"]]);
 
         //create flower group
         this.flowerTrail = this.add.group({
@@ -307,16 +332,13 @@ class Play extends Phaser.Scene {
         this.updateFootsteps();     // manages the footstep sounds
 
         this.updateObjects();       // updates a bunch of objects
+
+        this.updateRituals(); // updates all rituals
               
 
         this.physics.world.collide(this.player, this.wallLayer);
         this.physics.world.collide(this.player, this.ritual1Door);
         this.physics.world.collide(this.doppelganger, this.wallLayer);
-
-        this.simpleRitual1.update();
-        this.halfNoteRitual.update();
-        this.littleBigRitual.update();
-        this.slicedRitual.update();
 
         this.checkScares();
 
@@ -425,6 +447,15 @@ class Play extends Phaser.Scene {
                 this.currentDialogueBox = undefined;
             }
         }
+    }
+
+    updateRituals() {
+        this.simpleRitual1.update();
+        this.halfNoteRitual.update();
+        this.littleBigRitual.update();
+        this.slicedRitual.update();
+        this.lvl3Ritual1_1.update();
+        this.lvl3Ritual1_2.update();
     }
 
     checkScares() {
