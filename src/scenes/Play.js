@@ -41,12 +41,20 @@ class Play extends Phaser.Scene {
         this.load.image("ritualSliced2", "./assets/gamepieces/slicedC/slicedC2.png");
         this.load.image("ritualSliced3", "./assets/gamepieces/slicedC/slicedC3.png");
         this.load.image("ritualSliced4", "./assets/gamepieces/slicedC/slicedC4.png");
-        this.load.image("level3ritual1-1", "./assets/gamepieces/level three/1/1left1.png");
-        this.load.image("level3ritual1-2", "./assets/gamepieces/level three/1/1left2.png");
-        this.load.image("level3ritual1-3", "./assets/gamepieces/level three/1/1left3.png");
-        this.load.image("level3ritual2-1", "./assets/gamepieces/level three/1/1right1.png");
-        this.load.image("level3ritual2-2", "./assets/gamepieces/level three/1/1right2.png");
-        this.load.image("level3ritual2-3", "./assets/gamepieces/level three/1/1right3.png");
+        this.load.image("level3ritual1_1-1", "./assets/gamepieces/level three/1/1left1.png");
+        this.load.image("level3ritual1_1-2", "./assets/gamepieces/level three/1/1left2.png");
+        this.load.image("level3ritual1_1-3", "./assets/gamepieces/level three/1/1left3.png");
+        this.load.image("level3ritual1_2-1", "./assets/gamepieces/level three/1/1right1.png");
+        this.load.image("level3ritual1_2-2", "./assets/gamepieces/level three/1/1right2.png");
+        this.load.image("level3ritual1_2-3", "./assets/gamepieces/level three/1/1right3.png");
+        this.load.image("level3ritual4_1-4", "./assets/gamepieces/level three/4/4left1.png");
+        this.load.image("level3ritual4_1-1", "./assets/gamepieces/level three/4/4left2.png");
+        this.load.image("level3ritual4_1-2", "./assets/gamepieces/level three/4/4left3.png");
+        this.load.image("level3ritual4_1-3", "./assets/gamepieces/level three/4/4left4.png");
+        this.load.image("level3ritual4_2-4", "./assets/gamepieces/level three/4/4right1.png");
+        this.load.image("level3ritual4_2-1", "./assets/gamepieces/level three/4/4right2.png");
+        this.load.image("level3ritual4_2-2", "./assets/gamepieces/level three/4/4right3.png");
+        this.load.image("level3ritual4_2-3", "./assets/gamepieces/level three/4/4right4.png");
         this.load.image("little big UI", "./assets/gamepieces/little2BigA/little2BigBig.png");
         this.load.image("little big note", "./assets/gamepieces/noteOne.png");
         this.load.image("sliced note", "./assets/gamepieces/slicedC/noteC.png");
@@ -74,7 +82,7 @@ class Play extends Phaser.Scene {
         this.load.image("tileSheet", "./assets/tilesets/tilesheet.png");
         this.load.image("riverTiles", "./assets/tilesets/riverTile.png");
         this.load.image("moatTiles", "./assets/tilesets/moatTileSheet.png");
-        this.load.image("towerTiles", "./assets/tilesets/tower.png");
+        this.load.image("towerTiles", "./assets/tilesets/tower/tower3.png");
         this.load.tilemapTiledJSON("level1", "./assets/tilesets/level1.json");
         this.load.audio("footsteps", "./assets/sound/Footsteps.wav");
         this.load.audio("ritualFootsteps", "./assets/sound/TreeWalk.wav");
@@ -140,7 +148,7 @@ class Play extends Phaser.Scene {
         this.tileSet = this.level1Map.addTilesetImage("tilesheet", "tileSheet");
         this.riverTiles = this.level1Map.addTilesetImage("river", "riverTiles");
         this.moatTiles = this.level1Map.addTilesetImage("moat", "moatTiles");
-        this.towerTiles = this.level1Map.addTilesetImage("tower", "towerTiles");
+        this.towerTiles = this.level1Map.addTilesetImage("tower3", "towerTiles");
         levelWidth = 7;
         levelHeight = 10;
         this.camera.setBounds(0, 0, this.level1Map.displayWidth, this.level1Map.displayHeight);
@@ -227,15 +235,31 @@ class Play extends Phaser.Scene {
         //ritual 1
         this.lvl3Ritual1_1 = new Ritual(this,
             this.level1Map.findObject("rituals", obj => obj.name ==="lvl3ritual1door2"), "ritualDoor", "up", [
-                [this.level1Map.findObject("rituals", obj => obj.name ==="lvl3ritual1circle1-3"), "level3ritual1-3"],
-                [this.level1Map.findObject("rituals", obj => obj.name ==="lvl3ritual1circle1-1"), "level3ritual1-1"],
-                [this.level1Map.findObject("rituals", obj => obj.name ==="lvl3ritual1circle1-2"), "level3ritual1-2"]]);
+                [this.level1Map.findObject("rituals", obj => obj.name ==="lvl3ritual1circle1-3"), "level3ritual1_1-3"],
+                [this.level1Map.findObject("rituals", obj => obj.name ==="lvl3ritual1circle1-1"), "level3ritual1_1-1"],
+                [this.level1Map.findObject("rituals", obj => obj.name ==="lvl3ritual1circle1-2"), "level3ritual1_1-2"]]);
         this.lvl3Ritual1_2 = new Ritual(this,
             this.level1Map.findObject("rituals", obj => obj.name ==="lvl3ritual1door1"), "ritualDoor", "up", [
-                [this.level1Map.findObject("rituals", obj => obj.name ==="lvl3ritual1circle2-3"), "level3ritual2-3"],
-                [this.level1Map.findObject("rituals", obj => obj.name ==="lvl3ritual1circle2-1"), "level3ritual2-1"],
-                [this.level1Map.findObject("rituals", obj => obj.name ==="lvl3ritual1circle2-2"), "level3ritual2-2"]]);
+                [this.level1Map.findObject("rituals", obj => obj.name ==="lvl3ritual1circle2-3"), "level3ritual1_2-3"],
+                [this.level1Map.findObject("rituals", obj => obj.name ==="lvl3ritual1circle2-1"), "level3ritual1_2-1"],
+                [this.level1Map.findObject("rituals", obj => obj.name ==="lvl3ritual1circle2-2"), "level3ritual1_2-2"]]);
 
+        //ritual 4
+        this.lvl3Ritual4_1 = new Ritual(this,
+            this.level1Map.findObject("rituals", obj => obj.name ==="lvl3ritual4door2"), "ritualDoor", "up", [
+                [this.level1Map.findObject("rituals", obj => obj.name ==="lvl3ritual4circle1-4"), "level3ritual4_1-4"],
+                [this.level1Map.findObject("rituals", obj => obj.name ==="lvl3ritual4circle1-1"), "level3ritual4_1-1"],
+                [this.level1Map.findObject("rituals", obj => obj.name ==="lvl3ritual4circle1-3"), "level3ritual4_1-3"]], [
+                    [this.level1Map.findObject("rituals", obj => obj.name ==="lvl3ritual4circle1-2"), "level3ritual4_1-2"]
+                ]);
+        this.lvl3Ritual4_2 = new Ritual(this,
+            this.level1Map.findObject("rituals", obj => obj.name ==="lvl3ritual4door1"), "ritualDoor", "up", [
+                [this.level1Map.findObject("rituals", obj => obj.name ==="lvl3ritual4circle2-4"), "level3ritual4_2-4"],
+                [this.level1Map.findObject("rituals", obj => obj.name ==="lvl3ritual4circle2-1"), "level3ritual4_2-1"],
+                [this.level1Map.findObject("rituals", obj => obj.name ==="lvl3ritual4circle2-3"), "level3ritual4_2-3"]], [
+                    [this.level1Map.findObject("rituals", obj => obj.name ==="lvl3ritual4circle2-2"), "level3ritual4_2-2"]
+                ]);
+        
         //create flower group
         this.flowerTrail = this.add.group({
             runChildUpdate: true
@@ -466,6 +490,8 @@ class Play extends Phaser.Scene {
         this.slicedRitual.update();
         this.lvl3Ritual1_1.update();
         this.lvl3Ritual1_2.update();
+        this.lvl3Ritual4_1.update();
+        this.lvl3Ritual4_2.update();
     }
 
     checkScares() {
