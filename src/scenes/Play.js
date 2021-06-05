@@ -146,6 +146,7 @@ class Play extends Phaser.Scene {
 
         // it starts at zoom 8, really close up. i tween it to zoom 1 after a short delay
         this.camera.zoom = 8;
+        this.zoomedOut = false;
 
         // fade in from black from the Menu scene
         this.camera.fadeIn(500);
@@ -420,8 +421,10 @@ class Play extends Phaser.Scene {
             console.log("doppl sent");
         }
         if(this.doppelganger.gridX * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="syncPlace3").x 
-            && this.doppelganger.gridY * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="syncPlace3").y) {
+            && this.doppelganger.gridY * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="syncPlace3").y
+            && !this.zoomedOut) {
             //zoom out camera to catch tower
+            this.zoomedOut = true;
             this.cameraZoomOut2 = this.tweens.add({
                 targets: [this.camera],
                 zoom: 0.85,
@@ -429,6 +432,15 @@ class Play extends Phaser.Scene {
                 duration: 2500,
                 delay: 1000,
                 ease: "Quad.easeOut"
+            }).on("complete", () => {
+                this.cameraZoomIn = this.tweens.add({
+                    targets: [this.camera],
+                    zoom: 1,
+                    scrollY: this.camera.worldView.y + (gridUnit / 2),
+                    duration: 2500,
+                    delay: 4000,
+                    ease: "Quad.easeInOut"
+                });
             });
         }
 
