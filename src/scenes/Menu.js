@@ -13,6 +13,7 @@ class Menu extends Phaser.Scene {
             {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 6});
         this.load.json("text JSON", "./assets/text/text.json");
         this.load.audio("select", "./assets/sound/Select.wav");
+        this.load.audio("titlemusic", "./assets/sound/TitleScreenMusic.wav");
     }
     create() {
 
@@ -25,6 +26,10 @@ class Menu extends Phaser.Scene {
         // play a sound
         this.select = this.sound.add("select");
         this.select.setVolume(1.5);
+
+        this.titlemusic = this.sound.add("titlemusic");
+        this.titlemusic.play();
+        this.titlemusic.setLoop(true);
 
         this.add.sprite(0, 0, "menu ui").setOrigin(0, 0);
 
@@ -53,6 +58,7 @@ class Menu extends Phaser.Scene {
         
         this.input.keyboard.on("keydown-SPACE", () => {
             this.select.play();
+            this.sound.get("titlemusic").stop();
             this.cameras.main.fadeOut(500).on("camerafadeoutcomplete", () => {
                 this.scene.start("playScene");
             });
