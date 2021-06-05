@@ -1108,8 +1108,7 @@ class Play extends Phaser.Scene {
                 this.camCenterX - config.width/2 + i*64,    // starting from the left side of the screen
                 this.camCenterY - config.height/2,          // the top of the screen
                 "inventory box"
-            ).setOrigin(0, 0));
-            this.inventoryBoxArray[i].alpha = .8;
+            ).setOrigin(0, 0).setDepth(150).setAlpha(.5));
         }
     }
 

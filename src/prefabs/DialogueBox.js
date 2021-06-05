@@ -90,6 +90,8 @@ class DialogueBox {
             this.speakingSound.setLoop(true);
             this.speakingSound.volume = masterSFXVolume;
         }
+
+        this.count = 0;
     }
 
     drawText() {    // this scene has a lot of sprites so i will walk thru all of them
@@ -140,33 +142,43 @@ class DialogueBox {
     // i might add a feature in the future to skip the text that is currently coming in 
     nextPage() {
 
-        // this is the entire point of this function LOL
-        this.currentPage ++;
+        // first, if the text isn't finished being drawn, instead of changing the page, the text that isn't drawn yet fully gets drawn
+        // 
+        // these conditionals match the conditionals in nextLetter()
+        if (this.choiceObject == undefined 
+            && this.text != "" 
+            && this.currentSliceIndex <= this.text[this.currentPage].length) {
 
-        // if there is another page in this.text to display
-        if (this.currentPage < this.text.length) {
-            this.currentSliceIndex = 0;     // resets the current slice index so we draw none of the text on the first frame
-            this.currentText.destroy();     // destroy the current text so that we can get the new one
-            this.updateText();              // add the new page of text to the screen
-
-        // if there is no more pages of text to display
+                // this sets the slice of this.text[this.currentPage] to the end of that string
+                this.currentSliceIndex = this.text[this.currentPage].length -1;
         } else {
-            if (this.choice == false) {
-                this.currentText.destroy();     // destroy the text object
-                this.textBox.destroy();         // destroy the text box sprite
-                this.textBoxTail.destroy();     // destroy the tail sprite
-                this.speakingSound.pause();     // pause the talking sound (if it is not paused already)
-                this.NPC.stop();
+            // this is the entire point of this function LOL
+            this.currentPage ++;
 
-                // none of this is necessary because the scene is about to end but i like the drama of using destroy()
+            // if there is another page in this.text to display
+            if (this.currentPage < this.text.length) {
+                this.currentSliceIndex = 0;     // resets the current slice index so we draw none of the text on the first frame
+                this.currentText.destroy();     // destroy the current text so that we can get the new one
+                this.updateText();              // add the new page of text to the screen
 
-                // so that when nextLetter() is called, it marks all text as being read
-                this.text = "";
-            } else if (this.choiceObject == undefined) {
-                this.choiceObject = new ChoiceManager(this.scene, this);
+            // if there is no more pages of text to display
+            } else {
+                if (this.choice == false) {
+                    this.currentText.destroy();     // destroy the text object
+                    this.textBox.destroy();         // destroy the text box sprite
+                    this.textBoxTail.destroy();     // destroy the tail sprite
+                    this.speakingSound.pause();     // pause the talking sound (if it is not paused already)
+                    this.NPC.stop();
+
+                    // none of this is necessary because the scene is about to end but i like the drama of using destroy()
+
+                    // so that when nextLetter() is called, it marks all text as being read
+                    this.text = "";
+                } else if (this.choiceObject == undefined) {
+                    this.choiceObject = new ChoiceManager(this.scene, this);
+                }
             }
         }
-
     }
 
     updateText() {
@@ -190,7 +202,7 @@ class DialogueBox {
 
             // this.text becomes an empty string if the player advances to the next page while there are no pages left
             if (this.text != "") {
-                
+
                 // if the NPC is a choice npc, (which only appears at the very end) we don't need to play SFX or animate anything
                 if (this.choice == false && this.speakingSound.isPlaying == false) {  
                     this.speakingSound.play();
