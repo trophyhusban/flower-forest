@@ -148,16 +148,19 @@ class NPC extends Phaser.Physics.Arcade.Sprite {
 
     checkNextToPlayer() {   // this code gets run every frame on every NPC
 
-        // if the y is the same, than we need to check to see if the x is one greater than or less than it
-        if (this.gridY == this.player.gridY) { 
-            if (this.gridX == this.player.gridX + 1 || this.gridX == this.player.gridX - 1) {
-                return true;
-            }
-        
-        // if the x is the same, than we need to check to see if the y is one greater than or less than it
-        } else if (this.gridX == this.player.gridX) {
-            if (this.gridY == this.player.gridY + 1 || this.gridY == this.player.gridY - 1) {
-                return true;
+        //only check when player isn't moving
+        if (this.player.body.speed == 0) {
+            // if the y is the same, than we need to check to see if the x is one greater than or less than it
+            if (this.gridY == this.player.gridY) { 
+                if (this.gridX == this.player.gridX + 1 || this.gridX == this.player.gridX - 1) {
+                    return true;
+                }
+            
+            // if the x is the same, than we need to check to see if the y is one greater than or less than it
+            } else if (this.gridX == this.player.gridX) {
+                if (this.gridY == this.player.gridY + 1 || this.gridY == this.player.gridY - 1) {
+                    return true;
+                }
             }
         }
         return false;
