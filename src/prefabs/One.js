@@ -204,13 +204,6 @@ class One extends Phaser.Physics.Arcade.Sprite {
                         this.anims.play("oneWalk_Left");
                     }
                 }
-
-                //console.log(Phaser.Math.RadToDeg(this.body.angle));
-                // if(Phaser.Math.RadToDeg(this.body.angle) == 0 && this.body.speed != 0) {
-                // } else if(Phaser.Math.RadToDeg(this.body.angle) == -90 && this.body.speed != 0) {
-                // } else if(Phaser.Math.RadToDeg(this.body.angle) == 180 && this.body.speed != 0) {
-                // } else if(Phaser.Math.RadToDeg(this.body.angle) == 90 && this.body.speed != 0) {
-                // }
             }
         }
 
