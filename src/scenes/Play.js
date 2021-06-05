@@ -494,11 +494,13 @@ class Play extends Phaser.Scene {
             this.doppelganger.y = this.level1Map.findObject("triggers", obj => obj.name ==="syncPlace1").y;
             console.log("doppl sent");
         }
-        if(this.player.gridX * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="syncCheck2").x 
-            && this.player.gridY * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="syncCheck2").y) {
-            this.doppelganger.x = this.level1Map.findObject("triggers", obj => obj.name ==="syncPlace2").x;
-            this.doppelganger.y = this.level1Map.findObject("triggers", obj => obj.name ==="syncPlace2").y;
-            console.log("doppl sent");
+        if(this.doppelganger.gridX * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="syncCheck2").x 
+            && this.doppelganger.gridY * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="syncCheck2").y) {
+            this.player.x = this.level1Map.findObject("triggers", obj => obj.name ==="syncPlace2").x;
+            this.player.y = this.level1Map.findObject("triggers", obj => obj.name ==="syncPlace2").y;
+            this.camCenterY -= (gridSize * gridUnit);
+            this.camera.centerOn(this.camCenterX, this.camCenterY);
+            this.changeColor();
         }
         if(this.player.gridX * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="syncCheck3").x 
             && this.player.gridY * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="syncCheck3").y) {
