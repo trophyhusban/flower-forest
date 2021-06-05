@@ -1111,7 +1111,7 @@ class Play extends Phaser.Scene {
             this,
             this.player,
             2462,
-            4700,
+            4636,
             ["altar"],
             0,
             textJSON.altar,

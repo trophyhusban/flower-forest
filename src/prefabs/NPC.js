@@ -53,6 +53,7 @@ class NPC extends Phaser.Physics.Arcade.Sprite {
         }
         
         this.scene.physics.world.collide(this, this.player);
+        this.scene.physics.world.collide(this, this.scene.doppelganger);
 
     }
 
