@@ -88,7 +88,7 @@ class Play extends Phaser.Scene {
         this.load.image("tileSheet", "./assets/tilesets/tilesheet.png");
         this.load.image("riverTiles", "./assets/tilesets/riverTile.png");
         this.load.image("moatTiles", "./assets/tilesets/moatTileSheet.png");
-        this.load.image("towerTiles", "./assets/tilesets/tower/tower3.png");
+        this.load.image("towerTiles", "./assets/tilesets/tower/tower5.png");
         this.load.tilemapTiledJSON("level1", "./assets/tilesets/level1.json");
         this.load.audio("footsteps", "./assets/sound/Footsteps.wav");
         this.load.audio("ritualFootsteps", "./assets/sound/TreeWalk.wav");
@@ -154,7 +154,7 @@ class Play extends Phaser.Scene {
         this.tileSet = this.level1Map.addTilesetImage("tilesheet", "tileSheet");
         this.riverTiles = this.level1Map.addTilesetImage("river", "riverTiles");
         this.moatTiles = this.level1Map.addTilesetImage("moat", "moatTiles");
-        this.towerTiles = this.level1Map.addTilesetImage("tower3", "towerTiles");
+        this.towerTiles = this.level1Map.addTilesetImage("tower5", "towerTiles");
         levelWidth = 7;
         levelHeight = 10;
         this.camera.setBounds(0, 0, this.level1Map.displayWidth, this.level1Map.displayHeight);
@@ -507,6 +507,17 @@ class Play extends Phaser.Scene {
             this.doppelganger.x = this.level1Map.findObject("triggers", obj => obj.name ==="syncPlace3").x;
             this.doppelganger.y = this.level1Map.findObject("triggers", obj => obj.name ==="syncPlace3").y;
             console.log("doppl sent");
+        }
+        if(this.doppelganger.gridX * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="syncPlace3").x 
+            && this.doppelganger.gridY * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="syncPlace3").y) {
+            //zoom out camera to catch tower
+            this.cameraZoomOut2 = this.tweens.add({
+                targets: [this.camera],
+                zoom: {from: 1, to: 0.9},
+                duration: 10, // 2500
+                delay: 10,    // 2000
+                ease: "Quad.easeInOut"
+            });
         }
 
         // moves the inventory every frame relative to the center of the camera so that it is in the same place
