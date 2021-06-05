@@ -44,6 +44,12 @@ class Play extends Phaser.Scene {
         this.load.image("level3ritual1_1-1", "./assets/gamepieces/level three/1/1left1.png");
         this.load.image("level3ritual1_1-2", "./assets/gamepieces/level three/1/1left2.png");
         this.load.image("level3ritual1_1-3", "./assets/gamepieces/level three/1/1left3.png");
+        this.load.image("level3ritual2_1", "./assets/gamepieces/level three/2/2left1.png");
+        this.load.image("level3ritual2_2", "./assets/gamepieces/level three/2/2left2.png");
+        this.load.image("level3ritual2_3", "./assets/gamepieces/level three/2/2right1.png");
+        this.load.image("level3ritual3_1", "./assets/gamepieces/level three/3/3left1.png");
+        this.load.image("level3ritual3_2", "./assets/gamepieces/level three/3/3right1.png");
+        this.load.image("level3ritual3_3", "./assets/gamepieces/level three/3/3right2.png");
         this.load.image("level3ritual1_2-1", "./assets/gamepieces/level three/1/1right1.png");
         this.load.image("level3ritual1_2-2", "./assets/gamepieces/level three/1/1right2.png");
         this.load.image("level3ritual1_2-3", "./assets/gamepieces/level three/1/1right3.png");
@@ -243,6 +249,20 @@ class Play extends Phaser.Scene {
                 [this.level1Map.findObject("rituals", obj => obj.name ==="lvl3ritual1circle2-3"), "level3ritual1_2-3"],
                 [this.level1Map.findObject("rituals", obj => obj.name ==="lvl3ritual1circle2-1"), "level3ritual1_2-1"],
                 [this.level1Map.findObject("rituals", obj => obj.name ==="lvl3ritual1circle2-2"), "level3ritual1_2-2"]]);
+
+        //ritual 2
+        this.lvl3Ritual2 = new Ritual(this,
+            this.level1Map.findObject("rituals", obj => obj.name ==="lvl3ritual2door"), "ritualDoor", "right", [
+                [this.level1Map.findObject("rituals", obj => obj.name ==="lvl3ritual2circle3"), "level3ritual2_2"],
+                [this.level1Map.findObject("rituals", obj => obj.name ==="lvl3ritual2circle2"), "level3ritual2_3"],
+                [this.level1Map.findObject("rituals", obj => obj.name ==="lvl3ritual2circle1"), "level3ritual2_1"]]);
+        
+        //ritual 3
+        this.lvl3Ritual3 = new Ritual(this,
+            this.level1Map.findObject("rituals", obj => obj.name ==="lvl3ritual3door"), "ritualDoor", "up", [
+                [this.level1Map.findObject("rituals", obj => obj.name ==="lvl3ritual3circle1"), "level3ritual3_2"],
+                [this.level1Map.findObject("rituals", obj => obj.name ==="lvl3ritual3circle2"), "level3ritual3_1"],
+                [this.level1Map.findObject("rituals", obj => obj.name ==="lvl3ritual3circle3"), "level3ritual3_3"]]);
 
         //ritual 4
         this.lvl3Ritual4_1 = new Ritual(this,
@@ -468,6 +488,24 @@ class Play extends Phaser.Scene {
             this.doppelganger.y = this.dopplRecieve.y;
             console.log("doppl sent");
         }
+        if(this.player.gridX * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="syncCheck1").x 
+            && this.player.gridY * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="syncCheck1").y) {
+            this.doppelganger.x = this.level1Map.findObject("triggers", obj => obj.name ==="syncPlace1").x;
+            this.doppelganger.y = this.level1Map.findObject("triggers", obj => obj.name ==="syncPlace1").y;
+            console.log("doppl sent");
+        }
+        if(this.player.gridX * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="syncCheck2").x 
+            && this.player.gridY * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="syncCheck2").y) {
+            this.doppelganger.x = this.level1Map.findObject("triggers", obj => obj.name ==="syncPlace2").x;
+            this.doppelganger.y = this.level1Map.findObject("triggers", obj => obj.name ==="syncPlace2").y;
+            console.log("doppl sent");
+        }
+        if(this.player.gridX * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="syncCheck3").x 
+            && this.player.gridY * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="syncCheck3").y) {
+            this.doppelganger.x = this.level1Map.findObject("triggers", obj => obj.name ==="syncPlace3").x;
+            this.doppelganger.y = this.level1Map.findObject("triggers", obj => obj.name ==="syncPlace3").y;
+            console.log("doppl sent");
+        }
 
         // moves the inventory every frame relative to the center of the camera so that it is in the same place
         this.updateInventoryLocation();
@@ -490,6 +528,8 @@ class Play extends Phaser.Scene {
         this.slicedRitual.update();
         this.lvl3Ritual1_1.update();
         this.lvl3Ritual1_2.update();
+        this.lvl3Ritual2.update();
+        this.lvl3Ritual3.update();
         this.lvl3Ritual4_1.update();
         this.lvl3Ritual4_2.update();
     }
