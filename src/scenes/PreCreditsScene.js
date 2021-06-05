@@ -77,7 +77,7 @@ class PreCreditsScene extends Phaser.Scene {
 
         }
 
-        else {
+        else if (option == 0) {
             this.endcredit2 = this.sound.add("endcredit2");
             this.endcredit2.play();
             this.endcredit2.setLoop(true);
