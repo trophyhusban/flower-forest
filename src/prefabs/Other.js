@@ -80,7 +80,7 @@ class Other extends Phaser.Physics.Arcade.Sprite {
     }
 
     plant() {
-        if(!this.plantCooldown && !this.nextToNPC) {
+        if(!this.plantCooldown && !this.nextToNPC && this.scene.currentDialogueBox == undefined) {
             console.log("plant");
             if(!this.plantCooldown) {
                 this.plantCooldown = true;
