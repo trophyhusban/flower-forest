@@ -392,6 +392,44 @@ class Play extends Phaser.Scene {
 
         this.checkScares();
 
+        
+        //keep the doppelganger and player synchronized through level 3
+        if(this.player.gridX * gridUnit - (gridUnit / 2) == this.dopplSend.x && this.player.gridY * gridUnit - (gridUnit / 2) == this.dopplSend.y) {
+            this.doppelganger.x = this.dopplRecieve.x;
+            this.doppelganger.y = this.dopplRecieve.y;
+            console.log("doppl sent");
+        }
+        if(this.player.gridX * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="syncCheck1").x 
+            && this.player.gridY * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="syncCheck1").y) {
+            this.doppelganger.x = this.level1Map.findObject("triggers", obj => obj.name ==="syncPlace1").x;
+            this.doppelganger.y = this.level1Map.findObject("triggers", obj => obj.name ==="syncPlace1").y;
+            console.log("doppl sent");
+        }
+        if(this.doppelganger.gridX * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="syncCheck2").x 
+            && this.doppelganger.gridY * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="syncCheck2").y) {
+            this.player.x = this.level1Map.findObject("triggers", obj => obj.name ==="syncPlace2").x;
+            this.player.y = this.level1Map.findObject("triggers", obj => obj.name ==="syncPlace2").y;
+            this.camCenterY -= (gridSize * gridUnit);
+            this.camera.centerOn(this.camCenterX, this.camCenterY);
+            this.changeColor();
+        }
+        if(this.player.gridX * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="syncCheck3").x 
+            && this.player.gridY * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="syncCheck3").y) {
+            this.doppelganger.x = this.level1Map.findObject("triggers", obj => obj.name ==="syncPlace3").x;
+            this.doppelganger.y = this.level1Map.findObject("triggers", obj => obj.name ==="syncPlace3").y;
+            console.log("doppl sent");
+        }
+        if(this.doppelganger.gridX * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="syncPlace3").x 
+            && this.doppelganger.gridY * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="syncPlace3").y) {
+            //zoom out camera to catch tower
+            this.cameraZoomOut2 = this.tweens.add({
+                targets: [this.camera],
+                zoom: {from: 1, to: 0.9},
+                duration: 10, // 2500
+                delay: 10,    // 2000
+                ease: "Quad.easeInOut"
+            });
+        }
 
         //check to see if player is going through a door
         this.doorCheck = this.level1Map.getTileAtWorldXY(this.player.x, this.player.y, false, this.camera, "doors");
@@ -482,42 +520,6 @@ class Play extends Phaser.Scene {
                 this.doppelganger.x += 3 * gridUnit;
                 console.log("door right");
             }
-        }
-        if(this.player.gridX * gridUnit - (gridUnit / 2) == this.dopplSend.x && this.player.gridY * gridUnit - (gridUnit / 2) == this.dopplSend.y) {
-            this.doppelganger.x = this.dopplRecieve.x;
-            this.doppelganger.y = this.dopplRecieve.y;
-            console.log("doppl sent");
-        }
-        if(this.player.gridX * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="syncCheck1").x 
-            && this.player.gridY * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="syncCheck1").y) {
-            this.doppelganger.x = this.level1Map.findObject("triggers", obj => obj.name ==="syncPlace1").x;
-            this.doppelganger.y = this.level1Map.findObject("triggers", obj => obj.name ==="syncPlace1").y;
-            console.log("doppl sent");
-        }
-        if(this.doppelganger.gridX * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="syncCheck2").x 
-            && this.doppelganger.gridY * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="syncCheck2").y) {
-            this.player.x = this.level1Map.findObject("triggers", obj => obj.name ==="syncPlace2").x;
-            this.player.y = this.level1Map.findObject("triggers", obj => obj.name ==="syncPlace2").y;
-            this.camCenterY -= (gridSize * gridUnit);
-            this.camera.centerOn(this.camCenterX, this.camCenterY);
-            this.changeColor();
-        }
-        if(this.player.gridX * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="syncCheck3").x 
-            && this.player.gridY * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="syncCheck3").y) {
-            this.doppelganger.x = this.level1Map.findObject("triggers", obj => obj.name ==="syncPlace3").x;
-            this.doppelganger.y = this.level1Map.findObject("triggers", obj => obj.name ==="syncPlace3").y;
-            console.log("doppl sent");
-        }
-        if(this.doppelganger.gridX * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="syncPlace3").x 
-            && this.doppelganger.gridY * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="syncPlace3").y) {
-            //zoom out camera to catch tower
-            this.cameraZoomOut2 = this.tweens.add({
-                targets: [this.camera],
-                zoom: {from: 1, to: 0.9},
-                duration: 10, // 2500
-                delay: 10,    // 2000
-                ease: "Quad.easeInOut"
-            });
         }
 
         // moves the inventory every frame relative to the center of the camera so that it is in the same place
