@@ -110,6 +110,8 @@ class Play extends Phaser.Scene {
         this.load.audio("talking puck", "./assets/sound/CharacterSpeak.wav");
         this.load.audio("talking titania", "./assets/sound/TalkingTitania.wav");
         this.load.audio("talking flowerfae", "./assets/sound/TalkingFlower.wav");
+
+        this.load.image("inventory box", "./assets/ui/inventory_box.png");
     }
     create() {
 
@@ -294,6 +296,11 @@ class Play extends Phaser.Scene {
         this.input.keyboard.on("keydown-L", () => {
             this.nextColor();
         });
+
+        // the "inventory" is just four sprites that have the note sprites on top of them
+        // the main function of the inventory is to visually show players how many notes they have collected
+        // it also tells the players exactly what the tutorial keys for the note manager do
+        this.initializeInventory();
     }
 
     update() {
@@ -305,6 +312,8 @@ class Play extends Phaser.Scene {
         this.updateFootsteps();     // manages the footstep sounds
 
         this.updateObjects();       // updates a bunch of objects
+
+        
               
 
         this.physics.world.collide(this.player, this.wallLayer);
@@ -386,6 +395,9 @@ class Play extends Phaser.Scene {
             this.camera.centerOn(this.camCenterX, this.camCenterY);
             this.changeColor();
         }
+
+        // moves the inventory every frame relative to the center of the camera so that it is in the same place
+        this.updateInventoryLocation();
     }
 
     updateDialogueBox() {
@@ -943,5 +955,35 @@ class Play extends Phaser.Scene {
         );
 
         this.NPCArray.push(this.choiceTest);
+    }
+
+    initializeInventory() {
+
+        // an array of sprites that are below the sprites for the notes
+        this.inventoryBoxArray = [];
+
+        // an array of sprites that is the notes, above the box array
+        this.inventoryNoteArray = [];
+
+        // adds four identical sprites to the top left of the screen
+        for (let i = 0; i < 4; i++) {
+            this.inventoryBoxArray.push(this.add.sprite(
+                this.camCenterX - config.width/2 + i*64,    // starting from the left side of the screen
+                this.camCenterY - config.height/2,          // the top of the screen
+                "inventory box"
+            ).setOrigin(0, 0));
+            this.inventoryBoxArray[i].alpha = .8;
+        }
+    }
+
+    updateInventoryLocation() {
+        for (let i = 0; i < this.inventoryBoxArray.length; i++) {
+            this.inventoryBoxArray[i].x = this.camCenterX - config.width/2 + i*64;
+            this.inventoryBoxArray[i].y = this.camCenterY - config.height/2;
+        }
+        for (let i = 0; i < this.inventoryNoteArray.length; i++) {
+            this.inventoryNoteArray[i].x = this.camCenterX - config.width/2 + i*64;
+            this.inventoryNoteArray[i].y = this.camCenterY - config.height/2;
+        }
     }
 }

@@ -42,6 +42,8 @@ class NPC extends Phaser.Physics.Arcade.Sprite {
         this.scene.input.keyboard.on("keydown-SPACE", () => {
             this.handleInput();
         });
+
+        this.key = texture[0];
     }
 
     update() {
@@ -121,6 +123,12 @@ class NPC extends Phaser.Physics.Arcade.Sprite {
         if (this.scene.noteManager.noteArray.includes(this.content) == false) {
             this.scene.noteManager.noteArray.push(this.content);
 
+            this.scene.inventoryNoteArray.push(this.scene.add.sprite(
+                0, 
+                0,
+                this.key
+            ).setOrigin(0, 0).setDepth(150));
+
             // also create a tutorial key on screen for the key that opens the new note <3
             // the new note is made now but because we pause the play scene in 5 lines, it doesn't show up until the player
             // leaves the note scene
@@ -152,16 +160,18 @@ class NPC extends Phaser.Physics.Arcade.Sprite {
     createTutorialKeyForNote(numberKey) {
         this.numberName = numberKey.toString();
 
+        console.log(numberKey);
+
         // make a new tutorial key for the specific number
         this.tutorialKey = new TutorialKey(
             this.scene,
-            this.scene.camCenterX,
-            this.scene.camCenterY - config.height/2 + uiUnit*4 - 400,
+            this.scene.camCenterX - config.width/2 + 64 * (numberKey - 1) + 32,
+            this.scene.camCenterY - config.height/2 + uiUnit*2 - 400,
             this.numberName + " key",
             0,
             "up",
             this.numberName
-        ).setDepth(200);
+        ).setDepth(140).setOrigin(.5, 0);
 
         // make it blink a little 
         this.scene.add.tween({
@@ -175,7 +185,7 @@ class NPC extends Phaser.Physics.Arcade.Sprite {
         // move it into place
         this.scene.add.tween({
             targets: [this.tutorialKey],
-            y: this.scene.camCenterY - config.height/2 + uiUnit*4,
+            y: this.scene.camCenterY - config.height/2 + uiUnit*2,
             duration: 1500,
             ease: "Quad.easeOut",
         });
