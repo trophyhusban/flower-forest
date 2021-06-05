@@ -132,6 +132,10 @@ class Play extends Phaser.Scene {
         this.load.audio("talking flowerfae", "./assets/sound/TalkingFlower.wav");
 
         this.load.image("inventory box", "./assets/ui/inventory_box.png");
+
+        this.load.image("altar", "./assets/gamepieces/altar.png");
+        this.load.spritesheet("pond", "./assets/gamepieces/altarPond.png",
+            {frameWidth: 64, frameHeight:64, startFrame:0, endFrame: 1});
     }
     create() {
 
@@ -849,6 +853,14 @@ class Play extends Phaser.Scene {
             frameRate: 2,
             repeat: -1
         });
+
+        this.anims.create({
+            key: "pond",
+            frames: this.anims.generateFrameNumbers("pond",
+                {start: 0, end: 1, first: 0}),
+            frameRate: 2,
+            repeat: -1
+        });
     }
 
     changeColor() {
@@ -1095,18 +1107,24 @@ class Play extends Phaser.Scene {
 
         this.NPCArray.push(this.puckNPC2);
 
-        this.choiceTest = new NPC(
+        this.altar = new NPC(
             this,
             this.player,
-            this.player.x - 128,
-            this.player.y,
-            ["titania", "titaniaTalking"],
+            2462,
+            4700,
+            ["altar"],
             0,
-            ["text before the choice is made goes here"],
+            textJSON.altar,
             "choice"
-        );
+        ).setDepth(5);
 
-        this.NPCArray.push(this.choiceTest);
+        this.NPCArray.push(this.altar);
+
+        this.pond = this.add.sprite(
+            this.altar.x,
+            this.altar.y,
+            "pond"
+        ).setOrigin(0, 0).play("pond");
     }
 
     initializeInventory() {
