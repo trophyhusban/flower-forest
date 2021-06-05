@@ -394,6 +394,12 @@ class Play extends Phaser.Scene {
         this.physics.world.collide(this.player, this.wallLayer);
         this.physics.world.collide(this.player, this.ritual1Door);
         this.physics.world.collide(this.doppelganger, this.wallLayer);
+        this.physics.world.collide(this.doppelganger, this.player, (other, one) => {
+            if(other.violent) {
+                //reset player if the doppelganger is in kill mode
+                console.log("kill!");
+            }
+        });
 
         this.checkScares();
 

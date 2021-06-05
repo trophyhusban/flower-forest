@@ -14,6 +14,7 @@ class Other extends Phaser.Physics.Arcade.Sprite {
         this.currentInstruction = "";
         this.gridX = 0;
         this.gridY = 0;
+        this.violent = false;
         this.scene = scene;
         scene.add.existing(this);
         scene.physics.add.existing(this);
