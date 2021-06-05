@@ -142,6 +142,7 @@ class Ritual {
             this.scene.player.stopped = true;
             this.scene.doppelganger.stopped = true;
 
+            this.scene.camera.shake(this.walkTime, 0.001);
             this.walking = true;
             this.walkSFX.play();
             this.scene.time.delayedCall(this.walkTime / 2, () =>{this.walkSFX.play();});
@@ -208,6 +209,8 @@ class Ritual {
                 } else if(this.doorTexture == "ritualDoor") {
                     this.door.anims.play("doorWalk");
                 }
+
+                this.scene.camera.shake(this.walkTime, 0.001);
                 this.walkSFX.play();
                 this.scene.time.delayedCall(this.walkTime / 2, () =>{this.walkSFX.play();});
                 if(this.doorDirection == "up") {
