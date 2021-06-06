@@ -301,8 +301,9 @@ class Play extends Phaser.Scene {
             this.level1Map.findObject("triggers", obj => obj.name ==="warpLvl2Cam4-1")
         );
 
-        //create end of level trigger
+        //create end of level triggers
         this.endLevel1 = this.level1Map.findObject("triggers", obj => obj.name ==="levelEnd");
+        this.endLevel2 = this.level1Map.findObject("triggers", obj => obj.name ==="Level2End");
 
         //create simple rituals
         this.simpleRitual1 = new Ritual(this, 
@@ -631,10 +632,25 @@ class Play extends Phaser.Scene {
             console.log("warp2up");
             this.changeColor();
         }
+
+        //end level 1
         if(this.player.gridX * gridUnit - (gridUnit / 2) == this.endLevel1.x && this.player.gridY * gridUnit - (gridUnit / 2) == this.endLevel1.y) {
             this.add.text(this.camCenterX - (gridSize * gridUnit) / 4,
                 this.camCenterY,
                 "Thank you for completing\nthe Level 1 demo.",
+                textConfig);
+            this.camCenterX = this.level1Map.findObject("triggers", obj => obj.name ==="SpawnpointLvl2").x;
+            this.camCenterY = this.level1Map.findObject("triggers", obj => obj.name ==="SpawnpointLvl2").y;
+            this.player.x = this.level1Map.findObject("triggers", obj => obj.name ==="SpawnpointLvl2").x;
+            this.player.y = this.level1Map.findObject("triggers", obj => obj.name ==="SpawnpointLvl2").y;
+            this.camera.centerOn(this.camCenterX, this.camCenterY);
+            this.changeColor();
+        }
+        //end level 2
+        if(this.player.gridX * gridUnit - (gridUnit / 2) == this.endLevel2.x && this.player.gridY * gridUnit - (gridUnit / 2) == this.endLevel2.y) {
+            this.add.text(this.camCenterX - (gridSize * gridUnit) / 4,
+                this.camCenterY,
+                "Thank you for completing\nthe Level 2 demo.",
                 textConfig);
             this.camCenterX = this.level1Map.findObject("triggers", obj => obj.name ==="cameraLvl3Start").x;
             this.camCenterY = this.level1Map.findObject("triggers", obj => obj.name ==="cameraLvl3Start").y;

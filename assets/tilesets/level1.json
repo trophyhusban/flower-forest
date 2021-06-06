@@ -814,6 +814,17 @@
                  "width":0,
                  "x":6496,
                  "y":4576
+                }, 
+                {
+                 "height":0,
+                 "id":184,
+                 "name":"Level2End",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":5408,
+                 "y":2848
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -1491,7 +1502,7 @@
          "y":0
         }],
  "nextlayerid":13,
- "nextobjectid":184,
+ "nextobjectid":185,
  "orientation":"orthogonal",
  "properties":[
         {

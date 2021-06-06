@@ -18,9 +18,9 @@ class WarpDoor {
             this.scene.camCenterY = this.cameraTarget.y;
             this.scene.player.x = this.endObj.x;
             this.scene.player.y = this.endObj.y;
-            this.camera.centerOn(this.camCenterX, this.camCenterY);
+            this.scene.camera.centerOn(this.scene.camCenterX, this.scene.camCenterY);
             console.log("warped there");
-            this.changeColor();
+            this.scene.changeColor();
         }
         //warp doppelganger
         if(this.scene.doppelganger.gridX * gridUnit - (gridUnit / 2) == this.startObj.x && this.scene.doppelganger.gridY * gridUnit - (gridUnit / 2) == this.startObj.y) {
@@ -37,9 +37,9 @@ class WarpDoor {
                 this.scene.camCenterY = this.cameraTarget2.y;
                 this.scene.player.x = this.endObj2.x;
                 this.scene.player.y = this.endObj2.y;
-                this.camera.centerOn(this.camCenterX, this.camCenterY);
+                this.scene.camera.centerOn(this.scene.camCenterX, this.scene.camCenterY);
                 console.log("warped back");
-                this.changeColor();
+                this.scene.changeColor();
             }
             //warp doppelganger
             if(this.scene.doppelganger.gridX * gridUnit - (gridUnit / 2) == this.startObj2.x && this.scene.doppelganger.gridY * gridUnit - (gridUnit / 2) == this.startObj2.y) {
