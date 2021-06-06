@@ -36,6 +36,9 @@ class PauseScene extends Phaser.Scene {
         // 80 is the width of the sprite
         this.volumePadding = 16+ 128;
 
+        // the distance that the arrows around the volume controls move when the player adjusts the volume
+        this.volumeNudge = 4;
+
         // so i can destroy them when they go to volume controls
         this.menuUI = [];
 
@@ -65,6 +68,11 @@ class PauseScene extends Phaser.Scene {
             // currentVolumeOption less than two means that it will be on music or sfx, not back
             if (this.editingVolume == true && this.currentVolumeOption < 2) {
                 this.volumeControlsArray[this.currentVolumeOption].functionDown();
+                if (this.currentVolumeOption == 0 && masterMusicVolume != 0) {
+                    this.nudgeVolumeArrowDown();
+                } else if (this.currentVolumeOption == 1 && masterSFXVolume != 0) {
+                    this.nudgeVolumeArrowDown();
+                }
             }
         }); 
 
@@ -77,6 +85,11 @@ class PauseScene extends Phaser.Scene {
             // currentVolumeOption less than two means that it will be on music or sfx, not back
             if (this.editingVolume == true && this.currentVolumeOption < 2) {
                 this.volumeControlsArray[this.currentVolumeOption].functionUp();
+                if (this.currentVolumeOption == 0 && masterMusicVolume != 2) {
+                    this.nudgeVolumeArrowUp();
+                } else if (this.currentVolumeOption == 1 && masterSFXVolume != 2) {
+                    this.nudgeVolumeArrowUp();
+                }
             }
         }); 
 
@@ -255,6 +268,7 @@ class PauseScene extends Phaser.Scene {
 
         this.volumeControlsUI.push(this.volumeSelect);
 
+        this.addArrows();
     }
 
     increaseMusicVolume() {
@@ -373,6 +387,8 @@ class PauseScene extends Phaser.Scene {
 
         // play the select sound
         this.selectSound.play();
+
+        this.updateVolumeArrowsX();
     }
 
     optionLeft() {
@@ -390,6 +406,8 @@ class PauseScene extends Phaser.Scene {
 
         // play the select sound
         this.selectSound.play();
+
+        this.updateVolumeArrowsX();
     }
 
     selectOption() {
@@ -416,5 +434,50 @@ class PauseScene extends Phaser.Scene {
 
         // start at the middle, subtract one from i so that the second option is the one that's centered, then multiply by padding
         return config.width/2 + (i -1) * this.volumePadding;
+    }
+
+    addArrows() {
+        this.upArrowSprite = this.add.sprite(
+            config.width/2,
+            config.height/2 - uiUnit*1.5,
+            "up arrow"
+        ).setOrigin(.5, 1);
+
+        this.downArrowSprite = this.add.sprite(
+            config.width/2,
+            config.height/2 + uiUnit*1.5,
+            "up arrow"
+        ).setOrigin(.5, 0);
+
+        this.downArrowSprite.flipY = true;
+
+        this.volumeControlsUI.push(this.upArrowSprite);
+        this.volumeControlsUI.push(this.downArrowSprite);
+
+        this.updateVolumeArrowsX();
+    }
+
+    updateVolumeArrowsX() {
+        this.downArrowSprite.x = this.placeVolumeOption(this.currentVolumeOption);
+        this.upArrowSprite.x = this.placeVolumeOption(this.currentVolumeOption);
+
+        if (this.currentVolumeOption == 2) {
+            this.downArrowSprite.x = 800;
+            this.upArrowSprite.x = 800;
+        }
+    }
+
+    nudgeVolumeArrowDown() {
+        this.downArrowSprite.y = config.height/2 + uiUnit*1.5 + this.volumeNudge;
+        this.time.delayedCall(250, () => {
+            this.downArrowSprite.y = config.height/2 + uiUnit*1.5;
+        });
+    }
+
+    nudgeVolumeArrowUp() {
+        this.upArrowSprite.y = config.height/2 - uiUnit*1.5 - this.volumeNudge;
+        this.time.delayedCall(250, () => {
+            this.upArrowSprite.y = config.height/2 - uiUnit*1.5;
+        });
     }
 }

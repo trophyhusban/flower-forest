@@ -141,6 +141,7 @@ class Play extends Phaser.Scene {
         this.load.image("choice select", "./assets/ui/choice_select.png");
         this.load.spritesheet("alert", "./assets/ui/alert.png",
             {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 1});
+        this.load.image("up arrow", "./assets/ui/up_arrow.png");
 
         this.load.image("textbox0", "./assets/ui/textboxes/textbox0.png");
         this.load.image("textbox1", "./assets/ui/textboxes/textbox1.png");
