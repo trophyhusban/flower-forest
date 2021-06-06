@@ -377,6 +377,30 @@
                  "width":0,
                  "x":2592,
                  "y":4960
+                }, 
+                {
+                 "ellipse":true,
+                 "height":0,
+                 "id":140,
+                 "name":"scareBehindDoorTrigger",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":1056,
+                 "y":544
+                }, 
+                {
+                 "height":0,
+                 "id":141,
+                 "name":"scareBehindDoor",
+                 "point":true,
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":1120,
+                 "y":352
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -962,7 +986,7 @@
          "y":0
         }],
  "nextlayerid":11,
- "nextobjectid":140,
+ "nextobjectid":142,
  "orientation":"orthogonal",
  "properties":[
         {

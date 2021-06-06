@@ -324,6 +324,8 @@ class Play extends Phaser.Scene {
         this.scare1Going = false;
         this.scare2Done = false;
         this.scare2Going = false;
+        this.scareBehindDoorDone = false;
+        this.scareBehindDoorGoing = false;
 
         // this.input.keyboard.on("keydown-M", () => {
         //     this.doppelganger.mirrorMode = !this.doppelganger.mirrorMode;
@@ -627,6 +629,22 @@ class Play extends Phaser.Scene {
         }
         if(this.scare2Going && !this.doppelganger.scriptedMode) { //hide doppelganger once scare 2 is over
             this.scare2Going = false;
+            this.doppelganger.x = this.level1Map.findObject("triggers", obj => obj.name ==="dopplTest").x;
+            this.doppelganger.y = this.level1Map.findObject("triggers", obj => obj.name ==="dopplTest").y;
+        }
+
+        if(!this.scareBehindDoorDone) { //Scare behind door
+            if(this.player.gridX * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="scareBehindDoorTrigger").x &&
+                this.player.gridY * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="scareBehindDoorTrigger").y) { //left trigger
+                    this.scareBehindDoorDone = true;
+                    this.scareBehindDoorGoing = true;
+                    this.doppelganger.x = this.level1Map.findObject("triggers", obj => obj.name ==="scareBehindDoor").x;
+                    this.doppelganger.y = this.level1Map.findObject("triggers", obj => obj.name ==="scareBehindDoor").y;
+                    this.doppelganger.startScript(["right", "right", "right", "right", "right"]);
+            }
+        }
+        if(this.scareBehindDoorGoing && !this.doppelganger.scriptedMode) { //hide doppelganger once scare 2 is over
+            this.scareBehindDoorGoing = false;
             this.doppelganger.x = this.level1Map.findObject("triggers", obj => obj.name ==="dopplTest").x;
             this.doppelganger.y = this.level1Map.findObject("triggers", obj => obj.name ==="dopplTest").y;
         }
