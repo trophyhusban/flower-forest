@@ -70,14 +70,14 @@ class PreCreditsScene extends Phaser.Scene {
 
     initializeSound() {
         this.sound.get("level one music").stop();
-        if (option == 1) {
+        if (option == "share it") {
             this.endcredit1 = this.sound.add("endcredit1");
             this.endcredit1.play();
             this.endcredit1.setLoop(true);
 
         }
 
-        else if (option == 0) {
+        else if (option == "take it") {
             this.endcredit2 = this.sound.add("endcredit2");
             this.endcredit2.play();
             this.endcredit2.setLoop(true);
