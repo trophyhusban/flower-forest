@@ -221,6 +221,15 @@ class CreditsScene extends Phaser.Scene {
         if (this.finishedTweening) {
             if (keySPACE.isDown) {
                 this.selectSound.play();
+                if (option == "share it") {
+                    this.sound.get("endcredit1").stop();
+                }
+        
+                else if (option == "take it") {
+                    this.sound.get("endcredit2").stop();
+                }
+        
+                
                 this.cameras.main.fadeOut(500).on("camerafadeoutcomplete", () => {
                     this.scene.start("menuScene");
                 });
