@@ -203,11 +203,23 @@ class Play extends Phaser.Scene {
         //create end of level trigger
         this.endLevel1 = this.level1Map.findObject("triggers", obj => obj.name ==="levelEnd");
 
-        //create first ritual
-        this.ritual1DoorObj = this.level1Map.findObject("rituals", obj => obj.name ==="SimpleRitual1Door");
-        this.ritual1Obj = this.level1Map.findObject("rituals", obj => obj.name ==="SimpleRitual1");
-        this.simpleRitual1 = new Ritual(this, this.ritual1DoorObj, "ritualTree", "up", [[this.ritual1Obj, "ritualCircleBasic"]]);
-
+        //create simple rituals
+        this.simpleRitual1 = new Ritual(this, 
+            this.level1Map.findObject("rituals", obj => obj.name ==="SimpleRitual1Door"), "ritualTree", "up", [
+                [this.level1Map.findObject("rituals", obj => obj.name ==="SimpleRitual1"), "ritualCircleBasic"]]);
+        this.simpleRitual2 = new Ritual(this, 
+            this.level1Map.findObject("rituals", obj => obj.name ==="SimpleRitual2Door"), "ritualTree", "down", [
+                [this.level1Map.findObject("rituals", obj => obj.name ==="SimpleRitual2"), "ritualCircleBasic"]]);
+        this.simpleRitual3 = new Ritual(this, 
+            this.level1Map.findObject("rituals", obj => obj.name ==="SimpleRitual3Door"), "ritualTree", "right", [
+                [this.level1Map.findObject("rituals", obj => obj.name ==="SimpleRitual3"), "ritualCircleBasic"]]);
+        this.simpleRitual4 = new Ritual(this, 
+            this.level1Map.findObject("rituals", obj => obj.name ==="SimpleRitual4Door"), "ritualTree", "left", [
+                [this.level1Map.findObject("rituals", obj => obj.name ==="SimpleRitual4"), "ritualCircleBasic"]]);
+        this.simpleRitual5 = new Ritual(this, 
+            this.level1Map.findObject("rituals", obj => obj.name ==="SimpleRitual5Door"), "ritualTree", "down", [
+                [this.level1Map.findObject("rituals", obj => obj.name ==="SimpleRitual5"), "ritualCircleBasic"]]);
+        
         //level 1 rituals
         //create halfNote ritual
         this.halfNoteRitual = new Ritual(this,
@@ -565,6 +577,10 @@ class Play extends Phaser.Scene {
 
     updateRituals() {
         this.simpleRitual1.update();
+        this.simpleRitual2.update();
+        this.simpleRitual3.update();
+        this.simpleRitual4.update();
+        this.simpleRitual5.update();
         this.halfNoteRitual.update();
         this.littleBigRitual.update();
         this.slicedRitual.update();

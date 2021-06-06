@@ -978,6 +978,98 @@
                  "width":0,
                  "x":2336,
                  "y":5728
+                }, 
+                {
+                 "ellipse":true,
+                 "height":0,
+                 "id":142,
+                 "name":"SimpleRitual2",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":352,
+                 "y":1952
+                }, 
+                {
+                 "height":0,
+                 "id":143,
+                 "name":"SimpleRitual2Door",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":352,
+                 "y":2016
+                }, 
+                {
+                 "ellipse":true,
+                 "height":0,
+                 "id":144,
+                 "name":"SimpleRitual3",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":1952,
+                 "y":2464
+                }, 
+                {
+                 "height":0,
+                 "id":145,
+                 "name":"SimpleRitual3Door",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":2016,
+                 "y":2464
+                }, 
+                {
+                 "ellipse":true,
+                 "height":0,
+                 "id":146,
+                 "name":"SimpleRitual4",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":2976,
+                 "y":2464
+                }, 
+                {
+                 "height":0,
+                 "id":147,
+                 "name":"SimpleRitual4Door",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":2912,
+                 "y":2464
+                }, 
+                {
+                 "ellipse":true,
+                 "height":0,
+                 "id":149,
+                 "name":"SimpleRitual5",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":3872,
+                 "y":544
+                }, 
+                {
+                 "height":0,
+                 "id":150,
+                 "name":"SimpleRitual5Door",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":3872,
+                 "y":608
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -986,7 +1078,7 @@
          "y":0
         }],
  "nextlayerid":11,
- "nextobjectid":142,
+ "nextobjectid":151,
  "orientation":"orthogonal",
  "properties":[
         {
