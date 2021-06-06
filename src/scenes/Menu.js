@@ -19,6 +19,7 @@ class Menu extends Phaser.Scene {
             {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 8});
         this.load.spritesheet("flowerCrumb3", "./assets/gamepieces/flower3.png", 
             {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 5});
+        this.load.image("oneSprite", "./assets/gamepieces/player1.png");
         this.load.audio("titlemusic", "./assets/sound/TitleScreenMusic.wav");
     }
     create() {

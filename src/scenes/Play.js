@@ -20,7 +20,40 @@ class Play extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image("oneSprite", "./assets/gamepieces/player1.png");
+
+        this.cameras.main.fadeIn(250);
+
+        this.loadingScreenObjects = []
+
+        this.loadingScreenRect = this.add.rectangle(0, 0, config.width, config.height, 0x00d585).setOrigin(0, 0).setDepth(200);
+
+        this.loadingScreenObjects.push(this.loadingScreenRect);
+
+        this.loadingScreenFlower1 = this.add.sprite(
+            config.width/2 - uiUnit*6, 
+            config.height/2,
+            "plantCrumb2",
+            0
+        ).setScale(4).play("plantCrumb2").setDepth(201);
+
+        this.loadingScreenObjects.push(this.loadingScreenFlower1);
+
+        this.loadingScreenFlower2 = this.add.sprite(
+            config.width/2, 
+            config.height/2,
+            "plantCrumb"
+        ).setScale(4).play("plantCrumb").setDepth(201);
+
+        this.loadingScreenObjects.push(this.loadingScreenFlower2);
+
+        this.loadingScreenFlower3 = this.add.sprite(
+            config.width/2 + uiUnit*6, 
+            config.height/2,
+            "plantCrumb3"
+        ).setScale(4).play("plantCrumb3").setDepth(201);
+
+        this.loadingScreenObjects.push(this.loadingScreenFlower3);
+        
         this.load.image("ritualCircleBasic", "./assets/gamepieces/ritualCircleBasic.png");
         this.load.spritesheet("ritualTree", "./assets/gamepieces/treeSheet.png",
             {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 4});
@@ -138,6 +171,36 @@ class Play extends Phaser.Scene {
     }
     create() {
 
+        //fade out from the loading screen
+        this.cameras.main.fadeOut(250).on("camerafadeoutcomplete", () => {
+
+            // when it's done fading in, it deletes all the objects that made up the loading screen
+            for (let i = 0; i < this.loadingScreenObjects.length; i++) {
+                this.loadingScreenObjects[i].destroy();
+            }
+
+            // it starts at zoom 8, really close up. i tween it to zoom 1 after a short delay
+            this.camera.zoom = 8;
+            this.zoomedOut = false;
+            
+            // fade in from black from the Menu scene
+            this.camera.fadeIn(500).on("camerafadeincomplete", () => {
+                //zooms out the camera so it looks normal lol
+                this.cameraZoomOut = this.tweens.add({
+                    targets: [this.camera],
+                    zoom: 1,
+                    duration: 2500,
+                    delay: 2000,
+                    ease: "Quad.easeInOut"
+                }).on("complete", () => {
+                    // when the camera is finished zooming out, tween the tutorial keys on screen. that way u can actually see them tween
+                    this.tutorialKeysTweens();  
+                });
+            })
+            
+        });
+
+
         this.currentDialogueBox = undefined;
 
         this.input.keyboard.on("keydown-R", () => {
@@ -146,13 +209,6 @@ class Play extends Phaser.Scene {
 
         // the camera variable that we use in the rest of it
         this.camera = this.cameras.main;    
-
-        // it starts at zoom 8, really close up. i tween it to zoom 1 after a short delay
-        this.camera.zoom = 8;
-        this.zoomedOut = false;
-
-        // fade in from black from the Menu scene
-        this.camera.fadeIn(500);
 
         this.level1Map = this.make.tilemap({key: "level1"});
         this.tileSet = this.level1Map.addTilesetImage("tilesheet", "tileSheet");
@@ -310,6 +366,19 @@ class Play extends Phaser.Scene {
         this.camCenterY = this.spawnPoint.y;
         this.camera.centerOn(this.camCenterX, this.camCenterY);
 
+        // move the loading screen stuff to the new camera center 
+        this.loadingScreenRect.x = this.camCenterX - config.width/2;
+        this.loadingScreenRect.y = this.camCenterY - config.height/2;
+
+        this.loadingScreenFlower1.x = this.camCenterX - uiUnit*6;
+        this.loadingScreenFlower1.y = this.camCenterY;
+
+        this.loadingScreenFlower2.x = this.camCenterX;
+        this.loadingScreenFlower2.y = this.camCenterY;
+
+        this.loadingScreenFlower3.x = this.camCenterX + uiUnit*6;
+        this.loadingScreenFlower3.y = this.camCenterY;
+
         //create player
         this.player = new One(
             this, 
@@ -363,18 +432,6 @@ class Play extends Phaser.Scene {
 
         this.createTutorialKeys();  // adds all the keys that appear on screen to let the player know what buttons u can press
 
-        // zooms out the camera so it looks normal lol
-        this.cameraZoomOut = this.tweens.add({
-            targets: [this.camera],
-            zoom: 1,
-            duration: 10, // 2500
-            delay: 10,    // 2000
-            ease: "Quad.easeInOut"
-        }).on("complete", () => {
-            // when the camera is finished zooming out, tween the tutorial keys on screen. that way u can actually see them tween
-            this.tutorialKeysTweens();  
-        });
-
         this.initializeAudio();     // all the making of the audio variables go in here
 
         this.noteManager = new NoteManager(this);
@@ -392,6 +449,10 @@ class Play extends Phaser.Scene {
         // the main function of the inventory is to visually show players how many notes they have collected
         // it also tells the players exactly what the tutorial keys for the note manager do
         this.initializeInventory();
+
+        //this.camera.fadeIn(500);
+
+        
     }
 
     update() {
