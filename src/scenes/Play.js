@@ -216,7 +216,7 @@ class Play extends Phaser.Scene {
         this.riverTiles = this.level1Map.addTilesetImage("river", "riverTiles");
         this.moatTiles = this.level1Map.addTilesetImage("moat", "moatTiles");
         this.towerTiles = this.level1Map.addTilesetImage("tower5", "towerTiles");
-        levelWidth = 7;
+        levelWidth = 10;
         levelHeight = 10;
         this.camera.setBounds(0, 0, this.level1Map.displayWidth, this.level1Map.displayHeight);
 
@@ -255,6 +255,51 @@ class Play extends Phaser.Scene {
         this.warp2up = this.level1Map.findObject("triggers", obj => obj.name ==="warp2up");
         this.dopplSend = this.level1Map.findObject("triggers", obj => obj.name ==="dopplWarpSend");
         this.dopplRecieve = this.level1Map.findObject("triggers", obj => obj.name ==="dopplWarpRecieve");
+        this.warpLvl2_1 = new WarpDoor(this,
+            this.level1Map.findObject("triggers", obj => obj.name ==="warpLvl2Send1-1"),
+            this.level1Map.findObject("triggers", obj => obj.name ==="warpLvl2Get1-1"),
+            this.level1Map.findObject("triggers", obj => obj.name ==="warpLvl2Cam1-1"),
+            this.level1Map.findObject("triggers", obj => obj.name ==="warpLvl2Send1-2"),
+            this.level1Map.findObject("triggers", obj => obj.name ==="warpLvl2Get1-2"),
+            this.level1Map.findObject("triggers", obj => obj.name ==="warpLvl2Cam1-2")
+        );
+        this.warpLvl2_2 = new WarpDoor(this,
+            this.level1Map.findObject("triggers", obj => obj.name ==="warpLvl2Send2-1"),
+            this.level1Map.findObject("triggers", obj => obj.name ==="warpLvl2Get2-1"),
+            this.level1Map.findObject("triggers", obj => obj.name ==="warpLvl2Cam2-1"),
+            this.level1Map.findObject("triggers", obj => obj.name ==="warpLvl2Send2-2"),
+            this.level1Map.findObject("triggers", obj => obj.name ==="warpLvl2Get2-2"),
+            this.level1Map.findObject("triggers", obj => obj.name ==="warpLvl2Cam2-2")
+        );
+        this.warpLvl2_3 = new WarpDoor(this,
+            this.level1Map.findObject("triggers", obj => obj.name ==="warpLvl2Send3-1"),
+            this.level1Map.findObject("triggers", obj => obj.name ==="warpLvl2Get3-1"),
+            this.level1Map.findObject("triggers", obj => obj.name ==="warpLvl2Cam3-1"),
+            this.level1Map.findObject("triggers", obj => obj.name ==="warpLvl2Send3-2"),
+            this.level1Map.findObject("triggers", obj => obj.name ==="warpLvl2Get3-2"),
+            this.level1Map.findObject("triggers", obj => obj.name ==="warpLvl2Cam3-2")
+        );
+        this.warpLvl2_4 = new WarpDoor(this,
+            this.level1Map.findObject("triggers", obj => obj.name ==="warpLvl2Send4-1"),
+            this.level1Map.findObject("triggers", obj => obj.name ==="warpLvl2Get4-1"),
+            this.level1Map.findObject("triggers", obj => obj.name ==="warpLvl2Cam4-1"),
+            this.level1Map.findObject("triggers", obj => obj.name ==="warpLvl2Send4-2"),
+            this.level1Map.findObject("triggers", obj => obj.name ==="warpLvl2Get4-2"),
+            this.level1Map.findObject("triggers", obj => obj.name ==="warpLvl2Cam4-2")
+        );
+        this.warpLvl2_5 = new WarpDoor(this,
+            this.level1Map.findObject("triggers", obj => obj.name ==="warpLvl2Send5-1"),
+            this.level1Map.findObject("triggers", obj => obj.name ==="warpLvl2Get5-1"),
+            this.level1Map.findObject("triggers", obj => obj.name ==="warpLvl2Cam5-1"),
+            this.level1Map.findObject("triggers", obj => obj.name ==="warpLvl2Send5-2"),
+            this.level1Map.findObject("triggers", obj => obj.name ==="warpLvl2Get5-2"),
+            this.level1Map.findObject("triggers", obj => obj.name ==="warpLvl2Cam5-2")
+        );
+        this.warpLvl2_6 = new WarpDoor(this,
+            this.level1Map.findObject("triggers", obj => obj.name ==="warpLvl2Send6-1"),
+            this.level1Map.findObject("triggers", obj => obj.name ==="warpLvl2Get6-1"),
+            this.level1Map.findObject("triggers", obj => obj.name ==="warpLvl2Cam4-1")
+        );
 
         //create end of level trigger
         this.endLevel1 = this.level1Map.findObject("triggers", obj => obj.name ==="levelEnd");
@@ -468,6 +513,8 @@ class Play extends Phaser.Scene {
 
         this.updateRituals(); // updates all rituals
 
+        this.updateWarpDoors(); // updates all warp door objects
+
         this.physics.world.collide(this.player, this.wallLayer);
         this.physics.world.collide(this.player, this.ritual1Door);
         this.physics.world.collide(this.doppelganger, this.wallLayer);
@@ -665,6 +712,15 @@ class Play extends Phaser.Scene {
         this.lvl3Ritual3.update();
         this.lvl3Ritual4_1.update();
         this.lvl3Ritual4_2.update();
+    }
+
+    updateWarpDoors() {
+        this.warpLvl2_1.update();
+        this.warpLvl2_2.update();
+        this.warpLvl2_3.update();
+        this.warpLvl2_4.update();
+        this.warpLvl2_5.update();
+        this.warpLvl2_6.update();
     }
 
     checkScares() {
