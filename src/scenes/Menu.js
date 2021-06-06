@@ -13,8 +13,16 @@ class Menu extends Phaser.Scene {
             {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 6});
         this.load.json("text JSON", "./assets/text/text.json");
         this.load.audio("select", "./assets/sound/Select.wav");
+        this.load.spritesheet("flowerCrumb", "./assets/gamepieces/flower.png", 
+            {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 6});
+        this.load.spritesheet("flowerCrumb2", "./assets/gamepieces/flower2.png", 
+            {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 8});
+        this.load.spritesheet("flowerCrumb3", "./assets/gamepieces/flower3.png", 
+            {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 5});
     }
     create() {
+
+        this.initializeAnimations();
 
         // smooth ;-)
         this.cameras.main.fadeIn(1000);
@@ -56,6 +64,47 @@ class Menu extends Phaser.Scene {
             this.cameras.main.fadeOut(500).on("camerafadeoutcomplete", () => {
                 this.scene.start("playScene");
             });
+        });
+    }
+
+    initializeAnimations() {
+
+        //configure flower animations
+        this.anims.create({
+            key: 'plantCrumb',
+            frames: this.anims.generateFrameNumbers("flowerCrumb", 
+                {start: 0, end: 6, first: 0}),
+            frameRate: 6
+        });
+        this.anims.create({
+            key: 'killCrumb',
+            frames: this.anims.generateFrameNumbers("flowerCrumb", 
+                {start: 6, end: 0, first: 6}),
+            frameRate: 6
+        });
+        this.anims.create({
+            key: 'plantCrumb2',
+            frames: this.anims.generateFrameNumbers("flowerCrumb2", 
+                {start: 0, end: 8, first: 0}),
+            frameRate: 8
+        });
+        this.anims.create({
+            key: 'killCrumb2',
+            frames: this.anims.generateFrameNumbers("flowerCrumb2", 
+                {start: 8, end: 0, first: 8}),
+            frameRate: 8
+        });
+        this.anims.create({
+            key: 'plantCrumb3',
+            frames: this.anims.generateFrameNumbers("flowerCrumb3", 
+                {start: 0, end: 4, first: 0}),
+            frameRate: 6
+        });
+        this.anims.create({
+            key: 'killCrumb3',
+            frames: this.anims.generateFrameNumbers("flowerCrumb3", 
+                {start: 4, end: 0, first: 4}),
+            frameRate: 6
         });
     }
 }

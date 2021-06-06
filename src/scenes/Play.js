@@ -75,10 +75,7 @@ class Play extends Phaser.Scene {
         this.load.image("2 key", "./assets/ui/two_key.png");
         this.load.image("3 key", "./assets/ui/three_key.png");
         this.load.image("4 key", "./assets/ui/four_key.png");
-        this.load.spritesheet("flowerCrumb", "./assets/gamepieces/flower.png", 
-            {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 6});
-        this.load.spritesheet("flowerCrumb2", "./assets/gamepieces/flower2.png", 
-            {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 8});
+        
         this.load.spritesheet("puck", "./assets/gamepieces/puckSheet.png",
             {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 1});
         this.load.spritesheet("titania", "./assets/gamepieces/titannaSheet.png",
@@ -740,32 +737,6 @@ class Play extends Phaser.Scene {
             {start: 12, end: 15, first: 12}),
             frameRate: 6,
             repeat: -1
-        });
-
-        //configure flower animations
-        this.anims.create({
-            key: 'plantCrumb',
-            frames: this.anims.generateFrameNumbers("flowerCrumb", 
-                {start: 0, end: 6, first: 0}),
-            frameRate: 6
-        });
-        this.anims.create({
-            key: 'killCrumb',
-            frames: this.anims.generateFrameNumbers("flowerCrumb", 
-                {start: 6, end: 0, first: 6}),
-            frameRate: 6
-        });
-        this.anims.create({
-            key: 'plantCrumb2',
-            frames: this.anims.generateFrameNumbers("flowerCrumb2", 
-                {start: 0, end: 8, first: 0}),
-            frameRate: 8
-        });
-        this.anims.create({
-            key: 'killCrumb2',
-            frames: this.anims.generateFrameNumbers("flowerCrumb2", 
-                {start: 8, end: 0, first: 8}),
-            frameRate: 8
         });
 
         this.anims.create({

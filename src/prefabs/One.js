@@ -33,8 +33,8 @@ class One extends Phaser.Physics.Arcade.Sprite {
 
         //console.log("player x: " + this.x);
         //console.log("player y: " + this.y);
-        this.plantFlowerAnimations = ["plantCrumb", "plantCrumb2"];
-        this.pickFlowerAnimations = ["killCrumb", "killCrumb2"];
+        this.plantFlowerAnimations = ["plantCrumb", "plantCrumb2", "plantCrumb3"];
+        this.pickFlowerAnimations = ["killCrumb", "killCrumb2", "killCrumb3"];
         this.nextFlower = Phaser.Math.RND.integerInRange(1, this.plantFlowerAnimations.length) - 1;
     }
     
