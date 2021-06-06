@@ -14,12 +14,15 @@ class PreCreditsScene extends Phaser.Scene {
         this.load.spritesheet("share it", "./assets/gamepieces/endscene2.png",
             {frameWidth: 640, frameHeight: 640, startFrame: 0, endFrame: 3});
 
-        
+        this.load.audio("level one music", "./assets/sound/BackgroundMusic.wav");
+        this.load.audio("endcredit1", "./assets/sound/EndCredit1.wav");
+        this.load.audio("endcredit2", "./assets/sound/EndCredit2.wav");
     }
 
     create() {
 
         this.initializeAnimations();
+        this.initializeSound();
 
         this.fadeInComplete = false;
         this.cameras.main.fadeIn(1000).on("camerafadeincomplete", () => {
@@ -47,6 +50,7 @@ class PreCreditsScene extends Phaser.Scene {
     }
 
     initializeAnimations() {
+        console.log(option);
         this.anims.create({
             key: "take it",
             frames: this.anims.generateFrameNumbers("take it", 
@@ -62,5 +66,22 @@ class PreCreditsScene extends Phaser.Scene {
             frameRate: 6,
             repeat: -1
         });
+    }
+
+    initializeSound() {
+        this.sound.get("level one music").stop();
+        if (option == "share it") {
+            this.endcredit1 = this.sound.add("endcredit1");
+            this.endcredit1.play();
+            this.endcredit1.setLoop(true);
+
+        }
+
+        else if (option == "take it") {
+            this.endcredit2 = this.sound.add("endcredit2");
+            this.endcredit2.play();
+            this.endcredit2.setLoop(true);
+        }
+
     }
 }

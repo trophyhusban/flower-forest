@@ -8,6 +8,9 @@ class CreditsScene extends Phaser.Scene {
 
     preload() {
         this.load.image("credits bg", "./assets/ui/credits_background.png");
+        this.load.audio("endcredit1", "./assets/sound/EndCredit1.wav");
+        this.load.audio("endcredit2", "./assets/sound/EndCredit2.wav");
+        this.load.audio("titlemusic", "./assets/sound/TitleScreenMusic.wav");
     }
 
     create() {

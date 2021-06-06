@@ -15,6 +15,8 @@ class Play extends Phaser.Scene {
         keyTWO = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TWO);
         keyTHREE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.THREE);
         keyFOUR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.FOUR);
+        this.tileAnimTicker = 0;
+        this.tileAnimToggle = false;
     }
 
     preload() {
@@ -147,6 +149,7 @@ class Play extends Phaser.Scene {
 
         // it starts at zoom 8, really close up. i tween it to zoom 1 after a short delay
         this.camera.zoom = 8;
+        this.zoomedOut = false;
 
         // fade in from black from the Menu scene
         this.camera.fadeIn(500);
@@ -163,8 +166,10 @@ class Play extends Phaser.Scene {
         this.groundLayer = this.level1Map.createLayer("floor", this.tileSet, 0, 0);
         this.wallLayer = this.level1Map.createLayer("terrain", this.tileSet, 0, 0);
         this.wallLayer.setCollisionByProperty({wall: true});
-        this.riverLayer = this.level1Map.createLayer("riverVisuals", this.riverTiles, 0, 0);
-        this.moatLayer = this.level1Map.createLayer("moatVisuals", this.moatTiles, 0, 0);
+        this.riverLayer1 = this.level1Map.createLayer("riverVisuals1", this.riverTiles, 0, 0);
+        this.riverLayer2 = this.level1Map.createLayer("riverVisuals2", this.riverTiles, 0, 0).setAlpha(0);
+        this.moatLayer1 = this.level1Map.createLayer("moatVisuals1", this.moatTiles, 0, 0);
+        this.moatLayer2 = this.level1Map.createLayer("moatVisuals2", this.moatTiles, 0, 0).setAlpha(0);
         this.towerLayer = this.level1Map.createLayer("towerVisuals", this.towerTiles, 0, 0);
         this.doorLayer = this.level1Map.createLayer("doors", this.tileSet, 0, 0);
 
@@ -197,11 +202,23 @@ class Play extends Phaser.Scene {
         //create end of level trigger
         this.endLevel1 = this.level1Map.findObject("triggers", obj => obj.name ==="levelEnd");
 
-        //create first ritual
-        this.ritual1DoorObj = this.level1Map.findObject("rituals", obj => obj.name ==="SimpleRitual1Door");
-        this.ritual1Obj = this.level1Map.findObject("rituals", obj => obj.name ==="SimpleRitual1");
-        this.simpleRitual1 = new Ritual(this, this.ritual1DoorObj, "ritualTree", "up", [[this.ritual1Obj, "ritualCircleBasic"]]);
-
+        //create simple rituals
+        this.simpleRitual1 = new Ritual(this, 
+            this.level1Map.findObject("rituals", obj => obj.name ==="SimpleRitual1Door"), "ritualTree", "up", [
+                [this.level1Map.findObject("rituals", obj => obj.name ==="SimpleRitual1"), "ritualCircleBasic"]]);
+        this.simpleRitual2 = new Ritual(this, 
+            this.level1Map.findObject("rituals", obj => obj.name ==="SimpleRitual2Door"), "ritualTree", "down", [
+                [this.level1Map.findObject("rituals", obj => obj.name ==="SimpleRitual2"), "ritualCircleBasic"]]);
+        this.simpleRitual3 = new Ritual(this, 
+            this.level1Map.findObject("rituals", obj => obj.name ==="SimpleRitual3Door"), "ritualTree", "right", [
+                [this.level1Map.findObject("rituals", obj => obj.name ==="SimpleRitual3"), "ritualCircleBasic"]]);
+        this.simpleRitual4 = new Ritual(this, 
+            this.level1Map.findObject("rituals", obj => obj.name ==="SimpleRitual4Door"), "ritualTree", "left", [
+                [this.level1Map.findObject("rituals", obj => obj.name ==="SimpleRitual4"), "ritualCircleBasic"]]);
+        this.simpleRitual5 = new Ritual(this, 
+            this.level1Map.findObject("rituals", obj => obj.name ==="SimpleRitual5Door"), "ritualTree", "down", [
+                [this.level1Map.findObject("rituals", obj => obj.name ==="SimpleRitual5"), "ritualCircleBasic"]]);
+        
         //level 1 rituals
         //create halfNote ritual
         this.halfNoteRitual = new Ritual(this,
@@ -318,6 +335,8 @@ class Play extends Phaser.Scene {
         this.scare1Going = false;
         this.scare2Done = false;
         this.scare2Going = false;
+        this.scareBehindDoorDone = false;
+        this.scareBehindDoorGoing = false;
 
         // this.input.keyboard.on("keydown-M", () => {
         //     this.doppelganger.mirrorMode = !this.doppelganger.mirrorMode;
@@ -390,6 +409,12 @@ class Play extends Phaser.Scene {
         this.physics.world.collide(this.player, this.wallLayer);
         this.physics.world.collide(this.player, this.ritual1Door);
         this.physics.world.collide(this.doppelganger, this.wallLayer);
+        this.physics.world.collide(this.doppelganger, this.player, (other, one) => {
+            if(other.violent) {
+                //reset player if the doppelganger is in kill mode
+                console.log("kill!");
+            }
+        });
 
         this.checkScares();
 
@@ -421,8 +446,10 @@ class Play extends Phaser.Scene {
             console.log("doppl sent");
         }
         if(this.doppelganger.gridX * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="syncPlace3").x 
-            && this.doppelganger.gridY * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="syncPlace3").y) {
+            && this.doppelganger.gridY * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="syncPlace3").y
+            && !this.zoomedOut) {
             //zoom out camera to catch tower
+            this.zoomedOut = true;
             this.cameraZoomOut2 = this.tweens.add({
                 targets: [this.camera],
                 zoom: 0.85,
@@ -430,6 +457,15 @@ class Play extends Phaser.Scene {
                 duration: 2500,
                 delay: 1000,
                 ease: "Quad.easeOut"
+            }).on("complete", () => {
+                this.cameraZoomIn = this.tweens.add({
+                    targets: [this.camera],
+                    zoom: 1,
+                    scrollY: this.camera.worldView.y + (gridUnit / 2),
+                    duration: 2500,
+                    delay: 4000,
+                    ease: "Quad.easeInOut"
+                });
             });
         }
 
@@ -524,6 +560,20 @@ class Play extends Phaser.Scene {
             }
         }
 
+        //animate animated tiles
+        if(this.tileAnimTicker >= 30) {
+            this.tileAnimToggle = !this.tileAnimToggle;
+            this.tileAnimTicker = 0;
+        }
+        if(this.tileAnimToggle) {
+            this.riverLayer2.setAlpha(1);
+            this.moatLayer2.setAlpha(1);
+        } else {
+            this.riverLayer2.setAlpha(0);
+            this.moatLayer2.setAlpha(0);
+        }
+        this.tileAnimTicker++;
+
         // moves the inventory every frame relative to the center of the camera so that it is in the same place
         this.updateInventoryLocation();
     }
@@ -540,6 +590,10 @@ class Play extends Phaser.Scene {
 
     updateRituals() {
         this.simpleRitual1.update();
+        this.simpleRitual2.update();
+        this.simpleRitual3.update();
+        this.simpleRitual4.update();
+        this.simpleRitual5.update();
         this.halfNoteRitual.update();
         this.littleBigRitual.update();
         this.slicedRitual.update();
@@ -604,6 +658,22 @@ class Play extends Phaser.Scene {
         }
         if(this.scare2Going && !this.doppelganger.scriptedMode) { //hide doppelganger once scare 2 is over
             this.scare2Going = false;
+            this.doppelganger.x = this.level1Map.findObject("triggers", obj => obj.name ==="dopplTest").x;
+            this.doppelganger.y = this.level1Map.findObject("triggers", obj => obj.name ==="dopplTest").y;
+        }
+
+        if(!this.scareBehindDoorDone) { //Scare behind door
+            if(this.player.gridX * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="scareBehindDoorTrigger").x &&
+                this.player.gridY * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="scareBehindDoorTrigger").y) { //left trigger
+                    this.scareBehindDoorDone = true;
+                    this.scareBehindDoorGoing = true;
+                    this.doppelganger.x = this.level1Map.findObject("triggers", obj => obj.name ==="scareBehindDoor").x;
+                    this.doppelganger.y = this.level1Map.findObject("triggers", obj => obj.name ==="scareBehindDoor").y;
+                    this.doppelganger.startScript(["right", "right", "right", "right", "right"]);
+            }
+        }
+        if(this.scareBehindDoorGoing && !this.doppelganger.scriptedMode) { //hide doppelganger once scare 2 is over
+            this.scareBehindDoorGoing = false;
             this.doppelganger.x = this.level1Map.findObject("triggers", obj => obj.name ==="dopplTest").x;
             this.doppelganger.y = this.level1Map.findObject("triggers", obj => obj.name ==="dopplTest").y;
         }
@@ -737,6 +807,44 @@ class Play extends Phaser.Scene {
             {start: 12, end: 15, first: 12}),
             frameRate: 6,
             repeat: -1
+        });
+
+        //configure flower animations
+        this.anims.create({
+            key: 'plantCrumb',
+            frames: this.anims.generateFrameNumbers("flowerCrumb", 
+                {start: 0, end: 6, first: 0}),
+            frameRate: 6
+        });
+        this.anims.create({
+            key: 'killCrumb',
+            frames: this.anims.generateFrameNumbers("flowerCrumb", 
+                {start: 6, end: 0, first: 6}),
+            frameRate: 6
+        });
+        this.anims.create({
+            key: 'plantCrumb2',
+            frames: this.anims.generateFrameNumbers("flowerCrumb2", 
+                {start: 0, end: 8, first: 0}),
+            frameRate: 8
+        });
+        this.anims.create({
+            key: 'killCrumb2',
+            frames: this.anims.generateFrameNumbers("flowerCrumb2", 
+                {start: 8, end: 0, first: 8}),
+            frameRate: 8
+        });
+        this.anims.create({
+            key: 'plantCrumb3',
+            frames: this.anims.generateFrameNumbers("flowerCrumb3", 
+                {start: 0, end: 4, first: 0}),
+            frameRate: 4
+        });
+        this.anims.create({
+            key: 'killCrumb3',
+            frames: this.anims.generateFrameNumbers("flowerCrumb3", 
+                {start: 4, end: 0, first: 4}),
+            frameRate: 4
         });
 
         this.anims.create({
@@ -1070,7 +1178,7 @@ class Play extends Phaser.Scene {
             this,
             this.player,
             2462,
-            4700,
+            4636,
             ["altar"],
             0,
             textJSON.altar,
