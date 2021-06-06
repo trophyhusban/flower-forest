@@ -35,8 +35,8 @@ class Other extends Phaser.Physics.Arcade.Sprite {
         this.plantFlowerReverseAudio = this.scene.sound.add("plant flower reverse audio");
         this.plantFlowerAudio.setVolume(.6);
         this.plantFlowerReverseAudio.setVolume(.6);
-        this.plantFlowerAnimations = ["plantCrumb", "plantCrumb2"];
-        this.pickFlowerAnimations = ["killCrumb", "killCrumb2"];
+        this.plantFlowerAnimations = ["plantCrumb", "plantCrumb2", "plantCrumb3"];
+        this.pickFlowerAnimations = ["killCrumb", "killCrumb2", "killCrumb3"];
         this.nextFlower = Phaser.Math.RND.integerInRange(1, this.plantFlowerAnimations.length) - 1;
     }
     

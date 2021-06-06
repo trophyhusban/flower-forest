@@ -79,6 +79,8 @@ class Play extends Phaser.Scene {
             {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 6});
         this.load.spritesheet("flowerCrumb2", "./assets/gamepieces/flower2.png", 
             {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 8});
+        this.load.spritesheet("flowerCrumb3", "./assets/gamepieces/flower3.png", 
+            {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 4});
         this.load.spritesheet("puck", "./assets/gamepieces/puckSheet.png",
             {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 1});
         this.load.spritesheet("titania", "./assets/gamepieces/titannaSheet.png",
@@ -784,6 +786,18 @@ class Play extends Phaser.Scene {
             frames: this.anims.generateFrameNumbers("flowerCrumb2", 
                 {start: 8, end: 0, first: 8}),
             frameRate: 8
+        });
+        this.anims.create({
+            key: 'plantCrumb3',
+            frames: this.anims.generateFrameNumbers("flowerCrumb3", 
+                {start: 0, end: 4, first: 0}),
+            frameRate: 4
+        });
+        this.anims.create({
+            key: 'killCrumb3',
+            frames: this.anims.generateFrameNumbers("flowerCrumb3", 
+                {start: 4, end: 0, first: 4}),
+            frameRate: 4
         });
 
         this.anims.create({
