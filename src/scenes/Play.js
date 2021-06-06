@@ -32,25 +32,25 @@ class Play extends Phaser.Scene {
         this.loadingScreenFlower1 = this.add.sprite(
             config.width/2 - uiUnit*6, 
             config.height/2,
-            "plantCrumb2",
+            "yoyoCrumb2",
             0
-        ).setScale(4).play("plantCrumb2").setDepth(201);
+        ).setScale(4).play("yoyoCrumb2").setDepth(201);
 
         this.loadingScreenObjects.push(this.loadingScreenFlower1);
 
         this.loadingScreenFlower2 = this.add.sprite(
             config.width/2, 
             config.height/2,
-            "plantCrumb"
-        ).setScale(4).play("plantCrumb").setDepth(201);
+            "yoyoCrumb"
+        ).setScale(4).play("yoyoCrumb").setDepth(201);
 
         this.loadingScreenObjects.push(this.loadingScreenFlower2);
 
         this.loadingScreenFlower3 = this.add.sprite(
             config.width/2 + uiUnit*6, 
             config.height/2,
-            "plantCrumb3"
-        ).setScale(4).play("plantCrumb3").setDepth(201);
+            "yoyoCrumb3"
+        ).setScale(4).play("yoyoCrumb3").setDepth(201);
 
         this.loadingScreenObjects.push(this.loadingScreenFlower3);
         

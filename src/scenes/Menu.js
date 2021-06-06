@@ -113,6 +113,33 @@ class Menu extends Phaser.Scene {
                 {start: 4, end: 0, first: 4}),
             frameRate: 6
         });
+
+        this.anims.create({
+            key: 'yoyoCrumb',
+            frames: this.anims.generateFrameNumbers("flowerCrumb", 
+                {start: 0, end: 6, first: 0}),
+            frameRate: 6,
+            repeat: -1,
+            yoyo: true
+        });
+
+        this.anims.create({
+            key: 'yoyoCrumb2',
+            frames: this.anims.generateFrameNumbers("flowerCrumb2", 
+                {start: 0, end: 8, first: 0}),
+            frameRate: 6,
+            repeat: -1,
+            yoyo: true
+        });
+
+        this.anims.create({
+            key: 'yoyoCrumb3',
+            frames: this.anims.generateFrameNumbers("flowerCrumb3", 
+                {start: 0, end: 4, first: 0}),
+            frameRate: 6,
+            repeat: -1,
+            yoyo: true
+        });
     }
 
     initializeSounds() {
