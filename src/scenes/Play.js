@@ -15,6 +15,8 @@ class Play extends Phaser.Scene {
         keyTWO = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TWO);
         keyTHREE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.THREE);
         keyFOUR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.FOUR);
+        this.tileAnimTicker = 0;
+        this.tileAnimToggle = false;
     }
 
     preload() {
@@ -169,8 +171,10 @@ class Play extends Phaser.Scene {
         this.groundLayer = this.level1Map.createLayer("floor", this.tileSet, 0, 0);
         this.wallLayer = this.level1Map.createLayer("terrain", this.tileSet, 0, 0);
         this.wallLayer.setCollisionByProperty({wall: true});
-        this.riverLayer = this.level1Map.createLayer("riverVisuals", this.riverTiles, 0, 0);
-        this.moatLayer = this.level1Map.createLayer("moatVisuals", this.moatTiles, 0, 0);
+        this.riverLayer1 = this.level1Map.createLayer("riverVisuals1", this.riverTiles, 0, 0);
+        this.riverLayer2 = this.level1Map.createLayer("riverVisuals2", this.riverTiles, 0, 0).setAlpha(0);
+        this.moatLayer1 = this.level1Map.createLayer("moatVisuals1", this.moatTiles, 0, 0);
+        this.moatLayer2 = this.level1Map.createLayer("moatVisuals2", this.moatTiles, 0, 0).setAlpha(0);
         this.towerLayer = this.level1Map.createLayer("towerVisuals", this.towerTiles, 0, 0);
         this.doorLayer = this.level1Map.createLayer("doors", this.tileSet, 0, 0);
 
@@ -560,6 +564,20 @@ class Play extends Phaser.Scene {
                 console.log("door right");
             }
         }
+
+        //animate animated tiles
+        if(this.tileAnimTicker >= 30) {
+            this.tileAnimToggle = !this.tileAnimToggle;
+            this.tileAnimTicker = 0;
+        }
+        if(this.tileAnimToggle) {
+            this.riverLayer2.setAlpha(1);
+            this.moatLayer2.setAlpha(1);
+        } else {
+            this.riverLayer2.setAlpha(0);
+            this.moatLayer2.setAlpha(0);
+        }
+        this.tileAnimTicker++;
 
         // moves the inventory every frame relative to the center of the camera so that it is in the same place
         this.updateInventoryLocation();
