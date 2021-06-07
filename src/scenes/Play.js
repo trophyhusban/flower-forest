@@ -678,26 +678,52 @@ class Play extends Phaser.Scene {
         if(this.player.gridX * gridUnit - (gridUnit / 2) == this.dopplSend.x && this.player.gridY * gridUnit - (gridUnit / 2) == this.dopplSend.y) {
             this.doppelganger.x = this.dopplRecieve.x;
             this.doppelganger.y = this.dopplRecieve.y;
+            this.player.stopped = true;
+            this.doppelganger.stopped = true;
+            this.time.delayedCall(50, () => {
+                this.player.stopped = false;
+                this.doppelganger.stopped = false;
+            });
             console.log("doppl sent");
         }
         if(this.player.gridX * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="syncCheck1").x 
             && this.player.gridY * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="syncCheck1").y) {
             this.doppelganger.x = this.level1Map.findObject("triggers", obj => obj.name ==="syncPlace1").x;
             this.doppelganger.y = this.level1Map.findObject("triggers", obj => obj.name ==="syncPlace1").y;
+            this.player.stopped = true;
+            this.doppelganger.stopped = true;
+            this.time.delayedCall(100, () => {
+                this.player.stopped = false;
+                this.doppelganger.stopped = false;
+            });
             console.log("doppl sent");
         }
         if(this.doppelganger.gridX * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="syncCheck2").x 
-            && this.doppelganger.gridY * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="syncCheck2").y) {
+            && this.doppelganger.gridY * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="syncCheck2").y
+            && this.player.gridY >= this.doppelganger.gridY) {
             this.player.x = this.level1Map.findObject("triggers", obj => obj.name ==="syncPlace2").x;
             this.player.y = this.level1Map.findObject("triggers", obj => obj.name ==="syncPlace2").y;
+            this.player.calculateGridCoords();
             this.camCenterY -= (gridSize * gridUnit);
             this.camera.centerOn(this.camCenterX, this.camCenterY);
             this.changeColor();
+            this.player.stopped = true;
+            this.doppelganger.stopped = true;
+            this.time.delayedCall(100, () => {
+                this.player.stopped = false;
+                this.doppelganger.stopped = false;
+            });
         }
         if(this.player.gridX * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="syncCheck3").x 
             && this.player.gridY * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="syncCheck3").y) {
             this.doppelganger.x = this.level1Map.findObject("triggers", obj => obj.name ==="syncPlace3").x;
             this.doppelganger.y = this.level1Map.findObject("triggers", obj => obj.name ==="syncPlace3").y;
+            this.player.stopped = true;
+            this.doppelganger.stopped = true;
+            this.time.delayedCall(100, () => {
+                this.player.stopped = false;
+                this.doppelganger.stopped = false;
+            });
             console.log("doppl sent");
         }
         if(this.doppelganger.gridX * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="syncPlace3").x 
