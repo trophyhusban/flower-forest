@@ -10,6 +10,7 @@ class CreditsScene extends Phaser.Scene {
         this.load.image("credits bg", "./assets/ui/credits_background.png");
         this.load.audio("endcredit1", "./assets/sound/EndCredit1.wav");
         this.load.audio("endcredit2", "./assets/sound/EndCredit2.wav");
+        this.load.audio("endcredit2quiet", "./assets/sound/EndCredit2Quiet.wav");
         this.load.audio("titlemusic", "./assets/sound/TitleScreenMusic.wav");
     }
 
@@ -227,15 +228,6 @@ class CreditsScene extends Phaser.Scene {
         if (this.finishedTweening) {
             if (keySPACE.isDown) {
                 this.selectSound.play();
-                if (option == "share it") {
-                    this.sound.get("endcredit1").stop();
-                }
-        
-                else if (option == "take it") {
-                    this.sound.get("endcredit2").stop();
-                }
-        
-                
                 this.cameras.main.fadeOut(500).on("camerafadeoutcomplete", () => {
                     this.scene.start("menuScene");
                 });

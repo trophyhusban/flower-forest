@@ -17,6 +17,8 @@ class PreCreditsScene extends Phaser.Scene {
         this.load.audio("level one music", "./assets/sound/BackgroundMusic.wav");
         this.load.audio("endcredit1", "./assets/sound/EndCredit1.wav");
         this.load.audio("endcredit2", "./assets/sound/EndCredit2.wav");
+        this.load.audio("endcredit2quiet", "./assets/sound/EndCredit2Quiet.wav");
+        this.load.audio("river sound", "./assets/sound/River.wav");
     }
 
     create() {
@@ -70,6 +72,7 @@ class PreCreditsScene extends Phaser.Scene {
 
     initializeSound() {
         if (option == "share it") {
+            this.sound.get("river sound").stop();
             music = this.sound.add("endcredit1");
             music.play();
             music.setVolume(masterMusicVolume);
@@ -78,10 +81,19 @@ class PreCreditsScene extends Phaser.Scene {
         }
 
         else if (option == "take it") {
+            this.sound.get("river sound").stop();
             music = this.sound.add("endcredit2");
             music.play();
             music.setVolume(masterMusicVolume);
-            music.setLoop(true);
+
+            music.on("complete", () => { 
+                music = this.sound.add("endcredit2quiet");
+                music.play();
+                music.setVolume(masterMusicVolume);
+                music.setLoop(true);
+
+            });
+            
         }
 
     }
