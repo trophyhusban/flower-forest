@@ -877,6 +877,58 @@ class Play extends Phaser.Scene {
                 console.log("fade out from change level")
                 this.camera.fadeOut(500).on("camerafadeoutcomplete", () => {
                     this.changeLevel2(target);
+                    if(currentLevel == 2) {
+                        this.levelTitle = this.add.text(
+                            this.level1Map.findObject("triggers", obj => obj.name ==="SpawnpointLvl2").x,
+                            this.level1Map.findObject("triggers", obj => obj.name ==="SpawnpointLvl2").y - 2 *gridUnit,
+                            "Level 2:\nDread",
+                            textConfig
+                        ).setAlpha(0);
+                        this.levelTitle.x -= this.levelTitle.width / 2;
+                        this.titleTween = this.tweens.add({
+                            targets: [this.levelTitle],
+                            alpha: 1,
+                            y: this.levelTitle.y - gridUnit,
+                            duration: 2000,
+                            delay: 1000,
+                            ease: "Quad.easeOut"
+                        }).on("complete", () => {
+                            this.titleDeTween = this.tweens.add({
+                                targets: [this.levelTitle],
+                                alpha: 0,
+                                y: this.levelTitle.y + gridUnit,
+                                duration: 2000,
+                                delay: 2000,
+                                ease: "Quad.easeIn"
+                            });
+                        });
+                    } else if(currentLevel == 3) {
+                        this.levelTitle = this.add.text(
+                            this.level1Map.findObject("triggers", obj => obj.name ==="cameraLvl3Start").x,
+                            this.level1Map.findObject("triggers", obj => obj.name ==="cameraLvl3Start").y - 2 *gridUnit,
+                            "Level 3:\nHarmony",
+                            textConfig
+                        ).setAlpha(0);
+                        this.levelTitle.x -= this.levelTitle.width / 2;
+                        this.titleTween = this.tweens.add({
+                            targets: [this.levelTitle],
+                            alpha: 1,
+                            y: this.levelTitle.y - gridUnit,
+                            duration: 2000,
+                            delay: 1000,
+                            ease: "Quad.easeOut"
+                        }).on("complete", () => {
+                            this.titleDeTween = this.tweens.add({
+                                targets: [this.levelTitle],
+                                alpha: 0,
+                                y: this.levelTitle.y + gridUnit,
+                                duration: 2000,
+                                delay: 2000,
+                                ease: "Quad.easeIn"
+                            });
+                        });
+                    }
+                    
                 });
             } else {
                 this.changeLevel2(target);
