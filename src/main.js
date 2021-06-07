@@ -21,7 +21,7 @@ let unit = game.config.height / 15;
 
 let levelWidth, levelHeight, currentLevel;
 
-let keySPACE, keyUP, keyDOWN, keyLEFT, keyRIGHT, keyONE, keyTWO, keyTHREE, keyFOUR, keyFIVE, keyEIGHT, keyNINE, keyZERO;
+let keySPACE, keyUP, keyDOWN, keyLEFT, keyRIGHT, keyONE, keyTWO, keyTHREE, keyFOUR, keyFIVE, keyEIGHT, keyNINE, keyZERO, keySHIFT;
 
 // the text config object used in most of the game
 let textConfig;

@@ -19,6 +19,7 @@ class Play extends Phaser.Scene {
         keyEIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.EIGHT);
         keyNINE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NINE);
         keyZERO = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ZERO);
+        keySHIFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SHIFT);
         this.tileAnimTicker = 0;
         this.tileAnimToggle = false;
     }
@@ -249,8 +250,11 @@ class Play extends Phaser.Scene {
         // to keep track if the level is currently in progress of transitioning to the next one
         this.changingLevel = false;
 
+        //skip to credits cheat
         this.input.keyboard.on("keydown-R", () => {
-            this.scene.start("creditsScene");
+            if(keySHIFT.isDown) {
+                this.scene.start("creditsScene");
+            }
         });
 
         // the camera variable that we use in the rest of it
@@ -578,7 +582,9 @@ class Play extends Phaser.Scene {
 
         //secret cheat code :-). press c quickly to engage rave mode 
         this.input.keyboard.on("keydown-C", () => {
-            this.changeColor();
+            if(keySHIFT.isDown){
+                this.changeColor();
+            }
         });
 
         this.createTutorialKeys();  // adds all the keys that appear on screen to let the player know what buttons u can press
@@ -779,17 +785,17 @@ class Play extends Phaser.Scene {
         }
 
         //go to level 1 when cheat is called
-        if(keyEIGHT.isDown && currentLevel != 1) {
+        if(keyEIGHT.isDown && keySHIFT.isDown && currentLevel != 1) {
             this.changeLevel(1);
         }
         // go to level 2 at end of level 1 OR when cheat is called
         if(this.player.gridX * gridUnit - (gridUnit / 2) == this.endLevel1.x && this.player.gridY * gridUnit - (gridUnit / 2) == this.endLevel1.y || 
-            (keyNINE.isDown && currentLevel != 2)) {
+            (keyNINE.isDown && keySHIFT.isDown && currentLevel != 2)) {
             this.changeLevel(2);
         }
         //go to level 3 at end of level 2 OR when cheat is called
         if(this.player.gridX * gridUnit - (gridUnit / 2) == this.endLevel2.x && this.player.gridY * gridUnit - (gridUnit / 2) == this.endLevel2.y || 
-        (keyZERO.isDown && currentLevel != 3)) {
+        (keyZERO.isDown && keySHIFT.isDown && currentLevel != 3)) {
             this.changeLevel(3);
         }
 
