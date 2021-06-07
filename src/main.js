@@ -8,7 +8,7 @@ let config = {
             //debug: true
         }
     },
-    scene: [Menu, Play, DialogueScene, NoteScene, PreCreditsScene, CreditsScene, PauseScene],
+    scene: [Menu, Play, DialogueScene, NoteScene, GameOverScene, PreCreditsScene, CreditsScene, PauseScene],
     pixelArt: true,
 };
 

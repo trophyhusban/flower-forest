@@ -660,7 +660,7 @@ class Play extends Phaser.Scene {
                 //reset player if the doppelganger is in kill mode
                 console.log("kill!");
                 this.squelch.play();
-                this.scene.restart();
+                this.scene.start("gameOverScene");
             }
         });
 
