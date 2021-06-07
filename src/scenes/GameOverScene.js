@@ -6,10 +6,6 @@ class GameOverScene extends Phaser.Scene {
     }
 
     preload() {
-        this.load.spritesheet("gameOver", "./assets/gamepieces/level two/endscenelevel2.png",
-            {frameWidth: 640, frameHeight: 640, startFrame: 0, endFrame: 9});
-
-
         this.load.audio("level one music", "./assets/sound/BackgroundMusic.wav");
         this.load.audio("endcredit2", "./assets/sound/EndCredit2.wav");
         this.load.audio("endcredit2quiet", "./assets/sound/EndCredit2Quiet.wav");

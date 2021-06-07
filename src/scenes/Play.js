@@ -232,6 +232,10 @@ class Play extends Phaser.Scene {
         this.load.image("altar", "./assets/gamepieces/altar.png");
         this.load.spritesheet("pond", "./assets/gamepieces/altarPond.png",
             {frameWidth: 64, frameHeight:64, startFrame:0, endFrame: 1});
+        
+        
+        this.load.spritesheet("gameOver", "./assets/gamepieces/level two/endscenelevel2.png",
+            {frameWidth: 640, frameHeight: 640, startFrame: 0, endFrame: 9});
     }
     create() {
 

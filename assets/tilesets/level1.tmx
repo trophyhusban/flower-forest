@@ -474,7 +474,7 @@
   <object id="218" name="spiralNote" x="3936" y="6752"/>
   <object id="219" name="sliced2Note" x="5920" y="6624"/>
   <object id="220" name="bigRightNote" x="5344" y="5856"/>
-  <object id="221" name="bigLeftNote" x="5408" y="4512"/>
+  <object id="221" name="bigLeftNote" x="5152" y="4640"/>
   <object id="222" name="lvl2Scare1-1" x="5792" y="5984">
    <ellipse/>
   </object>
