@@ -10,6 +10,7 @@ class Other extends Phaser.Physics.Arcade.Sprite {
         this.dontReset = false;
         this.mirrorMode = false;
         this.scriptedMode = false;
+        this.stopCommand = false;
         this.script = [];
         this.currentInstruction = "";
         this.gridX = 0;
@@ -304,8 +305,10 @@ class Other extends Phaser.Physics.Arcade.Sprite {
                     this.command = "";
                     this.takingInput = true;
                 });
-            } else if(this.currentInstruction == "stop") {
+            } else if(this.currentInstruction == "stop" && !this.stopCommand) {
+                this.stopCommand = true;
                 this.scene.time.delayedCall(1000, () => {
+                    this.stopCommand = false;
                     this.currentInstruction = "";
                 });
             }

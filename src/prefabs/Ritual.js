@@ -49,6 +49,25 @@ class Ritual {
         this.outOfOrder = false;
 
         if(this.lastCorrectIndex.length == 0 ) {this.lastCorrectIndex.push(0);}
+        if(this.index - 1 >= 0) { //if not on first circle, make sure previous circles are still filled
+            for(this.i = 0; this.i < this.index; this.i++) {
+                this.colliding = false;
+                this.scene.physics.world.collide(this.circleArray[this.i], this.scene.flowerTrail, (circle, flower) => {
+                    this.colliding = true;
+                });
+                if(!this.colliding) {
+                    this.ritualFinished = false;
+                    this.index = this.i;
+                    this.done = false;
+                    while(!this.done) {
+                        if(this.lastCorrectIndex.pop() == this.index) {
+                            this.done = true;
+                        }
+                    }
+                    break;
+                }
+            }
+        }
         if(this.index + 1 >= this.circleArray.length) { //if no other circles remain, stop looking for them
             this.scene.physics.world.collide(this.circleArray[this.index], this.scene.flowerTrail, (circle, flower) => {
                 this.openDoor(); //if the final circle is filled, open the door
@@ -84,26 +103,6 @@ class Ritual {
                         //console.log(this.index);
                     }
                 });
-            }
-        }
-
-        if(this.ritualFinished) { //check to see if any flowers are removed from a completed ritual
-            for(this.i = 0; this.i < this.circleArray.length; this.i++) {
-                this.colliding = false;
-                this.scene.physics.world.collide(this.circleArray[this.i], this.scene.flowerTrail, (circle, flower) => {
-                    this.colliding = true;
-                });
-                if(!this.colliding) {
-                    this.ritualFinished = false;
-                    this.index = this.i;
-                    this.done = false;
-                    while(!this.done) {
-                        if(this.lastCorrectIndex.pop() == this.index) {
-                            this.done = true;
-                        }
-                    }
-                    break;
-                }
             }
         }
 
