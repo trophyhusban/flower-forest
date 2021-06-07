@@ -26,17 +26,21 @@ class Play extends Phaser.Scene {
 
     preload() {
 
+        // if the assets are already loaded, than we don't need to make a loading screen 
         if (loadedAssets == false) {
 
             console.log("fade in to the loading screen")
             this.cameras.main.fadeIn(500);
 
+            // an array with all the objects in the loading screen so we can destroy them later
             this.loadingScreenObjects = []
 
+            // green rectangle for the bg
             this.loadingScreenRect = this.add.rectangle(0, 0, config.width, config.height, 0x00d585).setOrigin(0, 0).setDepth(200);
 
             this.loadingScreenObjects.push(this.loadingScreenRect);
 
+            // the loading screen is three flowers which grow and die on a loop
             this.loadingScreenFlower1 = this.add.sprite(
                 config.width/2 - uiUnit*6, 
                 config.height/2 + uiUnit*2,
@@ -73,7 +77,7 @@ class Play extends Phaser.Scene {
                 lineHeight: "normal"
             };
 
-
+            // also there is the text "Loading"
             this.loadingScreenText = this.add.text(
                 config.width/2,
                 config.height/2 - uiUnit*3,
@@ -873,6 +877,7 @@ class Play extends Phaser.Scene {
 
             this.changingLevel = true;
 
+            // all this stuff is to put text ons creen with the name of the level. it's pretty cute
             if (loadedAssets && fromGameOver == false) {
                 console.log("fade out from change level")
                 this.camera.fadeOut(500).on("camerafadeoutcomplete", () => {
@@ -941,8 +946,8 @@ class Play extends Phaser.Scene {
         //move to the specified level
         if(target == 1) {
             currentLevel = 1;
-            this.doppelganger.violent = false;
-            this.camCenterX = this.spawnPoint.x;
+            this.doppelganger.violent = false;          // if violent is true, game over when they collide w/ player
+            this.camCenterX = this.spawnPoint.x;                        
             this.camCenterY = this.spawnPoint.y;
             this.player.x = this.spawnPoint.x;
             this.player.y = this.spawnPoint.y;
@@ -2016,12 +2021,17 @@ class Play extends Phaser.Scene {
         }
     }
 
+    // this method is called in the changeLevel() function, which gets called at create(), from the gameover scene, and 
+    // when the player otherwise changes levels
     fadeInFromLoading() {
-        //fade out from the loading screen
+
+        // if loadedAssets is false, we are transitioning from the loading screen
         if (loadedAssets == false) {
 
+            // fade out the camera 
             this.cameras.main.fadeOut(500).on("camerafadeoutcomplete", () => {
 
+                // set loaded assets to true so we don't do all this next time
                 loadedAssets = true;
 
                 // when it's done fading in, it deletes all the objects that made up the loading screen
@@ -2055,8 +2065,10 @@ class Play extends Phaser.Scene {
                 });
                 
             });
+            // if we are coming from the loading screen, we are not coming from the game over screen
             fromGameOver = false;
 
+        // if we are not coming from the loading screen, we don't need to delete the loading assets or the do any zooming
         } else {
             console.log("fade in with assets loaded");
             this.cameras.main.fadeIn(500);
