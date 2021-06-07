@@ -15,6 +15,10 @@ class Play extends Phaser.Scene {
         keyTWO = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.TWO);
         keyTHREE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.THREE);
         keyFOUR = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.FOUR);
+        keyFIVE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.FIVE);
+        keyEIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.EIGHT);
+        keyNINE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.NINE);
+        keyZERO = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ZERO);
         this.tileAnimTicker = 0;
         this.tileAnimToggle = false;
     }
@@ -211,6 +215,7 @@ class Play extends Phaser.Scene {
         // the camera variable that we use in the rest of it
         this.camera = this.cameras.main;    
 
+        currentLevel = 1;
         this.level1Map = this.make.tilemap({key: "level1"});
         this.tileSet = this.level1Map.addTilesetImage("tilesheet", "tileSheet");
         this.riverTiles = this.level1Map.addTilesetImage("river", "riverTiles");
@@ -633,34 +638,19 @@ class Play extends Phaser.Scene {
             this.changeColor();
         }
 
-        //end level 1
-        if(this.player.gridX * gridUnit - (gridUnit / 2) == this.endLevel1.x && this.player.gridY * gridUnit - (gridUnit / 2) == this.endLevel1.y) {
-            this.add.text(this.camCenterX - (gridSize * gridUnit) / 4,
-                this.camCenterY,
-                "Thank you for completing\nthe Level 1 demo.",
-                textConfig);
-            this.camCenterX = this.level1Map.findObject("triggers", obj => obj.name ==="SpawnpointLvl2").x;
-            this.camCenterY = this.level1Map.findObject("triggers", obj => obj.name ==="SpawnpointLvl2").y;
-            this.player.x = this.level1Map.findObject("triggers", obj => obj.name ==="SpawnpointLvl2").x;
-            this.player.y = this.level1Map.findObject("triggers", obj => obj.name ==="SpawnpointLvl2").y;
-            this.camera.centerOn(this.camCenterX, this.camCenterY);
-            this.changeColor();
+        //go to level 1 when cheat is called
+        if(keyEIGHT.isDown) {
+            this.changeLevel(1);
         }
-        //end level 2
-        if(this.player.gridX * gridUnit - (gridUnit / 2) == this.endLevel2.x && this.player.gridY * gridUnit - (gridUnit / 2) == this.endLevel2.y) {
-            this.add.text(this.camCenterX - (gridSize * gridUnit) / 4,
-                this.camCenterY,
-                "Thank you for completing\nthe Level 2 demo.",
-                textConfig);
-            this.camCenterX = this.level1Map.findObject("triggers", obj => obj.name ==="cameraLvl3Start").x;
-            this.camCenterY = this.level1Map.findObject("triggers", obj => obj.name ==="cameraLvl3Start").y;
-            this.player.x = this.level1Map.findObject("triggers", obj => obj.name ==="playerLvl3Start").x;
-            this.player.y = this.level1Map.findObject("triggers", obj => obj.name ==="playerLvl3Start").y;
-            this.doppelganger.x = this.level1Map.findObject("triggers", obj => obj.name ==="doplLvl3Start").x;
-            this.doppelganger.y = this.level1Map.findObject("triggers", obj => obj.name ==="doplLvl3Start").y;
-            this.doppelganger.mirrorMode = true;
-            this.camera.centerOn(this.camCenterX, this.camCenterY);
-            this.changeColor();
+        // go to level 2 at end of level 1 OR when cheat is called
+        if(this.player.gridX * gridUnit - (gridUnit / 2) == this.endLevel1.x && this.player.gridY * gridUnit - (gridUnit / 2) == this.endLevel1.y || 
+            keyNINE.isDown) {
+            this.changeLevel(2);
+        }
+        //go to level 3 at end of level 2 OR when cheat is called
+        if(this.player.gridX * gridUnit - (gridUnit / 2) == this.endLevel2.x && this.player.gridY * gridUnit - (gridUnit / 2) == this.endLevel2.y || 
+        keyZERO.isDown) {
+            this.changeLevel(3);
         }
 
 
@@ -701,6 +691,44 @@ class Play extends Phaser.Scene {
 
         // moves the inventory every frame relative to the center of the camera so that it is in the same place
         this.updateInventoryLocation();
+    }
+
+    changeLevel(target) {
+        //move to the specified level
+
+        if(target == 1) {
+            currentLevel = 1;
+            this.camCenterX = this.spawnPoint.x;
+            this.camCenterY = this.spawnPoint.y;
+            this.player.x = this.spawnPoint.x;
+            this.player.y = this.spawnPoint.y;
+            this.player.calculateGridCoords();
+            this.camera.centerOn(this.camCenterX, this.camCenterY);
+            this.changeColor();
+        }
+        else if(target == 2) {
+            currentLevel = 2;
+            this.camCenterX = this.level1Map.findObject("triggers", obj => obj.name ==="SpawnpointLvl2").x;
+            this.camCenterY = this.level1Map.findObject("triggers", obj => obj.name ==="SpawnpointLvl2").y;
+            this.player.x = this.level1Map.findObject("triggers", obj => obj.name ==="SpawnpointLvl2").x;
+            this.player.y = this.level1Map.findObject("triggers", obj => obj.name ==="SpawnpointLvl2").y;
+            this.player.calculateGridCoords();
+            this.camera.centerOn(this.camCenterX, this.camCenterY);
+            this.changeColor();
+        }
+        else if(target == 3) {
+            currentLevel = 3;
+            this.camCenterX = this.level1Map.findObject("triggers", obj => obj.name ==="cameraLvl3Start").x;
+            this.camCenterY = this.level1Map.findObject("triggers", obj => obj.name ==="cameraLvl3Start").y;
+            this.player.x = this.level1Map.findObject("triggers", obj => obj.name ==="playerLvl3Start").x;
+            this.player.y = this.level1Map.findObject("triggers", obj => obj.name ==="playerLvl3Start").y;
+            this.player.calculateGridCoords();
+            this.doppelganger.x = this.level1Map.findObject("triggers", obj => obj.name ==="doplLvl3Start").x;
+            this.doppelganger.y = this.level1Map.findObject("triggers", obj => obj.name ==="doplLvl3Start").y;
+            this.doppelganger.mirrorMode = true;
+            this.camera.centerOn(this.camCenterX, this.camCenterY);
+            this.changeColor();
+        }
     }
 
     updateDialogueBox() {
