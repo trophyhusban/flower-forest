@@ -66,9 +66,8 @@ class Menu extends Phaser.Scene {
         
         this.input.keyboard.on("keydown-SPACE", () => {
             this.select.play();
-            this.titlemusic.setLoop(false);
-            this.sound.get("titlemusic").stop();
             this.cameras.main.fadeOut(500).on("camerafadeoutcomplete", () => {
+                music.stop();
                 this.scene.start("playScene");
             });
         });
@@ -145,9 +144,9 @@ class Menu extends Phaser.Scene {
     }
 
     initializeSounds() {
-        this.titlemusic = this.sound.add("titlemusic");
-        this.titlemusic.setVolume(1);
-        this.titlemusic.play();
-        this.titlemusic.setLoop(true);
+        music = this.sound.add("titlemusic");
+        music.play();
+        music.setLoop(true);
+        music.setVolume(masterMusicVolume);
     }
 }

@@ -505,7 +505,16 @@ class Play extends Phaser.Scene {
 
         //this.camera.fadeIn(500);
 
+<<<<<<< HEAD
         this.changeLevel(currentLevel);
+=======
+        this.events.on("shutdown", () => {
+            if (music.isPlaying) {
+                music.stop();
+            }
+        });
+        
+>>>>>>> 9816dcc07d975e5beb41ddc3d0c00561726298d1
     }
 
     update() {
