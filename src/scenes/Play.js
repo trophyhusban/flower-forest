@@ -1022,9 +1022,9 @@ class Play extends Phaser.Scene {
                     this.doppelganger.x = this.level1Map.findObject("triggers", obj => obj.name ==="lvl2Scare1-2").x;
                     this.doppelganger.y = this.level1Map.findObject("triggers", obj => obj.name ==="lvl2Scare1-2").y;
                     if(!this.scareLvl2_Final_Gone) {
-                        this.doppelganger.startScript(["left", "left", "left", "left", "left", "left", "left", "left"]);
+                        this.doppelganger.startScript(["left", "stop", "left", "left", "left", "left", "left", "left", "left"]);
                     } else {
-                        this.doppelganger.startScript(["left", "left", "left", "left", "left", "left", "left", "left", "left"]);
+                        this.doppelganger.startScript(["left", "left", "stop", "left", "left", "left", "left", "left", "left", "left"]);
                         this.scareLvl2_Final_Gone = false;
                     }
             } 
@@ -1035,9 +1035,9 @@ class Play extends Phaser.Scene {
                     this.doppelganger.x = this.level1Map.findObject("triggers", obj => obj.name ==="lvl2Scare1-1").x;
                     this.doppelganger.y = this.level1Map.findObject("triggers", obj => obj.name ==="lvl2Scare1-1").y;
                     if(!this.scareLvl2_Final_Gone) {
-                        this.doppelganger.startScript(["right", "right", "right", "right", "right", "right", "right", "right"]);
+                        this.doppelganger.startScript(["right", "stop", "right", "right", "right", "right", "right", "right", "right"]);
                     } else {
-                        this.doppelganger.startScript(["right", "right", "right", "right", "right", "right", "right", "right", "right"]);
+                        this.doppelganger.startScript(["right", "right", "stop", "right", "right", "right", "right", "right", "right", "right"]);
                         this.scareLvl2_Final_Gone = false;
                     }
             }
@@ -1056,9 +1056,9 @@ class Play extends Phaser.Scene {
                     this.doppelganger.x = this.level1Map.findObject("triggers", obj => obj.name ==="lvl2Scare2-2").x;
                     this.doppelganger.y = this.level1Map.findObject("triggers", obj => obj.name ==="lvl2Scare2-2").y;
                     if(!this.scareLvl2_Final_Gone) {
-                        this.doppelganger.startScript(["up", "up", "up", "left", "left", "left", "left", "left"]);
+                        this.doppelganger.startScript(["up", "stop", "up", "up", "left", "left", "left", "left", "left"]);
                     } else {
-                        this.doppelganger.startScript(["up", "up", "up", "up", "left", "left", "left", "left", "left"]);
+                        this.doppelganger.startScript(["up", "up", "stop", "up", "up", "left", "left", "left", "left", "left"]);
                         this.scareLvl2_Final_Gone = false;
                     }
             } 
@@ -1069,9 +1069,9 @@ class Play extends Phaser.Scene {
                     this.doppelganger.x = this.level1Map.findObject("triggers", obj => obj.name ==="lvl2Scare2-1").x;
                     this.doppelganger.y = this.level1Map.findObject("triggers", obj => obj.name ==="lvl2Scare2-1").y;
                     if(!this.scareLvl2_Final_Gone) {
-                        this.doppelganger.startScript(["right", "right", "right", "down", "down", "down", "down", "down"]);
+                        this.doppelganger.startScript(["right", "stop", "right", "right", "down", "down", "down", "down", "down"]);
                     } else {
-                        this.doppelganger.startScript(["right", "right", "right", "right", "down", "down", "down", "down", "down"]);
+                        this.doppelganger.startScript(["right", "right", "stop", "right", "right", "down", "down", "down", "down", "down"]);
                         this.scareLvl2_Final_Gone = false;
                     }
             }
@@ -1090,9 +1090,9 @@ class Play extends Phaser.Scene {
                     this.doppelganger.x = this.level1Map.findObject("triggers", obj => obj.name ==="lvl2Scare3-2").x;
                     this.doppelganger.y = this.level1Map.findObject("triggers", obj => obj.name ==="lvl2Scare3-2").y;
                     if(!this.scareLvl2_Final_Gone) {
-                        this.doppelganger.startScript(["right", "right", "right", "right", "right", "right", "right", "right"]);
+                        this.doppelganger.startScript(["right", "stop", "right", "right", "right", "right", "right", "right", "right"]);
                     } else {
-                        this.doppelganger.startScript(["right", "right", "right", "right", "right", "right", "right", "right", "right"]);
+                        this.doppelganger.startScript(["right", "right", "stop", "right", "right", "right", "right", "right", "right", "right"]);
                         this.scareLvl2_Final_Gone = false;
                     }
             } 
@@ -1103,9 +1103,9 @@ class Play extends Phaser.Scene {
                     this.doppelganger.x = this.level1Map.findObject("triggers", obj => obj.name ==="lvl2Scare3-1").x;
                     this.doppelganger.y = this.level1Map.findObject("triggers", obj => obj.name ==="lvl2Scare3-1").y;
                     if(!this.scareLvl2_Final_Gone) {
-                        this.doppelganger.startScript(["down", "down", "down", "right", "right", "right", "right", "right"]);
+                        this.doppelganger.startScript(["down", "stop", "down", "down", "right", "right", "right", "right", "right"]);
                     } else {
-                        this.doppelganger.startScript(["down", "down", "down", "down", "right", "right", "right", "right", "right"]);
+                        this.doppelganger.startScript(["down", "down", "stop", "down", "down", "right", "right", "right", "right", "right"]);
                         this.scareLvl2_Final_Gone = false;
                     }
             }
@@ -1124,9 +1124,9 @@ class Play extends Phaser.Scene {
                     this.doppelganger.x = this.level1Map.findObject("triggers", obj => obj.name ==="warpLvl2Get3-2").x;
                     this.doppelganger.y = this.level1Map.findObject("triggers", obj => obj.name ==="warpLvl2Get3-2").y;
                     if(!this.scareLvl2_Final_Gone) {
-                        this.doppelganger.startScript(["up", "up", "left", "plant", "up", "plant", "up", "plant", "right", "plant", "right", "plant", "down", "right", "right", "right", "right"]);
+                        this.doppelganger.startScript(["up", "stop", "up", "left", "plant", "up", "plant", "up", "plant", "right", "plant", "right", "plant", "down", "right", "right", "right", "right"]);
                     } else {
-                        this.doppelganger.startScript(["up", "up", "up", "left", "plant", "up", "plant", "up", "plant", "right", "plant", "right", "plant", "down", "right", "right", "right", "right"]);
+                        this.doppelganger.startScript(["up", "up", "stop", "up", "left", "plant", "up", "plant", "up", "plant", "right", "plant", "right", "plant", "down", "right", "right", "right", "right"]);
                         this.scareLvl2_Final_Gone = false;
                     }
             } 
@@ -1137,9 +1137,9 @@ class Play extends Phaser.Scene {
                     this.doppelganger.x = this.level1Map.findObject("triggers", obj => obj.name ==="lvl2Scare4").x;
                     this.doppelganger.y = this.level1Map.findObject("triggers", obj => obj.name ==="lvl2Scare4").y;
                     if(!this.scareLvl2_Final_Gone) {
-                        this.doppelganger.startScript(["left", "left", "up", "plant", "left", "plant", "left", "plant", "down", "plant", "down", "plant", "right", "down", "down", "down", "down"]);
+                        this.doppelganger.startScript(["left", "stop", "left", "up", "plant", "left", "plant", "left", "plant", "down", "plant", "down", "plant", "right", "down", "down", "down", "down"]);
                     } else {
-                        this.doppelganger.startScript(["left", "left", "left", "up", "plant", "left", "plant", "left", "plant", "down", "plant", "down", "plant", "right", "down", "down", "down", "down"]);
+                        this.doppelganger.startScript(["left", "left", "stop", "left", "up", "plant", "left", "plant", "left", "plant", "down", "plant", "down", "plant", "right", "down", "down", "down", "down"]);
                         this.scareLvl2_Final_Gone = false;
                     }
             }
@@ -1162,7 +1162,7 @@ class Play extends Phaser.Scene {
                     this.doppelganger.mirrorMode = true;
                     this.player.stopped = true;
                     this.doppelganger.stopped = true;
-                    this.time.delayedCall(25, () => {
+                    this.time.delayedCall(50, () => {
                         this.player.stopped = false;
                         this.doppelganger.stopped = false;
                     });
@@ -1185,7 +1185,7 @@ class Play extends Phaser.Scene {
                     this.doppelganger.mirrorMode = true;
                     this.player.stopped = true;
                     this.doppelganger.stopped = true;
-                    this.time.delayedCall(25, () => {
+                    this.time.delayedCall(50, () => {
                         this.player.stopped = false;
                         this.doppelganger.stopped = false;
                     });
