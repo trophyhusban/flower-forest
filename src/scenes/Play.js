@@ -575,6 +575,8 @@ class Play extends Phaser.Scene {
         this.scareLvl2_Final_Done = false;
         this.scareLvl2_Final_Going = false;
         this.scareLvl2_Final_Gone = false;
+        this.mirrorActivated = false;
+        this.mirrorActivating = false;
 
         // this.input.keyboard.on("keydown-M", () => {
         //     this.doppelganger.mirrorMode = !this.doppelganger.mirrorMode;
@@ -658,7 +660,7 @@ class Play extends Phaser.Scene {
                 //reset player if the doppelganger is in kill mode
                 console.log("kill!");
                 this.squelch.play();
-                this.scene.restart();
+                this.scene.start("gameOverScene");
             }
         });
 
@@ -770,29 +772,42 @@ class Play extends Phaser.Scene {
         }
 
         //go to level 1 when cheat is called
-        if(keyEIGHT.isDown) {
+        if(keyEIGHT.isDown && currentLevel != 1) {
             this.changeLevel(1);
         }
         // go to level 2 at end of level 1 OR when cheat is called
         if(this.player.gridX * gridUnit - (gridUnit / 2) == this.endLevel1.x && this.player.gridY * gridUnit - (gridUnit / 2) == this.endLevel1.y || 
-            keyNINE.isDown) {
+            (keyNINE.isDown && currentLevel != 2)) {
             this.changeLevel(2);
         }
         //go to level 3 at end of level 2 OR when cheat is called
         if(this.player.gridX * gridUnit - (gridUnit / 2) == this.endLevel2.x && this.player.gridY * gridUnit - (gridUnit / 2) == this.endLevel2.y || 
-        keyZERO.isDown) {
+        (keyZERO.isDown && currentLevel != 3)) {
             this.changeLevel(3);
         }
 
         //perform the trigger at the end of level 2 that introduces mirror co-op
         if(this.player.gridX * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="mirrorActivate").x &&
-                this.player.gridY * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="mirrorActivate").y) { //left trigger
-                    this.scare2Done = true;
-                    this.scare2Going = true;
-                    this.doppelganger.x = this.level1Map.findObject("triggers", obj => obj.name ==="mirrorActivate").x;
-                    this.doppelganger.y = this.level1Map.findObject("triggers", obj => obj.name ==="mirrorActivate").y;
-                    this.doppelganger.startScript(["up", "up", "up", "up"]);
+                this.player.gridY * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="mirrorActivate").y &&
+                !this.mirrorActivated) {
+                    this.player.stopped = true;
+                    this.mirrorActivated = true;
+                    this.mirrorActivating = true;
+                    this.doppelganger.violent = false;
+                    this.doppelganger.x = this.level1Map.findObject("triggers", obj => obj.name ==="mirrorActivateSpawn").x;
+                    this.doppelganger.y = this.level1Map.findObject("triggers", obj => obj.name ==="mirrorActivateSpawn").y;
+                    this.doppelganger.calculateGridCoords();
+                    if(!this.scareLvl2_Final_Gone) {
+                        this.doppelganger.startScript(["up", "left", "up", "left", "up", "up", "mirror"]);
+                    } else {
+                        this.doppelganger.startScript(["up", "up", "left", "up", "left", "up", "up", "mirror"]);
+                        this.scareLvl2_Final_Gone = false;
+                    }
             }
+        if(this.mirrorActivating && this.doppelganger.mirrorMode) {
+            this.player.stopped = false;
+            this.mirrorActivating = false;
+        }
 
 
         //check to see if doppl is going through a door
