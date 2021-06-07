@@ -35,7 +35,7 @@ class Play extends Phaser.Scene {
 
         this.loadingScreenFlower1 = this.add.sprite(
             config.width/2 - uiUnit*6, 
-            config.height/2,
+            config.height/2 + uiUnit*2,
             "yoyoCrumb2",
             0
         ).setScale(4).play("yoyoCrumb2").setDepth(201);
@@ -44,7 +44,7 @@ class Play extends Phaser.Scene {
 
         this.loadingScreenFlower2 = this.add.sprite(
             config.width/2, 
-            config.height/2,
+            config.height/2 + uiUnit*2,
             "yoyoCrumb"
         ).setScale(4).play("yoyoCrumb").setDepth(201);
 
@@ -52,11 +52,32 @@ class Play extends Phaser.Scene {
 
         this.loadingScreenFlower3 = this.add.sprite(
             config.width/2 + uiUnit*6, 
-            config.height/2,
+            config.height/2 + uiUnit*2,
             "yoyoCrumb3"
         ).setScale(4).play("yoyoCrumb3").setDepth(201);
 
         this.loadingScreenObjects.push(this.loadingScreenFlower3);
+        
+        textConfig = {
+            fontFamily: "express",
+            fontSize: "63px",
+            color: "#FFF",
+            align: "center",
+            padding: 4,
+            wordWrap: {width: config.width - uiUnit*2},
+            align: "left",
+            lineHeight: "normal"
+        };
+
+
+        this.loadingScreenText = this.add.text(
+            config.width/2,
+            config.height/2 - uiUnit*3,
+            "Loading",
+            textConfig
+        ).setOrigin(.5, .5).setDepth(201);
+
+        this.loadingScreenObjects.push(this.loadingScreenText);
         
         this.load.image("ritualCircleBasic", "./assets/gamepieces/ritualCircleBasic.png");
         this.load.spritesheet("ritualTree", "./assets/gamepieces/treeSheet.png",
@@ -511,6 +532,9 @@ class Play extends Phaser.Scene {
 
         this.loadingScreenFlower3.x = this.camCenterX + uiUnit*6;
         this.loadingScreenFlower3.y = this.camCenterY;
+
+        this.loadingScreenText.x = this.camCenterX;
+        this.loadingScreenText.y = this.camCenterY - uiUnit*3;
 
         //create player
         this.player = new One(

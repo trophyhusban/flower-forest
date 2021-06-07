@@ -1,4 +1,5 @@
 {
+  "LEVEL ONE": "",
   "puck1": [
     "You look lost. I am Puck, fabled friend to those in need.", 
     "Most fae won’t even look at someone as ugly as you are, so you’re lucky to have me at your service. What’s your name?", 
@@ -28,13 +29,17 @@
     "They were trying for a while to get it back from her, but eventually it was gone forever.",
     "“The flower fae” became their new name. Now it’s all that we’ve ever known them by."
   ],
+
+  "LEVEL TWO": "",
+  
+  "LEVEL THREE": "",
   "altar": [
     "In front of you, your name lays on an altar. A stream flows from the pool formed by its tears.",
     "Across from you they are standing there.", 
-    "You turn to avoid eye contact and they turn too.",
-    "You take a moment to gather your thoughts. Who are they?", 
+    "You avoid eye contact and they turn too.",
+    "You take a moment to gather your thoughts. Who is this?", 
     "Have they been following you, or have you been following them?",
     "The fae in the tower watches you through a window, waiting for you to make a move.",
-    "Your name waits in front of you. What do you do?"
+    "Your name is within arm's reach. What do you do?"
   ]
 }
