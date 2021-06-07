@@ -629,7 +629,6 @@ class Play extends Phaser.Scene {
 
         // an array of sprites that is the notes, above the box array
         this.inventoryNoteArray = [];
-        this.initializeInventory(1);
 
         //this.camera.fadeIn(500);
 
@@ -1243,17 +1242,20 @@ class Play extends Phaser.Scene {
 
         music.setLoop(true);
         
-        music.volume = 0;
-
-        this.tweens.add({
-            targets: [music],
-            volume: masterMusicVolume,
-            duration: 2500,
-            ease: "Quad.easeInOut",
-            delay: 2000
-        }).on("start", () => {
+        if (currentLevel == 1) {
+            this.tweens.add({
+                targets: [music],
+                volume: {from: 0, to: masterMusicVolume},
+                duration: 2500,
+                ease: "Quad.easeInOut",
+                delay: 2000
+            }).on("start", () => {
+                music.play();
+            });
+        } else {
+            music.volume = masterMusicVolume;
             music.play();
-        });
+        }
 
         // i play the footsteps and then pause them immediately so i can play them later lol
         this.footsteps.setLoop(true);
@@ -1878,9 +1880,7 @@ class Play extends Phaser.Scene {
 
     initializeInventory(level) {
 
-        if (this.noteManager == undefined) {
-            this.noteManager = new NoteManager(this);
-        }
+        this.noteManager = new NoteManager(this);
 
         this.noteManager.noteArray = [];
 

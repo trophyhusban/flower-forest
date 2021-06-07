@@ -56,9 +56,13 @@ class NoteManager {
         this.scene.input.keyboard.on("keydown-RIGHT", () => {
             if (this.currentOpenNote != -1) this.closeNote();
         });
+
+        console.log("it is constructed");
     }
 
     takeInput(i) {  // handles three different cases when the player presses a number key
+
+        console.log(this.noteArray);
 
         // checks to see if there even is a note collected for that number
         if (this.noteArray[i] != undefined) {

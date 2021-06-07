@@ -13,6 +13,8 @@ class GameOverScene extends Phaser.Scene {
 
     create() {
 
+        keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
+
         this.initializeAnimations();
         this.initializeSound();
 
@@ -26,20 +28,18 @@ class GameOverScene extends Phaser.Scene {
         // so that you can only trigger the scene change once
         this.once = true;
 
-        this.input.keyboard.on("keydown", () => {
-            if (this.once = true) {
-                this.once = false;
-                this.cameras.main.fadeOut(1000).on("camerafadeoutcomplete", () => {
-            
-                    this.scene.start("playScene");
-                });
-            }
-        });
     }
 
-    nextScene() {
-        this.scene.play("playScene")
+    update() {
+        if (keySPACE.isDown && this.once) {
+            this.once = false;
+            this.cameras.main.fadeOut(1000).on("camerafadeoutcomplete", () => {
+            
+                this.scene.start("playScene");
+            });
+        }
     }
+
 
     initializeAnimations() {
         this.anims.create({
@@ -53,19 +53,10 @@ class GameOverScene extends Phaser.Scene {
 
     initializeSound() {
 
-        music = this.sound.add("endcredit2");
+        music = this.sound.add("endcredit2quiet");
         music.play();
         music.setVolume(masterMusicVolume);
-
-        music.on("complete", () => { 
-            music = this.sound.add("endcredit2quiet");
-            music.play();
-            music.setVolume(masterMusicVolume);
-            music.setLoop(true);
-
-        });
+        music.setLoop(true);
             
-        
-
     }
 }
