@@ -73,10 +73,21 @@ class Other extends Phaser.Physics.Arcade.Sprite {
                 this.scriptedMode = false;
             }
         } else {
-            this.body.setVelocity(0, 0);
-            this.x = this.gridX * gridUnit - (gridUnit / 2);
-            this.y = this.gridY * gridUnit - (gridUnit / 2);
-            this.anims.play("other_reset");
+            // console.log("calcX: " + ((this.x + (gridUnit / 2)) / gridUnit) + "| gridX: " + this.gridX);
+            if(((this.x + (gridUnit / 2)) / gridUnit) <= this.gridX + 0.1 && ((this.x + (gridUnit / 2)) / gridUnit) >= this.gridX - 0.1) {
+                this.body.setVelocityX(0);
+                this.x = this.gridX * gridUnit - (gridUnit / 2);
+                //console.log("stopX");
+            }
+            // console.log("calcY: " + ((this.y + (gridUnit / 2)) / gridUnit) + "| gridY: " + this.gridY);
+            if(((this.y + (gridUnit / 2)) / gridUnit) <= this.gridY + 0.1 && ((this.y + (gridUnit / 2)) / gridUnit) >= this.gridY - 0.1) {
+                this.body.setVelocityY(0);
+                this.y = this.gridY * gridUnit - (gridUnit / 2);
+                // console.log("stopY");
+            }
+            if(this.body.speed == 0) {
+                this.anims.play("other_reset");
+            }
             this.direction = "";
             this.command = "";
             this.takingInput = true;
