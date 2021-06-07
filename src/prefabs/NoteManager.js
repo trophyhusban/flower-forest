@@ -32,6 +32,9 @@ class NoteManager {
         this.scene.input.keyboard.on("keydown-FOUR", () => {
             this.takeInput(3);
         });
+        this.scene.input.keyboard.on("keydown-FIVE", () => {
+            this.takeInput(4);
+        });
 
         // the rest of the keys close the note if there is one open
         // this way i don't have to put an instruction on screen to tell players how to close notes

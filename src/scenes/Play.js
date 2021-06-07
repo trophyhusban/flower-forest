@@ -114,6 +114,7 @@ class Play extends Phaser.Scene {
         this.load.image("2 key", "./assets/ui/two_key.png");
         this.load.image("3 key", "./assets/ui/three_key.png");
         this.load.image("4 key", "./assets/ui/four_key.png");
+        this.load.image("5 key", "./assets/ui/five_key.png");
         
         this.load.spritesheet("puck", "./assets/gamepieces/puckSheet.png",
             {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 1});
@@ -488,7 +489,7 @@ class Play extends Phaser.Scene {
 
         this.initializeAudio();     // all the making of the audio variables go in here
 
-        this.noteManager = new NoteManager(this);
+        
 
         this.input.keyboard.on("keydown-ESC", () => {
             this.scene.pause();
@@ -499,10 +500,16 @@ class Play extends Phaser.Scene {
             this.nextColor();
         });
 
-        // the "inventory" is just four sprites that have the note sprites on top of them
+        // the "inventory" is just four sprites in level one and five in level two that have the note sprites on top of them
         // the main function of the inventory is to visually show players how many notes they have collected
         // it also tells the players exactly what the tutorial keys for the note manager do
-        this.initializeInventory();
+        // i make the arrys first so the function works properly
+        // an array of sprites that are below the sprites for the notes
+        this.inventoryBoxArray = [];
+
+        // an array of sprites that is the notes, above the box array
+        this.inventoryNoteArray = [];
+        this.initializeInventory(1);
 
         //this.camera.fadeIn(500);
 
@@ -738,6 +745,7 @@ class Play extends Phaser.Scene {
             this.changeColor();
             this.riverSound.setVolume(masterSFXVolume*.1);
         }
+        this.initializeInventory(target);
     }
 
     updateDialogueBox() {
@@ -1377,7 +1385,21 @@ class Play extends Phaser.Scene {
         ).setOrigin(0, 0).play("pond");
     }
 
-    initializeInventory() {
+    initializeInventory(level) {
+
+        if (this.noteManager == undefined) {
+            this.noteManager = new NoteManager(this);
+        }
+
+        this.noteManager.noteArray = [];
+
+        for (let i = 0; i < this.inventoryBoxArray.length; i++) {
+            this.inventoryBoxArray[i].destroy();
+        }
+
+        for (let i = 0; i < this.inventoryNoteArray.length; i++) {
+            this.inventoryNoteArray[i].destroy();
+        }
 
         // an array of sprites that are below the sprites for the notes
         this.inventoryBoxArray = [];
@@ -1385,14 +1407,26 @@ class Play extends Phaser.Scene {
         // an array of sprites that is the notes, above the box array
         this.inventoryNoteArray = [];
 
-        // adds four identical sprites to the top left of the screen
-        for (let i = 0; i < 4; i++) {
-            this.inventoryBoxArray.push(this.add.sprite(
-                this.camCenterX - config.width/2 + i*64,    // starting from the left side of the screen
-                this.camCenterY - config.height/2,          // the top of the screen
-                "inventory box"
-            ).setOrigin(0, 0).setDepth(150).setAlpha(.5));
+        if (level == 1) {
+            // adds four identical sprites to the top left of the screen
+            for (let i = 0; i < 4; i++) {
+                this.inventoryBoxArray.push(this.add.sprite(
+                    this.camCenterX - config.width/2 + i*64,    // starting from the left side of the screen
+                    this.camCenterY - config.height/2,          // the top of the screen
+                    "inventory box"
+                ).setOrigin(0, 0).setDepth(150).setAlpha(.5));
+            }
+        } else if (level == 2) {
+            // adds four identical sprites to the top left of the screen
+            for (let i = 0; i < 5; i++) {
+                this.inventoryBoxArray.push(this.add.sprite(
+                    this.camCenterX - config.width/2 + i*64,    // starting from the left side of the screen
+                    this.camCenterY - config.height/2,          // the top of the screen
+                    "inventory box"
+                ).setOrigin(0, 0).setDepth(150).setAlpha(.5));
+            }
         }
+        
     }
 
     updateInventoryLocation() {
