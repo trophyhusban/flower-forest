@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.5" tiledversion="1.6.0" orientation="orthogonal" renderorder="right-down" width="110" height="110" tilewidth="64" tileheight="64" infinite="0" nextlayerid="13" nextobjectid="236">
+<map version="1.5" tiledversion="1.6.0" orientation="orthogonal" renderorder="right-down" width="110" height="110" tilewidth="64" tileheight="64" infinite="0" nextlayerid="13" nextobjectid="237">
  <editorsettings>
   <export target="level1.json" format="json"/>
  </editorsettings>
@@ -505,13 +505,16 @@
   <object id="231" name="lvl2Scare4" x="4064" y="5280">
    <ellipse/>
   </object>
-  <object id="233" name="mirrorActivate" x="5280" y="3360">
+  <object id="233" name="mirrorActivate" x="5408" y="3104">
    <ellipse/>
   </object>
   <object id="234" name="lvl2ScareFinal1De" x="4768" y="3872">
    <ellipse/>
   </object>
   <object id="235" name="lvl2ScareFinal2De" x="5792" y="3872">
+   <ellipse/>
+  </object>
+  <object id="236" name="mirrorActivateSpawn" x="5280" y="3360">
    <ellipse/>
   </object>
  </objectgroup>
