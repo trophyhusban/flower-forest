@@ -96,10 +96,10 @@ class Play extends Phaser.Scene {
         this.load.image("ritualSliced2-2", "./assets/gamepieces/level two/sliced2/sliced2mid1.png");
         this.load.image("ritualSliced2-3", "./assets/gamepieces/level two/sliced2/sliced2left2.png");
         this.load.image("ritualSliced2-4", "./assets/gamepieces/level two/sliced2/sliced2mid2.png");
-        this.load.image("ritualSliced2-5", "./assets/gamepieces/level two/sliced2/sliced2right1.png");
+        this.load.image("ritualSliced2-5", "./assets/gamepieces/level two/sliced2/slicedright1.png");
         this.load.image("ritualSliced2-6", "./assets/gamepieces/level two/sliced2/sliced2left3.png");
         this.load.image("ritualSliced2-7", "./assets/gamepieces/level two/sliced2/sliced2mid3.png");
-        this.load.image("ritualSliced2-8", "./assets/gamepieces/level two/sliced2/sliced2right2.png");
+        this.load.image("ritualSliced2-8", "./assets/gamepieces/level two/sliced2/slicedright2.png");
         this.load.image("ritualSpiral1", "./assets/gamepieces/level two/spiral/spiralright1.png");
         this.load.image("ritualSpiral2", "./assets/gamepieces/level two/spiral/spiralleft1.png");
         this.load.image("ritualSpiral3", "./assets/gamepieces/level two/spiral/spiralright2.png");
@@ -388,7 +388,50 @@ class Play extends Phaser.Scene {
 
 
         //level 2 rituals
-        //
+        //create big ritual
+        this.bigRitual = new Ritual(this,
+            this.level1Map.findObject("rituals", obj => obj.name ==="bigDoor"), "ritualDoor", "up", [
+            [this.level1Map.findObject("rituals", obj => obj.name ==="big6"), "ritualBig6"],
+            [this.level1Map.findObject("rituals", obj => obj.name ==="big5"), "ritualBig5"],
+            [this.level1Map.findObject("rituals", obj => obj.name ==="big3"), "ritualBig3"],
+            [this.level1Map.findObject("rituals", obj => obj.name ==="big7"), "ritualBig7"],
+            [this.level1Map.findObject("rituals", obj => obj.name ==="big2"), "ritualBig2"],
+            [this.level1Map.findObject("rituals", obj => obj.name ==="big1"), "ritualBig1"],
+            [this.level1Map.findObject("rituals", obj => obj.name ==="big8"), "ritualBig8"]], [
+                [this.level1Map.findObject("rituals", obj => obj.name ==="big4"), "ritualBig4"]
+        ]);
+
+        //create mini ritual
+        this.miniRitual = new Ritual(this,
+            this.level1Map.findObject("rituals", obj => obj.name ==="miniDoor"), "ritualTree", "down", [
+            [this.level1Map.findObject("rituals", obj => obj.name ==="mini2"), "ritualMini2"],
+            [this.level1Map.findObject("rituals", obj => obj.name ==="mini1"), "ritualMini1"],
+            [this.level1Map.findObject("rituals", obj => obj.name ==="mini4"), "ritualMini4"],
+            [this.level1Map.findObject("rituals", obj => obj.name ==="mini3"), "ritualMini3"]
+        ]);
+
+        //create sliced2 ritual
+        this.sliced2Ritual = new Ritual(this,
+            this.level1Map.findObject("rituals", obj => obj.name ==="sliced2-Door"), "ritualTree", "left", [
+            [this.level1Map.findObject("rituals", obj => obj.name ==="sliced2-4"), "ritualSliced2-4"],
+            [this.level1Map.findObject("rituals", obj => obj.name ==="sliced2-7"), "ritualSliced2-7"],
+            [this.level1Map.findObject("rituals", obj => obj.name ==="sliced2-5"), "ritualSliced2-5"],
+            [this.level1Map.findObject("rituals", obj => obj.name ==="sliced2-3"), "ritualSliced2-3"],
+            [this.level1Map.findObject("rituals", obj => obj.name ==="sliced2-2"), "ritualSliced2-2"]], [
+                [this.level1Map.findObject("rituals", obj => obj.name ==="sliced2-1"), "ritualSliced2-1"],
+                [this.level1Map.findObject("rituals", obj => obj.name ==="sliced2-6"), "ritualSliced2-6"],
+                [this.level1Map.findObject("rituals", obj => obj.name ==="sliced2-8"), "ritualSliced2-8"]
+        ]);
+
+        //create spiral ritual
+        this.spiralRitual = new Ritual(this,
+            this.level1Map.findObject("rituals", obj => obj.name ==="spiralDoor"), "ritualTree", "left", [
+            [this.level1Map.findObject("rituals", obj => obj.name ==="spiral4"), "ritualSpiral4"],
+            [this.level1Map.findObject("rituals", obj => obj.name ==="spiral2"), "ritualSpiral2"],
+            [this.level1Map.findObject("rituals", obj => obj.name ==="spiral3"), "ritualSpiral3"],
+            [this.level1Map.findObject("rituals", obj => obj.name ==="spiral1"), "ritualSpiral1"],
+            [this.level1Map.findObject("rituals", obj => obj.name ==="spiral5"), "ritualSpiral5"]
+        ]);
 
 
         //level 3 rituals
@@ -792,6 +835,10 @@ class Play extends Phaser.Scene {
         this.halfNoteRitual.update();
         this.littleBigRitual.update();
         this.slicedRitual.update();
+        this.bigRitual.update();
+        this.miniRitual.update();
+        this.sliced2Ritual.update();
+        this.spiralRitual.update();
         this.lvl3Ritual1_1.update();
         this.lvl3Ritual1_2.update();
         this.lvl3Ritual2.update();
