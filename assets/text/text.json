@@ -31,6 +31,36 @@
   ],
 
   "LEVEL TWO": "",
+  "puck3": [
+    "Hello again, my ugly friend!",
+    "Listen, don’t give up.",
+    "When you get to the tower, you’ll find your name there. The fae of the tower will probably be hiding inside.",
+    "Frankly, she’s a coward. Don’t let her defeat you!"
+  ],
+  "puck4": [
+    "I’m not the only one seeing double, right?",
+    "Do you have any clue who that is or what they want with you?",
+    "Even the fae get lost in this part of the forest. The fae in the tower picked a good hiding place.",
+    "Keep your wits about you!"
+  ],
+  "titania2": [
+    "Have you two met? It looks like you have so much in common! They’re almost as ugly as you are HAHAHA!"
+  ],
+  "titania3": [
+    "I wonder if you’re the real one or if they are.",
+    "If you took their name from them, you’d be just as bad as the fae in the tower, right?"
+  ],
+  "flowerfae2": [
+    "Good to see you again! I can’t thank you enough for planting all those flowers! Keep it up!",
+    "You know, I really don’t like the fae in the tower… She doesn’t treat fae much better than people like you.",
+    "I really hope that you do end up finding your name!"
+  ],
+  "flowerfae3": [
+    "You know, having a doppelganger isn’t such an unusual issue.",
+    "I had a problem with a doppelganger a while ago.",
+    "...",
+    "It’s not a problem anymore <3"
+  ],
   
   "LEVEL THREE": "",
   "altar": [

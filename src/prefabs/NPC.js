@@ -139,7 +139,7 @@ class NPC extends Phaser.Physics.Arcade.Sprite {
             // also create a tutorial key on screen for the key that opens the new note <3
             // the new note is made now but because we pause the play scene in 5 lines, it doesn't show up until the player
             // leaves the note scene
-            this.createTutorialKeyForNote(this.scene.noteManager.noteArray.length);
+            if (currentLevel == 1) this.createTutorialKeyForNote(this.scene.noteManager.noteArray.length);
         }
 
         // i store them in a global variable so i can access them in the next scene

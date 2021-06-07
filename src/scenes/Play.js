@@ -526,13 +526,13 @@ class Play extends Phaser.Scene {
         this.loadingScreenRect.y = this.camCenterY - config.height/2;
 
         this.loadingScreenFlower1.x = this.camCenterX - uiUnit*6;
-        this.loadingScreenFlower1.y = this.camCenterY;
+        this.loadingScreenFlower1.y = this.camCenterY + uiUnit*2;
 
         this.loadingScreenFlower2.x = this.camCenterX;
-        this.loadingScreenFlower2.y = this.camCenterY;
+        this.loadingScreenFlower2.y = this.camCenterY + uiUnit*2;
 
         this.loadingScreenFlower3.x = this.camCenterX + uiUnit*6;
-        this.loadingScreenFlower3.y = this.camCenterY;
+        this.loadingScreenFlower3.y = this.camCenterY + uiUnit*2;
 
         this.loadingScreenText.x = this.camCenterX;
         this.loadingScreenText.y = this.camCenterY - uiUnit*3;
@@ -1774,6 +1774,84 @@ class Play extends Phaser.Scene {
         ).setDepth(105);
 
         this.NPCArray.push(this.spiralNote);
+
+        this.puckNPC3 = new NPC(
+            this,
+            this.player,
+            4446,
+            6688,
+            ["puck", "puckTalking"],
+            0,
+            textJSON.puck3,
+            "NPC"
+        );
+
+        this.NPCArray.push(this.puckNPC3);
+
+        this.puckNPC4 = new NPC(
+            this,
+            this.player,
+            3992,
+            4704,
+            ["puck", "puckTalking"],
+            0,
+            textJSON.puck4,
+            "NPC"
+        );
+
+        this.NPCArray.push(this.puckNPC4);
+
+        this.titaniaNPC2 = new NPC(
+            this,
+            this.player,
+            6756,
+            3884,
+            ["titania", "titaniaTalking"],
+            0,
+            textJSON.titania2,
+            "NPC"
+        );
+
+        this.NPCArray.push(this.titaniaNPC2);
+
+        this.titaniaNPC3 = new NPC(
+            this,
+            this.player,
+            3794,
+            6632,
+            ["titania", "titaniaTalking"],
+            0,
+            textJSON.titania3,
+            "NPC"
+        );
+
+        this.NPCArray.push(this.titaniaNPC3);
+
+        this.flowerfaeNPC2 = new NPC(
+            this,
+            this.player,
+            6678,
+            5870+64,
+            ["flowerfae", "flowerfaeTalking"],
+            0,
+            textJSON.flowerfae2,
+            "NPC"
+        );
+
+        this.NPCArray.push(this.flowerfaeNPC2);
+
+        this.flowerfaeNPC3 = new NPC(
+            this,
+            this.player,
+            4454,
+            5222,
+            ["flowerfae", "flowerfaeTalking"],
+            0,
+            textJSON.flowerfae3,
+            "NPC"
+        );
+
+        this.NPCArray.push(this.flowerfaeNPC3);
     }
 
     initializeInventory(level) {
