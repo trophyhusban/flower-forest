@@ -133,6 +133,16 @@ class Play extends Phaser.Scene {
         this.load.image("half left note", "./assets/gamepieces/halfNoteB/noteBLeft.png");
         this.load.image("half right UI", "./assets/gamepieces/halfNoteB/halfNoteBRight.png");
         this.load.image("half right note", "./assets/gamepieces/halfNoteB/noteBRight.png");
+        this.load.image("big right note", "./assets/gamepieces/level two/big/notebigRight.png");
+        this.load.image("big left note", "./assets/gamepieces/level two/big/notebigLeft.png");
+        this.load.image("big right UI", "./assets/gamepieces/level two/big/BigRightUI.png");
+        this.load.image("big left UI", "./assets/gamepieces/level two/big/BigLeftUI.png");
+        this.load.image("mini note", "./assets/gamepieces/level two/mini/notemini.png");
+        this.load.image("mini UI", "./assets/gamepieces/level two/mini/miniUI.png");
+        this.load.image("sliced2 note", "./assets/gamepieces/level two/sliced2/notesliced2.png");
+        this.load.image("sliced2 UI", "./assets/gamepieces/level two/sliced2/sliced2UI.png");
+        this.load.image("spiral note", "./assets/gamepieces/level two/spiral/notespiral.png");
+        this.load.image("spiral UI", "./assets/gamepieces/level two/spiral/sprialUI.png");
         this.load.image("arrow key up", "./assets/ui/arrow_key_up.png");
         this.load.image("space key", "./assets/ui/space_key.png");
         this.load.image("1 key", "./assets/ui/one_key.png");
@@ -1455,6 +1465,71 @@ class Play extends Phaser.Scene {
             this.altar.y,
             "pond"
         ).setOrigin(0, 0).play("pond");
+
+        this.bigNoteRight = new NPC(
+            this,
+            this.player,
+            this.level1Map.findObject("triggers", obj => obj.name ==="bigRightNote").x,
+            this.level1Map.findObject("triggers", obj => obj.name ==="bigRightNote").y,
+            ["big right note"],
+            0,
+            "big right UI",
+            "note"
+        ).setDepth(105);
+
+        this.NPCArray.push(this.bigNoteRight);
+
+        this.bigNoteLeft = new NPC(
+            this,
+            this.player,
+            this.level1Map.findObject("triggers", obj => obj.name ==="bigLeftNote").x,
+            this.level1Map.findObject("triggers", obj => obj.name ==="bigLeftNote").y,
+            ["big left note"],
+            0,
+            "big left UI",
+            "note"
+        ).setDepth(105);
+
+        this.NPCArray.push(this.bigNoteLeft);
+
+        this.miniNote = new NPC(
+            this,
+            this.player,
+            this.level1Map.findObject("triggers", obj => obj.name ==="miniNote").x,
+            this.level1Map.findObject("triggers", obj => obj.name ==="miniNote").y,
+            ["mini note"],
+            0,
+            "mini UI",
+            "note"
+        ).setDepth(105);
+
+        this.NPCArray.push(this.miniNote);
+
+        this.sliced2Note = new NPC(
+            this,
+            this.player,
+            this.level1Map.findObject("triggers", obj => obj.name ==="sliced2Note").x,
+            this.level1Map.findObject("triggers", obj => obj.name ==="sliced2Note").y,
+            ["sliced2 note"],
+            0,
+            "sliced2 UI",
+            "note"
+        ).setDepth(105);
+
+        this.NPCArray.push(this.sliced2Note);
+
+        this.spiralNote = new NPC(
+            this,
+            this.player,
+            this.level1Map.findObject("triggers", obj => obj.name ==="spiralNote").x,
+            this.level1Map.findObject("triggers", obj => obj.name ==="spiralNote").y,
+            ["spiral note"],
+            0,
+            "spiral UI",
+            "note"
+        ).setDepth(105);
+
+        this.NPCArray.push(this.spiralNote);
     }
 
     initializeInventory(level) {

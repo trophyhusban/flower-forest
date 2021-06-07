@@ -825,6 +825,61 @@
                  "width":0,
                  "x":5408,
                  "y":2848
+                }, 
+                {
+                 "height":0,
+                 "id":216,
+                 "name":"miniNote",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":3808,
+                 "y":4704
+                }, 
+                {
+                 "height":0,
+                 "id":218,
+                 "name":"spiralNote",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":3936,
+                 "y":6752
+                }, 
+                {
+                 "height":0,
+                 "id":219,
+                 "name":"sliced2Note",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":5920,
+                 "y":6624
+                }, 
+                {
+                 "height":0,
+                 "id":220,
+                 "name":"bigRightNote",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":5344,
+                 "y":5856
+                }, 
+                {
+                 "height":0,
+                 "id":221,
+                 "name":"bigLeftNote",
+                 "rotation":0,
+                 "type":"",
+                 "visible":true,
+                 "width":0,
+                 "x":5408,
+                 "y":4512
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -1846,7 +1901,7 @@
          "y":0
         }],
  "nextlayerid":13,
- "nextobjectid":216,
+ "nextobjectid":222,
  "orientation":"orthogonal",
  "properties":[
         {
