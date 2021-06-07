@@ -30,7 +30,7 @@ class CreditsScene extends Phaser.Scene {
         // i arranged this text in illustrator first, which is where i got the number of newlines from
         this.namesText = "Alex Basinksi\n\n\n\n\nAlexa Wilbert\n\n\n\n\nArdent Eliot :-) Reinhard\n\n\n\n\n\nStar Hagen-Esquerra";
         this.rolesText = "\nMain Programer\nGame Designer\nDesign of Level 1, 2, 3\n\n\nSound Designer\nArtist\nDesign of Level 1, 3\n\n\n";
-        this.rolesText += "UI/UX Designer\nPuzzle Designer\nWriter\nDesign of Level 1, 3\n\n\nArtist\nCharacter Designer\nPuzzle Designer\nDesign of Level 1, 3";
+        this.rolesText += "UI/UX Designer\nPuzzle Designer\nWriter\nDesign of Level 1, 3\n\n\nArtist\nCharacter Designer\nPuzzle Designer\nDesign of Level 1, 2, 3";
 
         // the y value that the text starts at
         // below the screen by 64 pixels
@@ -190,6 +190,12 @@ class CreditsScene extends Phaser.Scene {
             textConfig
         ).setOrigin(.5, .5);
         this.restartText.alpha = 0;
+
+        this.events.on("shutdown", () => {
+            if (music.isPlaying) {
+                music.stop();
+            }
+        });
     }
 
     update() {

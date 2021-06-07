@@ -453,6 +453,11 @@ class Play extends Phaser.Scene {
 
         //this.camera.fadeIn(500);
 
+        this.events.on("shutdown", () => {
+            if (music.isPlaying) {
+                music.stop();
+            }
+        });
         
     }
 
