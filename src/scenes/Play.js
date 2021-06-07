@@ -168,6 +168,7 @@ class Play extends Phaser.Scene {
         this.load.audio("speaking", "./assets/sound/CharacterSpeak.wav");
         this.load.audio("plant flower audio", "./assets/sound/PlantFlower.wav");
         this.load.audio("plant flower reverse audio", "./assets/sound/PlantFlowerReverse.wav");
+        this.load.audio("squelch", "./assets/sound/Squelch.wav");
         this.load.spritesheet("oneSheet", "./assets/gamepieces/playerAtlas.png", 
             {frameWidth: 64, frameHeight: 64, startFrame: 0, endFrame: 15});
         this.load.spritesheet("otherSheet", "./assets/gamepieces/dopplAtlas.png", 
@@ -632,6 +633,7 @@ class Play extends Phaser.Scene {
             if(other.violent) {
                 //reset player if the doppelganger is in kill mode
                 console.log("kill!");
+                this.squelch.play();
                 this.scene.restart();
             }
         });
@@ -757,6 +759,16 @@ class Play extends Phaser.Scene {
         keyZERO.isDown) {
             this.changeLevel(3);
         }
+
+        //perform the trigger at the end of level 2 that introduces mirror co-op
+        if(this.player.gridX * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="mirrorActivate").x &&
+                this.player.gridY * gridUnit - (gridUnit / 2) == this.level1Map.findObject("triggers", obj => obj.name ==="mirrorActivate").y) { //left trigger
+                    this.scare2Done = true;
+                    this.scare2Going = true;
+                    this.doppelganger.x = this.level1Map.findObject("triggers", obj => obj.name ==="mirrorActivate").x;
+                    this.doppelganger.y = this.level1Map.findObject("triggers", obj => obj.name ==="mirrorActivate").y;
+                    this.doppelganger.startScript(["up", "up", "up", "up"]);
+            }
 
 
         //check to see if doppl is going through a door
@@ -1166,6 +1178,7 @@ class Play extends Phaser.Scene {
         this.talkingFlowerfae = this.sound.add("talking flowerfae");
         this.select = this.sound.add("select");
         this.riverSound = this.sound.add("river sound");
+        this.squelch = this.sound.add("squelch");
 
         this.riverSound.play();
         this.riverSound.setLoop(true);
@@ -1178,6 +1191,7 @@ class Play extends Phaser.Scene {
         this.sounds.push(this.talkingTitania);
         this.sounds.push(this.talkingFlowerfae);
         this.sounds.push(this.riverSound);
+        this.sounds.push(this.squelch);
 
         music = this.sound.add("level one music");
 
