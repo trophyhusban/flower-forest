@@ -39,6 +39,11 @@ let masterSFXVolume = 1;
 let music;
 let option;
 
+// a global variable to keep track of whether the loading screen has been done or not
+let loadedAssets = false;
+
+let fromGameOver = false;
+
 // this is the array of colors that we use in the overlay
 // the idea is that every in every room, we randomize the color overlay
 // the overlay manifests itself as a mostly transparent rectangle that most objects are drawn below

@@ -25,59 +25,64 @@ class Play extends Phaser.Scene {
 
     preload() {
 
-        this.cameras.main.fadeIn(250);
+        if (loadedAssets == false) {
 
-        this.loadingScreenObjects = []
+            console.log("fade in to the loading screen")
+            this.cameras.main.fadeIn(500);
 
-        this.loadingScreenRect = this.add.rectangle(0, 0, config.width, config.height, 0x00d585).setOrigin(0, 0).setDepth(200);
+            this.loadingScreenObjects = []
 
-        this.loadingScreenObjects.push(this.loadingScreenRect);
+            this.loadingScreenRect = this.add.rectangle(0, 0, config.width, config.height, 0x00d585).setOrigin(0, 0).setDepth(200);
 
-        this.loadingScreenFlower1 = this.add.sprite(
-            config.width/2 - uiUnit*6, 
-            config.height/2 + uiUnit*2,
-            "yoyoCrumb2",
-            0
-        ).setScale(4).play("yoyoCrumb2").setDepth(201);
+            this.loadingScreenObjects.push(this.loadingScreenRect);
 
-        this.loadingScreenObjects.push(this.loadingScreenFlower1);
+            this.loadingScreenFlower1 = this.add.sprite(
+                config.width/2 - uiUnit*6, 
+                config.height/2 + uiUnit*2,
+                "yoyoCrumb2",
+                0
+            ).setScale(4).play("yoyoCrumb2").setDepth(201);
 
-        this.loadingScreenFlower2 = this.add.sprite(
-            config.width/2, 
-            config.height/2 + uiUnit*2,
-            "yoyoCrumb"
-        ).setScale(4).play("yoyoCrumb").setDepth(201);
+            this.loadingScreenObjects.push(this.loadingScreenFlower1);
 
-        this.loadingScreenObjects.push(this.loadingScreenFlower2);
+            this.loadingScreenFlower2 = this.add.sprite(
+                config.width/2, 
+                config.height/2 + uiUnit*2,
+                "yoyoCrumb"
+            ).setScale(4).play("yoyoCrumb").setDepth(201);
 
-        this.loadingScreenFlower3 = this.add.sprite(
-            config.width/2 + uiUnit*6, 
-            config.height/2 + uiUnit*2,
-            "yoyoCrumb3"
-        ).setScale(4).play("yoyoCrumb3").setDepth(201);
+            this.loadingScreenObjects.push(this.loadingScreenFlower2);
 
-        this.loadingScreenObjects.push(this.loadingScreenFlower3);
-        
-        textConfig = {
-            fontFamily: "express",
-            fontSize: "63px",
-            color: "#FFF",
-            align: "center",
-            padding: 4,
-            wordWrap: {width: config.width - uiUnit*2},
-            align: "left",
-            lineHeight: "normal"
-        };
+            this.loadingScreenFlower3 = this.add.sprite(
+                config.width/2 + uiUnit*6, 
+                config.height/2 + uiUnit*2,
+                "yoyoCrumb3"
+            ).setScale(4).play("yoyoCrumb3").setDepth(201);
+
+            this.loadingScreenObjects.push(this.loadingScreenFlower3);
+            
+            textConfig = {
+                fontFamily: "express",
+                fontSize: "63px",
+                color: "#FFF",
+                align: "center",
+                padding: 4,
+                wordWrap: {width: config.width - uiUnit*2},
+                align: "left",
+                lineHeight: "normal"
+            };
 
 
-        this.loadingScreenText = this.add.text(
-            config.width/2,
-            config.height/2 - uiUnit*3,
-            "Loading",
-            textConfig
-        ).setOrigin(.5, .5).setDepth(201);
+            this.loadingScreenText = this.add.text(
+                config.width/2,
+                config.height/2 - uiUnit*3,
+                "Loading",
+                textConfig
+            ).setOrigin(.5, .5).setDepth(201);
 
-        this.loadingScreenObjects.push(this.loadingScreenText);
+            this.loadingScreenObjects.push(this.loadingScreenText);
+
+        }
         
         this.load.image("ritualCircleBasic", "./assets/gamepieces/ritualCircleBasic.png");
         this.load.spritesheet("ritualTree", "./assets/gamepieces/treeSheet.png",
@@ -239,39 +244,10 @@ class Play extends Phaser.Scene {
     }
     create() {
 
-        //fade out from the loading screen
-        this.cameras.main.fadeOut(250).on("camerafadeoutcomplete", () => {
-
-            // when it's done fading in, it deletes all the objects that made up the loading screen
-            for (let i = 0; i < this.loadingScreenObjects.length; i++) {
-                this.loadingScreenObjects[i].destroy();
-            }
-
-            // it starts at zoom 8, really close up. i tween it to zoom 1 after a short delay
-            if(currentLevel == 1) {
-                this.camera.zoom = 8;
-            }
-            this.zoomedOut = false;
-            
-            // fade in from black from the Menu scene
-            this.camera.fadeIn(500).on("camerafadeincomplete", () => {
-                //zooms out the camera so it looks normal lol
-                this.cameraZoomOut = this.tweens.add({
-                    targets: [this.camera],
-                    zoom: 1,
-                    duration: 2500,
-                    delay: 2000,
-                    ease: "Quad.easeInOut"
-                }).on("complete", () => {
-                    // when the camera is finished zooming out, tween the tutorial keys on screen. that way u can actually see them tween
-                    this.tutorialKeysTweens();  
-                });
-            })
-            
-        });
-
-
         this.currentDialogueBox = undefined;
+
+        // to keep track if the level is currently in progress of transitioning to the next one
+        this.changingLevel = false;
 
         this.input.keyboard.on("keydown-R", () => {
             this.scene.start("creditsScene");
@@ -630,7 +606,6 @@ class Play extends Phaser.Scene {
         // an array of sprites that is the notes, above the box array
         this.inventoryNoteArray = [];
 
-        //this.camera.fadeIn(500);
 
         this.changeLevel(currentLevel);
         this.events.on("shutdown", () => {
@@ -638,7 +613,7 @@ class Play extends Phaser.Scene {
                 music.stop();
             }
         });
-        
+
     }
 
     update() {
@@ -881,9 +856,31 @@ class Play extends Phaser.Scene {
         this.updateInventoryLocation();
     }
 
+    // this is a two part function
+    // the first part determines if there needs to be a fade out, and calls the second part when the fade is done
+    // the second part does all the actual changing of the level
     changeLevel(target) {
-        //move to the specified level
 
+        currentLevel = target;
+
+        if (this.changingLevel == false) {
+
+            this.changingLevel = true;
+
+            if (loadedAssets && fromGameOver == false) {
+                console.log("fade out from change level")
+                this.camera.fadeOut(500).on("camerafadeoutcomplete", () => {
+                    this.changeLevel2(target);
+                });
+            } else {
+                this.changeLevel2(target);
+            }
+        }
+        fromGameOver = false;
+    }
+
+    changeLevel2(target) {
+        //move to the specified level
         if(target == 1) {
             currentLevel = 1;
             this.doppelganger.violent = false;
@@ -922,6 +919,10 @@ class Play extends Phaser.Scene {
             this.riverSound.setVolume(masterSFXVolume*.1);
         }
         this.initializeInventory(target);
+
+        console.log("current level at the end of changelevel(), before fadeInFromLoading():", currentLevel);
+        this.fadeInFromLoading();
+        this.changingLevel = false;
     }
 
     updateDialogueBox() {
@@ -1954,6 +1955,54 @@ class Play extends Phaser.Scene {
         for (let i = 0; i < this.inventoryNoteArray.length; i++) {
             this.inventoryNoteArray[i].x = this.camCenterX - config.width/2 + i*64;
             this.inventoryNoteArray[i].y = this.camCenterY - config.height/2;
+        }
+    }
+
+    fadeInFromLoading() {
+        //fade out from the loading screen
+        if (loadedAssets == false) {
+
+            this.cameras.main.fadeOut(500).on("camerafadeoutcomplete", () => {
+
+                loadedAssets = true;
+
+                // when it's done fading in, it deletes all the objects that made up the loading screen
+                for (let i = 0; i < this.loadingScreenObjects.length; i++) {
+                    this.loadingScreenObjects[i].destroy();
+                }
+
+                console.log("current level before zoom:", currentLevel);
+                // it starts at zoom 8, really close up. i tween it to zoom 1 after a short delay
+                if(currentLevel == 1) {
+                    console.log("zoom");
+                    this.camera.zoom = 8;
+                }
+
+                this.zoomedOut = false;
+
+                // fade in from black from the loading screen
+                console.log("fade in from the loading screen")
+                this.camera.fadeIn(500).on("camerafadeincomplete", () => {
+                    //zooms out the camera so it looks normal lol
+                    this.cameraZoomOut = this.tweens.add({
+                        targets: [this.camera],
+                        zoom: 1,
+                        duration: 2500,
+                        delay: 2000,
+                        ease: "Quad.easeInOut"
+                    }).on("complete", () => {
+                        // when the camera is finished zooming out, tween the tutorial keys on screen. that way u can actually see them tween
+                        this.tutorialKeysTweens();  
+                    });
+                });
+                
+            });
+            fromGameOver = false;
+
+        } else {
+            console.log("fade in with assets loaded");
+            this.cameras.main.fadeIn(500);
+            fromGameOver = false;
         }
     }
 }

@@ -13,6 +13,9 @@ class GameOverScene extends Phaser.Scene {
 
     create() {
 
+        // used for scene transitioning into play.js
+        fromGameOver = true;
+
         keySPACE = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
 
         this.initializeAnimations();
