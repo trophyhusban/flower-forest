@@ -71,6 +71,8 @@ class Menu extends Phaser.Scene {
                 this.scene.start("playScene");
             });
         });
+        
+        currentLevel = 1;
     }
 
     initializeAnimations() {

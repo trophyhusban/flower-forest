@@ -186,7 +186,9 @@ class Play extends Phaser.Scene {
             }
 
             // it starts at zoom 8, really close up. i tween it to zoom 1 after a short delay
-            this.camera.zoom = 8;
+            if(currentLevel == 1) {
+                this.camera.zoom = 8;
+            }
             this.zoomedOut = false;
             
             // fade in from black from the Menu scene
@@ -216,7 +218,6 @@ class Play extends Phaser.Scene {
         // the camera variable that we use in the rest of it
         this.camera = this.cameras.main;    
 
-        currentLevel = 1;
         this.level1Map = this.make.tilemap({key: "level1"});
         this.tileSet = this.level1Map.addTilesetImage("tilesheet", "tileSheet");
         this.riverTiles = this.level1Map.addTilesetImage("river", "riverTiles");
@@ -505,6 +506,7 @@ class Play extends Phaser.Scene {
 
         //this.camera.fadeIn(500);
 
+        this.changeLevel(currentLevel);
         this.events.on("shutdown", () => {
             if (music.isPlaying) {
                 music.stop();
