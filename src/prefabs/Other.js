@@ -43,16 +43,7 @@ class Other extends Phaser.Physics.Arcade.Sprite {
     update() {
         if(!this.stopped) {
             //recalculate the Other's grid position
-            for(this.j = 0; this.j <= gridSize * levelWidth; this.j++) {
-                if(Math.abs(this.x - (this.j * gridUnit - (gridUnit / 2))) < Math.abs(this.x - (this.gridX * gridUnit - (gridUnit / 2)))) {
-                    this.gridX = this.j;
-                }
-            }
-            for(this.i = 0; this.i <= gridSize * levelHeight; this.i++) {
-                if(Math.abs(this.y - (this.i * gridUnit - (gridUnit / 2))) < Math.abs(this.y - (this.gridY * gridUnit - (gridUnit / 2)))) {
-                    this.gridY = this.i;
-                }
-            }
+            this.calculateGridCoords();
 
             if(this.mirrorMode) { //mirror the player's movements in Mirror Mode
                 this.walk();
@@ -73,8 +64,9 @@ class Other extends Phaser.Physics.Arcade.Sprite {
                     this.currentInstruction = "";
                 }
 
-                if(this.currentInstruction == "die") {
-                    this.destroy();
+                if(this.currentInstruction == "mirror") {
+                    this.mirrorMode = true;
+                    this.scriptedMode = false;
                 }
 
             } else if (this.scriptedMode) { //if the script is empty, change to mirror mode
@@ -359,5 +351,18 @@ class Other extends Phaser.Physics.Arcade.Sprite {
         }
 
         this.body.velocity.normalize().scale(this.walkSpd);
+    }
+
+    calculateGridCoords() {
+        for(this.j = 0; this.j <= gridSize * levelWidth; this.j++) {
+            if(Math.abs(this.x - (this.j * gridUnit - (gridUnit / 2))) < Math.abs(this.x - (this.gridX * gridUnit - (gridUnit / 2)))) {
+                this.gridX = this.j;
+            }
+        }
+        for(this.i = 0; this.i <= gridSize * levelHeight; this.i++) {
+            if(Math.abs(this.y - (this.i * gridUnit - (gridUnit / 2))) < Math.abs(this.y - (this.gridY * gridUnit - (gridUnit / 2)))) {
+                this.gridY = this.i;
+            }
+        }
     }
 }
