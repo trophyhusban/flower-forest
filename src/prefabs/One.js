@@ -44,16 +44,7 @@ class One extends Phaser.Physics.Arcade.Sprite {
     update() {
         if(!this.stopped) {
             this.walk();
-            for(this.j = 0; this.j <= gridSize * levelWidth; this.j++) {
-                if(Math.abs(this.x - (this.j * gridUnit - (gridUnit / 2))) < Math.abs(this.x - (this.gridX * gridUnit - (gridUnit / 2)))) {
-                    this.gridX = this.j;
-                }
-            }
-            for(this.i = 0; this.i <= gridSize * levelHeight; this.i++) {
-                if(Math.abs(this.y - (this.i * gridUnit - (gridUnit / 2))) < Math.abs(this.y - (this.gridY * gridUnit - (gridUnit / 2)))) {
-                    this.gridY = this.i;
-                }
-            }
+            this.calculateGridCoords();
 
             if(keySPACE.isDown) {
                 this.plant();
@@ -218,6 +209,19 @@ class One extends Phaser.Physics.Arcade.Sprite {
         }
 
         this.body.velocity.normalize().scale(this.walkSpd);
+    }
+
+    calculateGridCoords() {
+        for(this.j = 0; this.j <= gridSize * levelWidth; this.j++) {
+            if(Math.abs(this.x - (this.j * gridUnit - (gridUnit / 2))) < Math.abs(this.x - (this.gridX * gridUnit - (gridUnit / 2)))) {
+                this.gridX = this.j;
+            }
+        }
+        for(this.i = 0; this.i <= gridSize * levelHeight; this.i++) {
+            if(Math.abs(this.y - (this.i * gridUnit - (gridUnit / 2))) < Math.abs(this.y - (this.gridY * gridUnit - (gridUnit / 2)))) {
+                this.gridY = this.i;
+            }
+        }
     }
 
     chooseNextFlower() {

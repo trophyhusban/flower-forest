@@ -19,9 +19,9 @@ let gridSize = 11;
 let gridUnit = game.config.width / (gridSize - 1);
 let unit = game.config.height / 15;
 
-let levelWidth, levelHeight;
+let levelWidth, levelHeight, currentLevel;
 
-let keySPACE, keyUP, keyDOWN, keyLEFT, keyRIGHT, keyONE, keyTWO, keyTHREE, keyFOUR;
+let keySPACE, keyUP, keyDOWN, keyLEFT, keyRIGHT, keyONE, keyTWO, keyTHREE, keyFOUR, keyFIVE, keyEIGHT, keyNINE, keyZERO;
 
 // the text config object used in most of the game
 let textConfig;
