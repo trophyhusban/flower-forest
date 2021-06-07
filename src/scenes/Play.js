@@ -614,6 +614,34 @@ class Play extends Phaser.Scene {
 
 
         this.changeLevel(currentLevel);
+        if(currentLevel == 1) {
+            this.levelTitle1 = this.add.text(
+                this.level1Map.findObject("triggers", obj => obj.name ==="Spawnpoint").x,
+                this.level1Map.findObject("triggers", obj => obj.name ==="Spawnpoint").y - 2 *gridUnit,
+                "Level 1:\nCuriosity",
+                textConfig
+            ).setAlpha(0);
+            this.levelTitle1.x -= this.levelTitle1.width / 2;
+            this.titleTween1 = this.tweens.add({
+                targets: [this.levelTitle1],
+                alpha: 1,
+                y: this.levelTitle1.y - gridUnit,
+                duration: 2000,
+                delay: 6000,
+                ease: "Quad.easeOut"
+            }).on("complete", () => {
+                this.titleDeTween1 = this.tweens.add({
+                    targets: [this.levelTitle1],
+                    alpha: 0,
+                    y: this.levelTitle1.y + gridUnit,
+                    duration: 2000,
+                    delay: 2000,
+                    ease: "Quad.easeIn"
+                }).on("complete", () => {
+                    this.levelTitle1.destroy();
+                });
+            });
+        }
         this.events.on("shutdown", () => {
             if (music.isPlaying) {
                 music.stop();
@@ -877,54 +905,86 @@ class Play extends Phaser.Scene {
                 console.log("fade out from change level")
                 this.camera.fadeOut(500).on("camerafadeoutcomplete", () => {
                     this.changeLevel2(target);
+                    if(currentLevel == 1) {
+                        this.levelTitle1 = this.add.text(
+                            this.level1Map.findObject("triggers", obj => obj.name ==="Spawnpoint").x,
+                            this.level1Map.findObject("triggers", obj => obj.name ==="Spawnpoint").y - 2 *gridUnit,
+                            "Level 1:\nCuriosity",
+                            textConfig
+                        ).setAlpha(0);
+                        this.levelTitle1.x -= this.levelTitle1.width / 2;
+                        this.titleTween1 = this.tweens.add({
+                            targets: [this.levelTitle1],
+                            alpha: 1,
+                            y: this.levelTitle1.y - gridUnit,
+                            duration: 2000,
+                            delay: 6000,
+                            ease: "Quad.easeOut"
+                        }).on("complete", () => {
+                            this.titleDeTween1 = this.tweens.add({
+                                targets: [this.levelTitle1],
+                                alpha: 0,
+                                y: this.levelTitle1.y + gridUnit,
+                                duration: 2000,
+                                delay: 2000,
+                                ease: "Quad.easeIn"
+                            }).on("complete", () => {
+                                this.levelTitle1.destroy();
+                            });
+                        });
+                    }
                     if(currentLevel == 2) {
-                        this.levelTitle = this.add.text(
+                        this.levelTitle2 = this.add.text(
                             this.level1Map.findObject("triggers", obj => obj.name ==="SpawnpointLvl2").x,
                             this.level1Map.findObject("triggers", obj => obj.name ==="SpawnpointLvl2").y - 2 *gridUnit,
                             "Level 2:\nDread",
                             textConfig
                         ).setAlpha(0);
-                        this.levelTitle.x -= this.levelTitle.width / 2;
-                        this.titleTween = this.tweens.add({
-                            targets: [this.levelTitle],
+                        this.levelTitle2.x -= this.levelTitle2.width / 2;
+                        this.titleTween2 = this.tweens.add({
+                            targets: [this.levelTitle2],
                             alpha: 1,
-                            y: this.levelTitle.y - gridUnit,
+                            y: this.levelTitle2.y - gridUnit,
                             duration: 2000,
                             delay: 1000,
                             ease: "Quad.easeOut"
                         }).on("complete", () => {
-                            this.titleDeTween = this.tweens.add({
-                                targets: [this.levelTitle],
+                            this.titleDeTween2 = this.tweens.add({
+                                targets: [this.levelTitle2],
                                 alpha: 0,
-                                y: this.levelTitle.y + gridUnit,
+                                y: this.levelTitle2.y + gridUnit,
                                 duration: 2000,
                                 delay: 2000,
                                 ease: "Quad.easeIn"
+                            }).on("complete", () => {
+                                this.levelTitle2.destroy();
                             });
                         });
                     } else if(currentLevel == 3) {
-                        this.levelTitle = this.add.text(
+                        this.levelTitle3 = this.add.text(
                             this.level1Map.findObject("triggers", obj => obj.name ==="cameraLvl3Start").x,
                             this.level1Map.findObject("triggers", obj => obj.name ==="cameraLvl3Start").y - 2 *gridUnit,
                             "Level 3:\nHarmony",
                             textConfig
                         ).setAlpha(0);
-                        this.levelTitle.x -= this.levelTitle.width / 2;
-                        this.titleTween = this.tweens.add({
-                            targets: [this.levelTitle],
+                        this.levelTitle3.x -= this.levelTitle3.width / 2;
+                        this.titleTween3 = this.tweens.add({
+                            targets: [this.levelTitle3],
                             alpha: 1,
-                            y: this.levelTitle.y - gridUnit,
+                            y: this.levelTitle3.y - gridUnit,
                             duration: 2000,
                             delay: 1000,
                             ease: "Quad.easeOut"
                         }).on("complete", () => {
-                            this.titleDeTween = this.tweens.add({
-                                targets: [this.levelTitle],
+                            this.titleDeTween3 = this.tweens.add({
+                                targets: [this.levelTitle3],
                                 alpha: 0,
-                                y: this.levelTitle.y + gridUnit,
+                                y: this.levelTitle3.y + gridUnit,
                                 duration: 2000,
                                 delay: 2000,
                                 ease: "Quad.easeIn"
+                            }).on("complete", () => {
+                                this.levelTitle3.destroy();
                             });
                         });
                     }
