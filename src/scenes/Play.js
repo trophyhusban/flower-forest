@@ -167,6 +167,7 @@ class Play extends Phaser.Scene {
         this.load.audio("talking puck", "./assets/sound/CharacterSpeak.wav");
         this.load.audio("talking titania", "./assets/sound/TalkingTitania.wav");
         this.load.audio("talking flowerfae", "./assets/sound/TalkingFlower.wav");
+        this.load.audio("river sound", "./assets/sound/River.wav");
 
         this.load.image("inventory box", "./assets/ui/inventory_box.png");
 
@@ -733,6 +734,7 @@ class Play extends Phaser.Scene {
             this.doppelganger.mirrorMode = true;
             this.camera.centerOn(this.camCenterX, this.camCenterY);
             this.changeColor();
+            this.riverSound.setVolume(masterSFXVolume*.1);
         }
     }
 
@@ -865,6 +867,10 @@ class Play extends Phaser.Scene {
         this.talkingTitania = this.sound.add("talking titania");
         this.talkingFlowerfae = this.sound.add("talking flowerfae");
         this.select = this.sound.add("select");
+        this.riverSound = this.sound.add("river sound");
+
+        this.riverSound.play();
+        this.riverSound.setLoop(true);
 
         this.sounds.push(this.footsteps);
         this.sounds.push(this.player.plantFlowerAudio);
@@ -873,6 +879,7 @@ class Play extends Phaser.Scene {
         this.sounds.push(this.talkingPuck);
         this.sounds.push(this.talkingTitania);
         this.sounds.push(this.talkingFlowerfae);
+        this.sounds.push(this.riverSound);
 
         music = this.sound.add("level one music");
 
@@ -895,11 +902,18 @@ class Play extends Phaser.Scene {
         this.footsteps.play();
         this.footsteps.pause();
         this.footsteps.setRate(1.5);
+
+        this.updateSFXVolume();
     }
 
     updateSFXVolume() {
         for (let i = 0; i < this.sounds.length; i++) {
-            this.sounds[i].volume = masterSFXVolume;
+            this.sounds[i].setVolume(masterSFXVolume);
+        }
+        if (currentLevel != 3) {
+            this.riverSound.setVolume(0);
+        } else {
+            this.riverSound.setVolume(masterSFXVolume * .1);
         }
     }
 
